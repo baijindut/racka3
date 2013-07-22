@@ -11,12 +11,19 @@
 
 #include "plugins/RBEcho.h"
 #include "plugins/FuzzTest.h"
-
+#include <stdio.h>
 
 Host::Host()
 {
 	RBEcho* echo = new RBEcho();
 	_plugins.push_back(echo);
+
+	cJSON* j = cJSON_CreateObject();
+	echo->getPluginJson(j);
+	char* c = cJSON_Print(j);
+	printf("%s\n",c);
+	free(c);
+	cJSON_Delete(j);
 
 //	FuzzTest* fuzz = new FuzzTest();
 //	_plugins.push_back(fuzz);

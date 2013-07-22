@@ -32,6 +32,6 @@ src/host/plugins/RBEcho.o: src/host/plugins/RBEcho.C /usr/include/stdio.h \
  src/host/plugins/RBEcho.h src/host/plugins/global.h \
  src/host/plugins/../../settings.h libs/portaudio/include/portaudio.h \
  src/host/plugins/delayline.h src/host/plugins/../Plugin.h src/cJSON.h \
- src/host/plugins/../../uthash.h /usr/include/inttypes.h \
+ src/uthash.h /usr/include/inttypes.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/stdint.h /usr/include/stdint.h \
  /usr/include/i386-linux-gnu/bits/wchar.h

@@ -28,7 +28,7 @@ src/host/Host.o: src/host/Host.cpp src/host/Host.h \
  /usr/include/c++/4.6/initializer_list \
  /usr/include/c++/4.6/bits/range_access.h \
  /usr/include/c++/4.6/bits/deque.tcc src/host/Plugin.h src/cJSON.h \
- src/host/plugins/../../uthash.h /usr/include/string.h \
+ src/uthash.h /usr/include/string.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/stddef.h /usr/include/xlocale.h \
  /usr/include/stdlib.h /usr/include/i386-linux-gnu/bits/waitflags.h \
  /usr/include/i386-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
@@ -55,4 +55,8 @@ src/host/Host.o: src/host/Host.cpp src/host/Host.h \
  /usr/include/i386-linux-gnu/bits/mathdef.h \
  /usr/include/i386-linux-gnu/bits/mathcalls.h \
  src/host/plugins/delayline.h src/host/plugins/../Plugin.h \
- src/host/plugins/FuzzTest.h
+ src/host/plugins/FuzzTest.h /usr/include/stdio.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
+ /usr/include/i386-linux-gnu/bits/stdio_lim.h \
+ /usr/include/i386-linux-gnu/bits/sys_errlist.h

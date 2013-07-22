@@ -58,7 +58,7 @@
 
 # The pre-processor and compiler options.
 # MY_CFLAGS = -ggdb3 -pipe -O2 -Wall -Wextra -fopenmp -march=native -mfpmath=sse -DLINUX -m64 -std=c++0x
-MY_CFLAGS = -g -DLINUX -Isrc -Ilibs/portaudio/include -Isrc/host -Isrc/host/plugins
+MY_CFLAGS = -Wno-write-strings -g -DLINUX -Isrc -Ilibs/portaudio/include -Isrc/host -Isrc/host/plugins
 
 # The linker options.
 # MY_LIBS   = -lGLEW -lglut -lGLU -lGL -lX11 -lXmu -lXi -lm -L/usr/X11R6/lib -lgomp -lOpenThreads -lpthread

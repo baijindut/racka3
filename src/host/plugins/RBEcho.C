@@ -31,10 +31,7 @@
 
 RBEcho::RBEcho ()
 {
-  //  efxoutl = efxoutl_;
-   // efxoutr = efxoutr_;
-
-    //default values
+	//default values
     Pvolume = 100;
     Ppanning = 64;
     Pdelay = 60;
@@ -55,14 +52,20 @@ RBEcho::RBEcho ()
     ldelay = new delayline(2.0f, 3);
     rdelay = new delayline(2.0f, 3);
 
-    setvolume (Pvolume);
-    setpanning (Ppanning);
-    setdelay (Pdelay);
-    setlrdelay (Plrdelay);
-    setlrcross (Plrcross);
-    setfb (Pfb);
-    sethidamp (Phidamp);
-    setreverse (Preverse);
+	registerPlugin("Echoverse",
+				   "A flexible temp-syncing reversible echo",
+				   1);
+
+	registerParam(0,"Level","","","off","",0,127,1,100);
+    registerParam(1,"Pan","","","far left","far right",0,127,1,64);
+    registerParam(2,"Tempo","","BPM","","",0,600,1,120);
+    registerParam(3,"LR Delay","","","","",0,127,1,80);
+    registerParam(4,"Angle","","far left","far right","",0,127,1,40);
+    registerParam(5,"Feedback","","","","",0,127,1,80);
+    registerParam(6,"Damping","","","","",0,127,1,10);
+    registerParam(7,"Reverse","Reverse the echo","","forward","backward",0,127,127,0);
+    registerParam(8,"Tempo Subdivision","fraction of beat","","","",0,5,1,0);
+    registerParam(9,"E.S.","","","","",0,127,1,100);
 
     cleanup ();
 };

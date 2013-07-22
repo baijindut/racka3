@@ -26,6 +26,7 @@ public:
                  const PaStreamCallbackTimeInfo* timeInfo,
                  PaStreamCallbackFlags statusFlags);
 
+
 private:
 	deque <Plugin*> _plugins;
 
