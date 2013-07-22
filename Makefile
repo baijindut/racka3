@@ -58,7 +58,7 @@
 
 # The pre-processor and compiler options.
 # MY_CFLAGS = -ggdb3 -pipe -O2 -Wall -Wextra -fopenmp -march=native -mfpmath=sse -DLINUX -m64 -std=c++0x
-MY_CFLAGS = -g -DLINUX -Ilibs/portaudio/include -Isrc/host -Isrc/host/plugins
+MY_CFLAGS = -g -DLINUX -Isrc -Ilibs/portaudio/include -Isrc/host -Isrc/host/plugins
 
 # The linker options.
 # MY_LIBS   = -lGLEW -lglut -lGLU -lGL -lX11 -lXmu -lXi -lm -L/usr/X11R6/lib -lgomp -lOpenThreads -lpthread
@@ -72,7 +72,7 @@ LDFLAGS   = -Llibs/portaudio/lib
 
 # The directories in which source files reside.
 # If not specified, only the current directory will be serached.
-SRCDIRS   = src src/host src/host/plugins
+SRCDIRS   = src/host/plugins src/host src
 
 # The executable file name.
 # If not specified, current directory name or `a.out' will be used.

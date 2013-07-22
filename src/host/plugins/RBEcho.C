@@ -313,7 +313,7 @@ RBEcho::sethidamp (int Phidamp)
 };
 
 void
-RBEcho::changepar (int npar, int value)
+RBEcho::setParam (int npar, int value)
 {
     switch (npar) {
     case 0:
@@ -354,7 +354,7 @@ RBEcho::changepar (int npar, int value)
 };
 
 int
-RBEcho::getpar (int npar)
+RBEcho::getParam (int npar)
 {
     switch (npar) {
     case 0:

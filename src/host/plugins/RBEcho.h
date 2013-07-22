@@ -36,18 +36,18 @@ class RBEcho : public Plugin
 public:
     RBEcho ();
     ~RBEcho ();
-    //void out (float * smpsl, float * smpr);
-    void changepar (int npar, int value);
-    int getpar (int npar);
-    void cleanup ();
 
 	int process(float* inLeft,float* inRight,float* outLeft,float* outRight,
 			  unsigned long framesPerBuffer);
 
+private:
+
+    //void out (float * smpsl, float * smpr);
+    void setParam (int npar, int value);
+    int getParam (int npar);
+    void cleanup ();
 
     float outvolume;
-
-private:
 
     void setvolume (int Pvolume);
     void setpanning (int Ppanning);
