@@ -1,5 +1,5 @@
 src/host/Host.o: src/host/Host.cpp src/host/Host.h \
- libs/portaudio/include/portaudio.h /usr/include/c++/4.6/deque \
+ libs/portaudio/include/portaudio.h /usr/include/c++/4.6/list \
  /usr/include/c++/4.6/bits/stl_algobase.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/c++config.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/os_defines.h \
@@ -22,13 +22,10 @@ src/host/Host.o: src/host/Host.cpp src/host/Host.h \
  /usr/include/c++/4.6/debug/debug.h /usr/include/c++/4.6/bits/allocator.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/c++allocator.h \
  /usr/include/c++/4.6/ext/new_allocator.h /usr/include/c++/4.6/new \
- /usr/include/c++/4.6/exception /usr/include/c++/4.6/bits/stl_construct.h \
- /usr/include/c++/4.6/bits/stl_uninitialized.h \
- /usr/include/c++/4.6/bits/stl_deque.h \
- /usr/include/c++/4.6/initializer_list \
- /usr/include/c++/4.6/bits/range_access.h \
- /usr/include/c++/4.6/bits/deque.tcc src/host/Plugin.h src/cJSON.h \
- src/uthash.h /usr/include/string.h \
+ /usr/include/c++/4.6/exception /usr/include/c++/4.6/bits/range_access.h \
+ /usr/include/c++/4.6/bits/stl_list.h \
+ /usr/include/c++/4.6/initializer_list /usr/include/c++/4.6/bits/list.tcc \
+ src/host/Plugin.h src/cJSON.h src/uthash.h /usr/include/string.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/stddef.h /usr/include/xlocale.h \
  /usr/include/stdlib.h /usr/include/i386-linux-gnu/bits/waitflags.h \
  /usr/include/i386-linux-gnu/bits/waitstatus.h /usr/include/endian.h \

@@ -15,27 +15,39 @@
 
 Host::Host()
 {
-	RBEcho* echo = new RBEcho();
-	_plugins.push_back(echo);
+	Plugin* plugin;
 
-	cJSON* j = cJSON_CreateObject();
-	echo->getPluginJson(j);
-	char* c = cJSON_Print(j);
+	// add all the plugins to the pool
+	createPluginIfNeeded("Echoverse",true);
+	// TODO: add other plugins
+
+	// loop over pool and create all plugin json list
+	_jsonAllPlugins = cJSON_CreateArray();
+	for(list<Plugin*>::iterator it=_pool.begin(); it!=_pool.end();++it)
+	{
+		cJSON* jsonObject = cJSON_CreateObject();
+		(*it)->getPluginJson(jsonObject);
+		cJSON_AddItemToArray(_jsonAllPlugins,jsonObject);
+	}
+
+	// debug
+	char* c = cJSON_Print(_jsonAllPlugins);
 	printf("%s\n",c);
 	free(c);
-	cJSON_Delete(j);
-
-//	FuzzTest* fuzz = new FuzzTest();
-//	_plugins.push_back(fuzz);
 }
 
 
 Host::~Host()
 {
-	for(deque<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
-	{
+	list<Plugin*>::iterator it;
+
+	for(it=_plugins.begin(); it!=_plugins.end();++it)
 		delete *it;
-	}
+
+	for(it=_pool.begin(); it!=_pool.end();++it)
+		delete *it;
+
+	cJSON_Delete(_jsonAllPlugins);
 }
 
 int Host::process(const float *inputBuffer,
@@ -64,7 +76,7 @@ int Host::process(const float *inputBuffer,
 
 	if (_plugins.size())
 	{
-		for(deque<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
+		for(list<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
 		{
 			// process
 			(*it)->process(bufLeft1,bufRight1,bufLeft2,bufRight2,framesPerBuffer);
@@ -86,3 +98,100 @@ int Host::process(const float *inputBuffer,
 	return paContinue;
 }
 
+cJSON* Host::getAvailablePlugins()
+{
+	return _jsonAllPlugins;
+}
+
+bool Host::addPlugin(char* name, int before)
+{
+	bool bOk=false;
+
+	if (_plugins.size()==0 && before < _plugins.size() && before >= 0)
+	{
+		Plugin* plugin = createPluginIfNeeded(name);
+		if (plugin)
+		{
+			if (_plugins.size())
+			{
+				list<Plugin*>::iterator it=_plugins.begin();
+				for (int i=0;i<before;i++)
+					it++;
+				_plugins.insert(it,plugin);
+			}
+			else
+			{
+				_plugins.push_back(plugin);
+			}
+
+			bOk = true;
+		}
+	}
+
+	return bOk;
+}
+
+bool Host::movePlugin(int from, int before)
+{
+	bool bOk = false;
+
+	if (from >=0 && from < _plugins.size() &&
+		before >=0 && before < _plugins.size() &&
+		from!=before && _plugins.size()>=2)
+	{
+		// TODO: swap the two plugins
+	}
+
+	return bOk;
+}
+
+bool Host::setPluginParams(cJSON* json)
+{
+	//TODO: set plugin parameters
+}
+
+bool Host::setPluginParam(int index, char* param, int value)
+{
+	//TODO: set plugin parameter
+}
+
+Plugin* Host::createNewPlugin(char* name)
+{
+	Plugin* plugin =0;
+
+	if (0==strcmp(name,"Echoverse"))
+	{
+		return new RBEcho();
+	}
+
+	return plugin;
+}
+
+Plugin* Host::createPluginIfNeeded(char* name,bool addToPoolImmediately)
+{
+	Plugin* plugin=0;
+	list<Plugin*>::iterator it;
+
+	// look in pool
+	for(it=_pool.begin(); it!=_pool.end();++it)
+	{
+		if (0==strcmp(name,(*it)->getName()))
+		{
+			plugin = *it;
+			_pool.remove(plugin);
+			break;
+		}
+	}
+
+	// if not found in pool
+	if (!plugin)
+	{
+		plugin = createNewPlugin(name);
+		if (addToPoolImmediately && plugin)
+		{
+			_pool.push_back(plugin);
+		}
+	}
+
+	return plugin;
+}
