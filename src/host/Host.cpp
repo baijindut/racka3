@@ -131,15 +131,19 @@ bool Host::addPlugin(char* name, int before)
 	return bOk;
 }
 
-bool Host::movePlugin(int from, int before)
+bool Host::swapPlugin(int from, int to)
 {
 	bool bOk = false;
 
 	if (from >=0 && from < _plugins.size() &&
-		before >=0 && before < _plugins.size() &&
-		from!=before && _plugins.size()>=2)
+		to >=0 && to < _plugins.size() &&
+		from!=to && _plugins.size()>=2)
 	{
-		// TODO: swap the two plugins
+		Plugin* a = _plugins[from];
+		Plugin* b = _plugins[to];
+
+		_plugins[to] = a;
+		_plugins[from] = b;
 	}
 
 	return bOk;

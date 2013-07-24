@@ -29,7 +29,7 @@ public:
 	cJSON* getAvailablePlugins();
 
 	bool addPlugin(char* name,int before);
-	bool movePlugin(int from,int before);
+	bool swapPlugin(int from,int to);
 
 	bool setPluginParams(cJSON* json);
 	bool setPluginParam(int index,char* param,int value);
