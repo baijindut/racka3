@@ -23,23 +23,18 @@ Host::Host()
 
 	// loop over pool and create all plugin json list
 	_jsonAllPlugins = cJSON_CreateArray();
-	for(list<Plugin*>::iterator it=_pool.begin(); it!=_pool.end();++it)
+	for(vector<Plugin*>::iterator it=_pool.begin(); it!=_pool.end();++it)
 	{
 		cJSON* jsonObject = cJSON_CreateObject();
 		(*it)->getPluginJson(jsonObject);
 		cJSON_AddItemToArray(_jsonAllPlugins,jsonObject);
 	}
-
-	// debug
-	char* c = cJSON_Print(_jsonAllPlugins);
-	printf("%s\n",c);
-	free(c);
 }
 
 
 Host::~Host()
 {
-	list<Plugin*>::iterator it;
+	vector<Plugin*>::iterator it;
 
 	for(it=_plugins.begin(); it!=_plugins.end();++it)
 		delete *it;
@@ -76,7 +71,7 @@ int Host::process(const float *inputBuffer,
 
 	if (_plugins.size())
 	{
-		for(list<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
+		for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
 		{
 			// process
 			(*it)->process(bufLeft1,bufRight1,bufLeft2,bufRight2,framesPerBuffer);
@@ -98,14 +93,17 @@ int Host::process(const float *inputBuffer,
 	return paContinue;
 }
 
-cJSON* Host::getAvailablePlugins()
+void Host::getAvailablePlugins(cJSON* json)
 {
-	return _jsonAllPlugins;
+	cJSON_AddItemReferenceToObject(json,"plugins",_jsonAllPlugins);
 }
 
-bool Host::addPlugin(char* name, int before)
+void Host::addPlugin(cJSON* json)
 {
-	bool bOk=false;
+	char* name;
+	int before;
+
+	// TODO: get name and before from JSON
 
 	if (_plugins.size()==0 && before < _plugins.size() && before >= 0)
 	{
@@ -114,7 +112,7 @@ bool Host::addPlugin(char* name, int before)
 		{
 			if (_plugins.size())
 			{
-				list<Plugin*>::iterator it=_plugins.begin();
+				vector<Plugin*>::iterator it=_plugins.begin();
 				for (int i=0;i<before;i++)
 					it++;
 				_plugins.insert(it,plugin);
@@ -123,17 +121,16 @@ bool Host::addPlugin(char* name, int before)
 			{
 				_plugins.push_back(plugin);
 			}
-
-			bOk = true;
 		}
 	}
-
-	return bOk;
 }
 
-bool Host::swapPlugin(int from, int to)
+void Host::swapPlugin(cJSON* json)
 {
-	bool bOk = false;
+	int from;
+	int to;
+
+	// TODO: get from and to from JSON
 
 	if (from >=0 && from < _plugins.size() &&
 		to >=0 && to < _plugins.size() &&
@@ -146,17 +143,11 @@ bool Host::swapPlugin(int from, int to)
 		_plugins[from] = b;
 	}
 
-	return bOk;
 }
 
-bool Host::setPluginParams(cJSON* json)
+void Host::setPluginParams(cJSON* json)
 {
 	//TODO: set plugin parameters
-}
-
-bool Host::setPluginParam(int index, char* param, int value)
-{
-	//TODO: set plugin parameter
 }
 
 Plugin* Host::createNewPlugin(char* name)
@@ -174,15 +165,14 @@ Plugin* Host::createNewPlugin(char* name)
 Plugin* Host::createPluginIfNeeded(char* name,bool addToPoolImmediately)
 {
 	Plugin* plugin=0;
-	list<Plugin*>::iterator it;
+	vector<Plugin*>::iterator it;
 
 	// look in pool
 	for(it=_pool.begin(); it!=_pool.end();++it)
 	{
 		if (0==strcmp(name,(*it)->getName()))
 		{
-			plugin = *it;
-			_pool.remove(plugin);
+			_pool.erase(it);
 			break;
 		}
 	}

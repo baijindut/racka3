@@ -9,7 +9,7 @@
 #define HOST_H_
 
 #include "portaudio.h"
-#include <list>
+#include <vector>
 #include "Plugin.h"
 #include "../settings.h"
 using namespace std;
@@ -26,13 +26,12 @@ public:
                  const PaStreamCallbackTimeInfo* timeInfo,
                  PaStreamCallbackFlags statusFlags);
 
-	cJSON* getAvailablePlugins();
+	void getAvailablePlugins(cJSON* json);
 
-	bool addPlugin(char* name,int before);
-	bool swapPlugin(int from,int to);
+	void addPlugin(cJSON* json);
+	void swapPlugin(cJSON* json);
 
-	bool setPluginParams(cJSON* json);
-	bool setPluginParam(int index,char* param,int value);
+	void setPluginParams(cJSON* json);
 
 private:
 
@@ -43,10 +42,10 @@ private:
 	Plugin* createNewPlugin(char* name);
 
 	// pool of spare plugins
-	list <Plugin*> _pool;
+	vector <Plugin*> _pool;
 
 	// the plugins in the chain
-	list <Plugin*> _plugins;
+	vector <Plugin*> _plugins;
 
 	// 2 buffers to swap, for input and output
 	float _bufferLeft[2][FRAMES_PER_BUFFER*2];

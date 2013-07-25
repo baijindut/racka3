@@ -1,0 +1,23 @@
+<html>
+<head>
+<script src="jquery-1.10.2.min.js"></script>
+<script>
+
+function testPost(url,json) {
+	$.post(url, json)
+	.done(function(data) {
+	  alert("Data Loaded: " + data);
+	});
+}
+
+</script>
+<title>Racka3</title>
+</head>
+
+<body>
+<h1>Racka3</h1>
+
+<input type="button" value="addPlugin" onclick='testPost("addPlugin","jhgjhgjhg")'/>
+
+</body>
+</html>

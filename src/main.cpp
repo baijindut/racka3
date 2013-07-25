@@ -5,6 +5,7 @@
 #include <string.h>
 #include "portaudio.h"
 #include "Host.h"
+#include "HttpServer.h"
 
 #include "settings.h"
 
@@ -169,6 +170,9 @@ int main(int argc,char* argv[])
     PaError err;
     paTestData data;
     int i;
+    HttpServer server;
+
+    server.setPluginHost(&data.host);
 
     /* initialise sinusoidal wavetable */
     for( i=0; i<TABLE_SIZE; i++ )
@@ -234,6 +238,7 @@ int main(int argc,char* argv[])
 
     printf("Finished. gNumNoInputs = %d\n", gNumNoInputs );
     Pa_Terminate();
+    server.stop();
     return 0;
 
 error:
@@ -241,5 +246,6 @@ error:
     fprintf( stderr, "An error occured while using the portaudio stream\n" );
     fprintf( stderr, "Error number: %d\n", err );
     fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
+    server.stop();
     return -1;
 }
