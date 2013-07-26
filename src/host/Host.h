@@ -32,6 +32,7 @@ public:
 	void swapPlugin(cJSON* json);
 
 	void setPluginParams(cJSON* json);
+	void getPluginParams(cJSON* json);
 
 private:
 
@@ -52,6 +53,8 @@ private:
 	float _bufferRight[2][FRAMES_PER_BUFFER*2];
 
 	cJSON* _jsonAllPlugins;
+
+	bool _bBypassAll;
 };
 
 #endif /* HOST_H_ */

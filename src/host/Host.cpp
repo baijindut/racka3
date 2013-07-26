@@ -13,6 +13,8 @@
 #include "plugins/FuzzTest.h"
 #include <stdio.h>
 
+#define JSONERROR(JSON,ERROR) do {cJSON_AddItemToObject(JSON,"error",cJSON_CreateString(ERROR));} while(0)
+
 Host::Host()
 {
 	Plugin* plugin;
@@ -29,6 +31,8 @@ Host::Host()
 		(*it)->getPluginJson(jsonObject);
 		cJSON_AddItemToArray(_jsonAllPlugins,jsonObject);
 	}
+
+	_bBypassAll = false;
 }
 
 
@@ -69,7 +73,7 @@ int Host::process(const float *inputBuffer,
 	float* latestLeftBuf = (float*)inLeft;
 	float* latestRightBuf = (float*)inRight;
 
-	if (_plugins.size())
+	if (!_bBypassAll && _plugins.size() )
 	{
 		for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
 		{
@@ -103,25 +107,45 @@ void Host::addPlugin(cJSON* json)
 	char* name;
 	int before;
 
-	// TODO: get name and before from JSON
+	cJSON* jsonName = cJSON_GetObjectItem(json,"name");
+	cJSON* jsonPosition = cJSON_GetObjectItem(json,"position");
 
-	if (_plugins.size()==0 && before < _plugins.size() && before >= 0)
+	if (jsonName && jsonName->type==cJSON_String && jsonName->valuestring &&
+		jsonPosition && jsonPosition->type==cJSON_Number)
 	{
-		Plugin* plugin = createPluginIfNeeded(name);
-		if (plugin)
+		name = jsonName->valuestring;
+		before = jsonPosition->valueint;
+
+		if ( (_plugins.size()==0 && before == 0) || (before < _plugins.size() && before >= 0))
 		{
-			if (_plugins.size())
+			Plugin* plugin = createPluginIfNeeded(name);
+			if (plugin)
 			{
-				vector<Plugin*>::iterator it=_plugins.begin();
-				for (int i=0;i<before;i++)
-					it++;
-				_plugins.insert(it,plugin);
+				if (_plugins.size())
+				{
+					vector<Plugin*>::iterator it=_plugins.begin();
+					for (int i=0;i<before;i++)
+						it++;
+					_plugins.insert(it,plugin);
+				}
+				else
+				{
+					_plugins.push_back(plugin);
+				}
 			}
 			else
 			{
-				_plugins.push_back(plugin);
+				JSONERROR(json,"no such plugin name");
 			}
 		}
+		else
+		{
+			JSONERROR(json,"position is OOB");
+		}
+	}
+	else
+	{
+		JSONERROR(json,"name or position incorrectly or not given");
 	}
 }
 
@@ -148,6 +172,11 @@ void Host::swapPlugin(cJSON* json)
 void Host::setPluginParams(cJSON* json)
 {
 	//TODO: set plugin parameters
+}
+
+void Host::getPluginParams(cJSON* json)
+{
+	//TODO
 }
 
 Plugin* Host::createNewPlugin(char* name)

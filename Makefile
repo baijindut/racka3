@@ -65,7 +65,7 @@ MY_CFLAGS = -Wno-write-strings -g -DLINUX -Isrc -Ilibs/portaudio/include -Isrc/h
 MY_LIBS   = -ldl -lm -lasound -lpthread -lportaudio
 
 # The pre-processor options used by the cpp (man cpp for more).
-CPPFLAGS  = 
+CPPFLAGS  = -Os
 
 # The options used in linking as well as in any direct use of ld.
 LDFLAGS   = -Llibs/portaudio/lib
@@ -239,6 +239,8 @@ endif
 
 clean:
 	$(RM) $(OBJS) $(PROGRAM) $(PROGRAM).exe
+	find . -type f -name "*.o" -exec rm -f {} \;
+	find . -type f -name "*.d" -exec rm -f {} \;
 
 distclean: clean
 	$(RM) $(DEPS) TAGS

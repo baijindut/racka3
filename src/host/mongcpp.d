@@ -21,14 +21,16 @@ src/host/mongcpp.o: src/host/mongcpp.cpp src/host/mongcpp.h \
  /usr/include/i386-linux-gnu/bits/select.h \
  /usr/include/i386-linux-gnu/bits/sigset.h \
  /usr/include/i386-linux-gnu/bits/time.h \
+ /usr/include/i386-linux-gnu/bits/select2.h \
  /usr/include/i386-linux-gnu/sys/sysmacros.h \
  /usr/include/i386-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
- src/host/mongoose.h /usr/include/stdio.h /usr/include/libio.h \
- /usr/include/_G_config.h /usr/include/wchar.h \
- /usr/lib/gcc/i686-linux-gnu/4.7/include/stdarg.h \
+ /usr/include/i386-linux-gnu/bits/stdlib.h src/host/mongoose.h \
+ /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h \
+ /usr/include/wchar.h /usr/lib/gcc/i686-linux-gnu/4.7/include/stdarg.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
- /usr/include/c++/4.7/string /usr/include/c++/4.7/bits/stringfwd.h \
+ /usr/include/i386-linux-gnu/bits/stdio2.h /usr/include/c++/4.7/string \
+ /usr/include/c++/4.7/bits/stringfwd.h \
  /usr/include/c++/4.7/bits/char_traits.h \
  /usr/include/c++/4.7/bits/stl_algobase.h \
  /usr/include/c++/4.7/bits/functexcept.h \
@@ -43,6 +45,7 @@ src/host/mongcpp.o: src/host/mongcpp.cpp src/host/mongcpp.h \
  /usr/include/c++/4.7/bits/stl_iterator.h \
  /usr/include/c++/4.7/debug/debug.h /usr/include/c++/4.7/bits/postypes.h \
  /usr/include/c++/4.7/cwchar /usr/include/i386-linux-gnu/bits/wchar.h \
+ /usr/include/i386-linux-gnu/bits/wchar2.h \
  /usr/include/c++/4.7/bits/allocator.h \
  /usr/include/c++/4.7/i686-linux-gnu/bits/c++allocator.h \
  /usr/include/c++/4.7/ext/new_allocator.h /usr/include/c++/4.7/new \
@@ -95,4 +98,4 @@ src/host/mongcpp.o: src/host/mongcpp.cpp src/host/mongcpp.h \
  /usr/include/c++/4.7/bits/ostream.tcc \
  /usr/include/c++/4.7/bits/istream.tcc \
  /usr/include/c++/4.7/bits/sstream.tcc /usr/include/c++/4.7/cstring \
- /usr/include/string.h
+ /usr/include/string.h /usr/include/i386-linux-gnu/bits/string3.h

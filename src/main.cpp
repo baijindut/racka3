@@ -79,11 +79,11 @@ static int processCallback( const void *inputBuffer, void *outputBuffer,
     		{
 				for( i=0; i<framesPerBuffer; i++ )
 				{
-					*outLeft++ = data->sine[data->left_phase];  /* left */
-					*outRight++ = data->sine[data->right_phase];  /* right */
+					*outLeft++ = data->sine[data->left_phase];
+					*outRight++ = data->sine[data->right_phase];
 					data->left_phase += 1;
 					if( data->left_phase >= TABLE_SIZE ) data->left_phase -= TABLE_SIZE;
-					data->right_phase += 3; /* higher pitch so we can distinguish left and right. */
+					data->right_phase += 3;
 					if( data->right_phase >= TABLE_SIZE ) data->right_phase -= TABLE_SIZE;
 				}
     		}

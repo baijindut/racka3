@@ -33,7 +33,7 @@ private:
 							 const MongooseRequest &request,
 							 MongooseResponse &response);
 
-    Host* _pluinHost;
+    Host* _pluginHost;
 };
 
 
