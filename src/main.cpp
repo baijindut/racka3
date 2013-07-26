@@ -6,7 +6,7 @@
 #include "portaudio.h"
 #include "Host.h"
 #include "HttpServer.h"
-
+#include <unistd.h>
 #include "settings.h"
 
 #ifndef M_PI
@@ -140,7 +140,10 @@ PaError setAudioIO(PaStreamParameters* inputParameters,char* inputName, PaStream
 		{
 		    deviceInfo = Pa_GetDeviceInfo(i);
 		    if (strstr(deviceInfo->name,inputName))
+		    {
 		    	inputParameters->device=i;
+		    	break;
+		    }
 		}
 	}
 
@@ -151,7 +154,10 @@ PaError setAudioIO(PaStreamParameters* inputParameters,char* inputName, PaStream
 		{
 		    deviceInfo = Pa_GetDeviceInfo(i);
 		    if (strstr(deviceInfo->name,outputName))
+		    {
 		    	outputParameters->device=i;
+		    	break;
+		    }
 		}
 	}
 
@@ -197,23 +203,21 @@ int main(int argc,char* argv[])
 
     setAudioIO(&inputParameters,inName,&outputParameters,outName);
 
-    inputParameters.device = Pa_GetDefaultInputDevice(); /* default input device */
     if (inputParameters.device == paNoDevice) {
       fprintf(stderr,"Error: No default input device.\n");
       goto error;
     }
     inputParameters.channelCount = 2;       /* stereo input */
-    inputParameters.sampleFormat = PA_SAMPLE_TYPE | paNonInterleaved;
+    inputParameters.sampleFormat = PA_SAMPLE_TYPE | INTERLEAVED;
     inputParameters.suggestedLatency = Pa_GetDeviceInfo( inputParameters.device )->defaultLowInputLatency;
     inputParameters.hostApiSpecificStreamInfo = NULL;
 
-    outputParameters.device = Pa_GetDefaultOutputDevice(); /* default output device */
     if (outputParameters.device == paNoDevice) {
       fprintf(stderr,"Error: No default output device.\n");
       goto error;
     }
     outputParameters.channelCount = 2;       /* stereo output */
-    outputParameters.sampleFormat = PA_SAMPLE_TYPE | paNonInterleaved;
+    outputParameters.sampleFormat = PA_SAMPLE_TYPE | INTERLEAVED;
     outputParameters.suggestedLatency = Pa_GetDeviceInfo( outputParameters.device )->defaultLowOutputLatency;
     outputParameters.hostApiSpecificStreamInfo = NULL;
 
@@ -223,10 +227,13 @@ int main(int argc,char* argv[])
               &outputParameters,
               SAMPLE_RATE,
               FRAMES_PER_BUFFER,
-              0, /* paClipOff, */  /* we won't output out of range samples so don't bother clipping them */
+              paClipOff,
               processCallback,
               &data );
     if( err != paNoError ) goto error;
+
+    printf("pause for effect...\n");
+    sleep(2);
 
     err = Pa_StartStream( stream );
     if( err != paNoError ) goto error;

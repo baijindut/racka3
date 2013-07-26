@@ -6,7 +6,7 @@ src/host/mongoose.o: src/host/mongoose.c /usr/include/i386-linux-gnu/sys/types.h
  /usr/include/i386-linux-gnu/gnu/stubs-32.h \
  /usr/include/i386-linux-gnu/bits/types.h \
  /usr/include/i386-linux-gnu/bits/typesizes.h /usr/include/time.h \
- /usr/lib/gcc/i686-linux-gnu/4.6/include/stddef.h \
+ /usr/lib/gcc/i686-linux-gnu/4.7/include/stddef.h \
  /usr/include/i386-linux-gnu/bits/pthreadtypes.h \
  /usr/include/i386-linux-gnu/sys/stat.h \
  /usr/include/i386-linux-gnu/bits/stat.h /usr/include/errno.h \
@@ -28,16 +28,17 @@ src/host/mongoose.o: src/host/mongoose.c /usr/include/i386-linux-gnu/sys/types.h
  /usr/include/linux/stddef.h \
  /usr/include/i386-linux-gnu/asm/posix_types.h \
  /usr/include/i386-linux-gnu/asm/posix_types_32.h \
+ /usr/include/asm-generic/posix_types.h \
  /usr/include/i386-linux-gnu/bits/sigthread.h /usr/include/fcntl.h \
  /usr/include/i386-linux-gnu/bits/fcntl.h \
  /usr/include/i386-linux-gnu/bits/time.h /usr/include/stdlib.h \
  /usr/include/i386-linux-gnu/bits/waitflags.h \
  /usr/include/i386-linux-gnu/bits/waitstatus.h \
- /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h /usr/include/assert.h \
+ /usr/lib/gcc/i686-linux-gnu/4.7/include/stdarg.h /usr/include/assert.h \
  /usr/include/string.h /usr/include/ctype.h /usr/include/endian.h \
  /usr/include/i386-linux-gnu/bits/endian.h \
- /usr/lib/gcc/i686-linux-gnu/4.6/include-fixed/limits.h \
- /usr/lib/gcc/i686-linux-gnu/4.6/include-fixed/syslimits.h \
+ /usr/lib/gcc/i686-linux-gnu/4.7/include-fixed/limits.h \
+ /usr/lib/gcc/i686-linux-gnu/4.7/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/i386-linux-gnu/bits/posix1_lim.h \
  /usr/include/i386-linux-gnu/bits/local_lim.h /usr/include/linux/limits.h \
  /usr/include/i386-linux-gnu/bits/posix2_lim.h \
@@ -59,7 +60,7 @@ src/host/mongoose.o: src/host/mongoose.c /usr/include/i386-linux-gnu/sys/types.h
  /usr/include/asm-generic/sockios.h \
  /usr/include/i386-linux-gnu/sys/select.h \
  /usr/include/i386-linux-gnu/bits/select.h /usr/include/netinet/in.h \
- /usr/lib/gcc/i686-linux-gnu/4.6/include/stdint.h /usr/include/stdint.h \
+ /usr/lib/gcc/i686-linux-gnu/4.7/include/stdint.h /usr/include/stdint.h \
  /usr/include/i386-linux-gnu/bits/wchar.h \
  /usr/include/i386-linux-gnu/bits/in.h \
  /usr/include/i386-linux-gnu/bits/byteswap.h /usr/include/arpa/inet.h \
