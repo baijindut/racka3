@@ -1,5 +1,6 @@
 <html>
 <head>
+<LINK href="toggle.css" rel="stylesheet" type="text/css">
 <style>
 div.plugin
 {
@@ -100,23 +101,43 @@ function getAllPlugins() {
 // creates a html knob from param object
 function createHtmlKnob(instance,param) {
 	
-	var html="";
+	var html = "";
+	var knobId = instance+'|'+param.name;
 	
+	// knob or toggle, it always goes in a knob holder.
 	html+='<div class="knobHolder">';
-	html+='<span class="paramName">'+param.name+'</span>';
-	html+='<input class="knob" id="'+instance+'|'+param.name+'" '; 
-	html+='data-width="48" ';
-	html+='data-height="48" ';
-	html+='data-cursor="true" ';
-	html+='data-thickness="0.3" ';
-	html+='data-fgColor="#222222" ';
-	html+='data-step="'+param.step+'" ';
-	html+='data-angleOffset="-125" ';
-	html+='data-angleArc="250" ';
-	html+='data-min="'+param.min+'" ';
-	html+='data-max="'+param.max+'" ';
-	html+='value='+param.defaultValue+' ';
-	html+='/></div>';
+	
+	// do we want a toggle button or a knob?
+	if ( Math.abs(Number(param.max) - Number(param.min)) == Number(param.step) )
+	{
+		var checked = param.defaultValue==param.min ? '': 'checked="checked"' ;
+		html+='<fieldset class="toggle">';
+		html+='<input id="'+knobId+'" type="checkbox" '+checked+' ';
+		html+='onclick="setParam('+instance+',\''+param.name+'\',this.checked?'+param.max+':'+param.min+')"';
+		html+='/>';
+		html+='<label for="'+knobId+'">';
+		html+='<div class="toggle-button"><div class="toggle-tab"></div></div>';
+		html+=param.name;
+		html+='</label>';
+		html+='</fieldset>';
+	} else { 
+		html+='<span class="paramName">'+param.name+'</span>';
+		html+='<input class="knob" id="'+knobId+'" '; 
+		html+='data-width="48" ';
+		html+='data-height="48" ';
+		html+='data-cursor="true" ';
+		html+='data-thickness="0.3" ';
+		html+='data-fgColor="#222222" ';
+		html+='data-step="'+param.step+'" ';
+		html+='data-angleOffset="-125" ';
+		html+='data-angleArc="250" ';
+		html+='data-min="'+param.min+'" ';
+		html+='data-max="'+param.max+'" ';
+		html+='value='+param.defaultValue+' ';
+		html+='/>';
+	}
+	
+	html+='</div>';
 	
 	return html;
 	
@@ -227,8 +248,7 @@ function addPlugin(pluginName,chainPosition) {
 <body>
 <h1>Racka3</h1>
 
-<input type="button" value="getALlPlugins" onclick='getAllPlugins()'/>
-<input type="button" value="addPlugin" onclick='addPlugin("Echoverse",0)'/>
+<input type="button" value="+ Echoverse" onclick='addPlugin("Echoverse",0)'/>
 
 <div class="rack" id="rack">
 <div class="plugin" id="empty">&nbsp;</div>

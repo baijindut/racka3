@@ -56,11 +56,11 @@ RBEcho::RBEcho ()
 				   "A flexible temp-syncing reversible echo",
 				   1);
 
-	registerParam(0,"Level","","","off","",0,127,1,100);
-    registerParam(1,"Pan","","","far left","far right",0,127,1,64);
+	registerParam(0,"Level","","","off","",0,127,1,64);
+    registerParam(1,"Pan","","","far left","far right",-64,64,1,0);
     registerParam(2,"Tempo","","BPM","","",0,600,1,120);
     registerParam(3,"LR Delay","","","","",0,127,1,80);
-    registerParam(4,"Angle","","far left","far right","",0,127,1,40);
+    registerParam(4,"Angle","","far left","far right","",-64,64,1,0);
     registerParam(5,"Feedback","","","","",0,127,1,80);
     registerParam(6,"Damping","","","","",0,127,1,10);
     registerParam(7,"Reverse","Reverse the echo","","forward","backward",0,127,127,0);
@@ -249,7 +249,7 @@ RBEcho::setvolume (int Pvolume)
 void
 RBEcho::setpanning (int Ppanning)
 {
-    this->Ppanning = Ppanning;
+    this->Ppanning = Ppanning ;
     lpanning = ((float)Ppanning) / 64.0f;
     rpanning = 2.0f - lpanning;
     lpanning = 10.0f * powf(lpanning, 4);
