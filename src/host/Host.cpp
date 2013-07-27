@@ -12,12 +12,15 @@
 #include "plugins/RBEcho.h"
 #include "plugins/FuzzTest.h"
 #include <stdio.h>
+#include <algorithm>
+using namespace std;
 
 #define JSONERROR(JSON,ERROR) do {cJSON_AddItemToObject(JSON,"error",cJSON_CreateString(ERROR));} while(0)
 
 Host::Host()
 {
 	Plugin* plugin;
+	_nextInstance=0;
 
 	// add all the plugins to the pool
 	createPluginIfNeeded("Echoverse",true);
@@ -102,6 +105,29 @@ void Host::getAvailablePlugins(cJSON* json)
 	cJSON_AddItemReferenceToObject(json,"plugins",_jsonAllPlugins);
 }
 
+void Host::removePlugin(cJSON* json)
+{
+	cJSON* jsonInstance = cJSON_GetObjectItem(json,"instance");
+
+	if (jsonInstance && jsonInstance->type==cJSON_Number)
+	{
+		Plugin* plugin = getPluginFromInstance(jsonInstance->valueint);
+		if (plugin)
+		{
+			_plugins.erase(std::remove(_plugins.begin(), _plugins.end(), plugin),
+						   _plugins.end());
+		}
+		else
+		{
+			JSONERROR(json,"invalid instance");
+		}
+	}
+	else
+	{
+		JSONERROR(json,"instance not given");
+	}
+}
+
 void Host::addPlugin(cJSON* json)
 {
 	char* name;
@@ -121,6 +147,7 @@ void Host::addPlugin(cJSON* json)
 			Plugin* plugin = createPluginIfNeeded(name);
 			if (plugin)
 			{
+				plugin->setInstance(_nextInstance++);
 				if (_plugins.size())
 				{
 					vector<Plugin*>::iterator it=_plugins.begin();
@@ -132,6 +159,10 @@ void Host::addPlugin(cJSON* json)
 				{
 					_plugins.push_back(plugin);
 				}
+
+				// add all plugin details to response - remove name.
+				cJSON_DeleteItemFromObject(json,"name");
+				plugin->getPluginJson(json);
 			}
 			else
 			{
@@ -169,14 +200,45 @@ void Host::swapPlugin(cJSON* json)
 
 }
 
-void Host::setPluginParams(cJSON* json)
+Plugin* Host::getPluginFromInstance(int instance)
 {
-	//TODO: set plugin parameters
+	// TODO: use a hashmap of instances for faster lookup
+
+	for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
+	{
+		if ((*it)->getInstance()==instance)
+			return *it;
+	}
+	return 0;
 }
 
-void Host::getPluginParams(cJSON* json)
+void Host::setPluginParam(cJSON* json)
 {
-	//TODO
+	cJSON* jsonInstance = cJSON_GetObjectItem(json,"instance");
+	cJSON* jsonParam = cJSON_GetObjectItem(json,"param");
+	cJSON* jsonValue = cJSON_GetObjectItem(json,"value");
+
+	if (jsonInstance && jsonInstance->type==cJSON_Number &&
+		jsonParam && jsonParam->type==cJSON_String && jsonParam->valuestring &&
+		jsonValue && jsonValue->type==cJSON_Number)
+	{
+		Plugin* plugin = getPluginFromInstance(jsonInstance->valueint);
+		if (plugin)
+		{
+			if (!plugin->setParam(json))
+			{
+				JSONERROR(json,"bad parameter name or value");
+			}
+		}
+		else
+		{
+			JSONERROR(json,"bad instance value");
+		}
+	}
+	else
+	{
+		JSONERROR(json,"incorrect parameters specified");
+	}
 }
 
 Plugin* Host::createNewPlugin(char* name)
@@ -218,3 +280,4 @@ Plugin* Host::createPluginIfNeeded(char* name,bool addToPoolImmediately)
 
 	return plugin;
 }
+

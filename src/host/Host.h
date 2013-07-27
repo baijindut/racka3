@@ -29,10 +29,10 @@ public:
 	void getAvailablePlugins(cJSON* json);
 
 	void addPlugin(cJSON* json);
+	void removePlugin(cJSON* json);
 	void swapPlugin(cJSON* json);
 
-	void setPluginParams(cJSON* json);
-	void getPluginParams(cJSON* json);
+	void setPluginParam(cJSON* json);
 
 private:
 
@@ -41,6 +41,9 @@ private:
 
 	// definately create a new plugin instance
 	Plugin* createNewPlugin(char* name);
+
+	// get plugin by instance number
+	Plugin* getPluginFromInstance(int instance);
 
 	// pool of spare plugins
 	vector <Plugin*> _pool;
@@ -55,6 +58,8 @@ private:
 	cJSON* _jsonAllPlugins;
 
 	bool _bBypassAll;
+
+	int _nextInstance;
 };
 
 #endif /* HOST_H_ */

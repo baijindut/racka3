@@ -24,6 +24,7 @@ struct PluginParam
 	int max;					// 2000.0
 	int min;					// 0.0
 	int step;					// 1.0
+	int defaultValue;
 	Plugin* plugin;				// pointer to the plugin that owns this parameter
 	UT_hash_handle hh;
 };
@@ -45,6 +46,9 @@ public:
 	// sets the volume to 100 and pan to 128
 	int setParams(cJSON* jsonParamArray);
 
+	// set a single parameter
+	int setParam(cJSON* json);
+
 	// called by host to get plugin parameters. supplied values (if any) are completely ignored.
 	// [{param="volume",value=100},{param="pan",value=128}] or [{param="volume"},{param="pan",value=128}]
 	// might be updated to:
@@ -53,6 +57,9 @@ public:
 
 	// creates the JSON describing the plugin and all its details
 	int getPluginJson(cJSON* jsonObject);
+
+	void setInstance(int instance);
+	int getInstance();
 
 protected:
 	void registerPlugin(char* name,
@@ -76,6 +83,7 @@ private:
 	char _name[64];
 	char _description[256];
 	int _version;
+	int _instance;
 
 	PluginParam* _paramList;
 

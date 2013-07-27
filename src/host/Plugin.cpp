@@ -12,8 +12,8 @@ Plugin::Plugin() {
 	_name[0] = '\0';
 	_description[0] = '\0';
 	_version = 0;
-
 	_paramList = 0;
+	_instance = -1;
 }
 
 Plugin::~Plugin() {
@@ -30,6 +30,41 @@ int Plugin::getVersion() {
 	return _version;
 }
 
+int Plugin::setParam(cJSON* jsonItem)
+{
+	int ok =1;
+
+	// get the parameter name
+	cJSON* jsonParam  = cJSON_GetObjectItem(jsonItem,"param");
+
+	// get the value
+	cJSON* jsonValue = cJSON_GetObjectItem(jsonItem,"value");
+
+	// make sure we got a string for the parameter name, and an int for the value
+	if (jsonParam && jsonParam->type==cJSON_String && jsonParam->valuestring &&
+		jsonValue && jsonValue->type==cJSON_Number)
+	{
+		// get the PluginParam struct pointer for the named parameter
+		PluginParam* pPluginParam = 0;
+		HASH_FIND_STR(_paramList,jsonParam->valuestring,pPluginParam);
+		if (pPluginParam)
+		{
+			// actually set the value
+			pPluginParam->plugin->setParam(pPluginParam->index,jsonValue->valueint);
+		}
+		else
+		{
+			ok = 0;
+		}
+	}
+	else
+	{
+		ok = 0;
+	}
+
+	return ok;
+}
+
 int Plugin::setParams(cJSON* jsonParamArray) {
 	int ok = 1;
 
@@ -37,33 +72,7 @@ int Plugin::setParams(cJSON* jsonParamArray) {
 	cJSON* jsonItem=jsonParamArray->child;
 	while(jsonItem)
 	{
-		// get the parameter name
-		cJSON* jsonParam  = cJSON_GetObjectItem(jsonItem,"param");
-
-		// get the value
-		cJSON* jsonValue = cJSON_GetObjectItem(jsonItem,"value");
-
-		// make sure we got a string for the parameter name, and an int for the value
-		if (!jsonParam || jsonParam->type!=cJSON_String || !jsonParam->valuestring ||
-			!jsonValue || jsonValue->type!=cJSON_Number)
-		{
-			ok = 0;
-		}
-		else
-		{
-			// get the PluginParam struct pointer for the named parameter
-			PluginParam* pPluginParam = 0;
-			HASH_FIND_STR(_paramList,jsonParam->valuestring,pPluginParam);
-			if (pPluginParam)
-			{
-				// actually set the value
-				pPluginParam->plugin->setParam(pPluginParam->index,jsonValue->valueint);
-			}
-			else
-			{
-				ok = 0;
-			}
-		}
+		setParam(jsonItem);
 
 		jsonItem=jsonItem->next;
 	}
@@ -122,6 +131,7 @@ int Plugin::getPluginJson(cJSON* jsonObject) {
 	cJSON_AddItemToObject(jsonObject,"name",cJSON_CreateString(_name));
 	cJSON_AddItemToObject(jsonObject,"description",cJSON_CreateString(_description));
 	cJSON_AddItemToObject(jsonObject,"version",cJSON_CreateNumber(_version));
+	cJSON_AddItemToObject(jsonObject,"instance",cJSON_CreateNumber(_instance));
 
 	cJSON* paramArray = cJSON_CreateArray();
 	PluginParam* pParam = _paramList;
@@ -137,6 +147,7 @@ int Plugin::getPluginJson(cJSON* jsonObject) {
 		cJSON_AddItemToObject(paramObject,"max",cJSON_CreateNumber((int)pParam->max));
 		cJSON_AddItemToObject(paramObject,"min",cJSON_CreateNumber((int)pParam->min));
 		cJSON_AddItemToObject(paramObject,"step",cJSON_CreateNumber((int)pParam->step));
+		cJSON_AddItemToObject(paramObject,"defaultValue",cJSON_CreateNumber((int)pParam->defaultValue));
 
 		cJSON_AddItemToArray(paramArray,paramObject);
 		pParam = (PluginParam*)pParam->hh.next;
@@ -151,6 +162,16 @@ void Plugin::registerPlugin(char* name, char* description, int version) {
 	strcpy(_name,name);
 	strcpy(_description,description);
 	_version = version;
+}
+
+void Plugin::setInstance(int instance)
+{
+	_instance = instance;
+}
+
+int Plugin::getInstance()
+{
+	return _instance;
 }
 
 void Plugin::registerParam(int index,char* name, char* description, char* units,
@@ -169,6 +190,7 @@ void Plugin::registerParam(int index,char* name, char* description, char* units,
 	param->min=min;
 	param->step=step;
 	param->plugin=this;
+	param->defaultValue=value;
 
 	// add to the hashmap
 	HASH_ADD_STR(_paramList,name,param);

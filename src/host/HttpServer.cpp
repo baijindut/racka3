@@ -27,7 +27,11 @@ bool HttpServer::handleEvent(ServerHandlingEvent eventCode,
 	switch (eventCode)
 	{
 	case MG_NEW_REQUEST:
-		res = handleNewRequest(eventCode,connection,request,response);
+		// check that we want to handle this.
+		if (request.getUri().substr(0,strlen("/racka3/")) == "/racka3/")
+		{
+			res = handleNewRequest(eventCode,connection,request,response);
+		}
 		break;
 
 	default:
@@ -53,8 +57,7 @@ bool HttpServer::handleNewRequest(ServerHandlingEvent eventCode,
 	bool res = false;
 	cJSON* json = 0;
 	string uri = request.getUri();
-
-	printf("Http %s %s\n",request.getRequestMethod().c_str(),uri.c_str());
+	bool handled = false;
 
 	// if this is a post, get the post data
 	if (request.getRequestMethod() == "POST")
@@ -69,6 +72,12 @@ bool HttpServer::handleNewRequest(ServerHandlingEvent eventCode,
 
 		printf("received POST:\n%s\n",buffer.c_str());
 		json = cJSON_Parse(buffer.c_str());
+
+		// if we couldnt parse the json? make empty json
+		if (!json)
+		{
+			json = cJSON_CreateObject();
+		}
 	}
 	else
 	{
@@ -76,29 +85,22 @@ bool HttpServer::handleNewRequest(ServerHandlingEvent eventCode,
 		json = cJSON_CreateObject();
 	}
 
-	// we should have the POSTED json, or an empty json object
-	if (json)
+	// now act depending on the path
+	if (uri == string("/racka3/getallplugins"))
 	{
-		// now act depending on the path
-		if (uri == string("/getallplugins"))
-		{
-			_pluginHost->getAvailablePlugins(json);
-		} else if (uri == string("/addplugin")) {
-			_pluginHost->addPlugin(json);
-		} else if (uri == string("/removeplugin")) {
-			// TODO
-		} else if (uri == string("/swapPlugin")) {
-			// TODO
-		} else if (uri == string("/setpluginparams")) {
-			// TODO
-		} else if (uri == string("/getpluginparams")) {
-			// TODO
-		}
-
+		_pluginHost->getAvailablePlugins(json);
+	} else if (uri == string("/racka3/addplugin")) {
+		_pluginHost->addPlugin(json);
+	} else if (uri == string("/racka3/removeplugin")) {
+		_pluginHost->removePlugin(json);
+	} else if (uri == string("/racka3/swapPlugin")) {
+		// TODO
+	} else if (uri == string("/racka3/setparamvalue")) {
+		_pluginHost->setPluginParam(json);
 	}
 
 	// did we make any json?
-	if (json && json->child)
+	if (json->child)
 	{
 		// output the json
 		char * content = cJSON_Print(json);
@@ -107,15 +109,10 @@ bool HttpServer::handleNewRequest(ServerHandlingEvent eventCode,
 		response.addContent(content);
 		free(content);
 	}
-	else if (json)
-	{
-		// no json: error code for you.
-		response.setStatus(404);
-	}
 	else
 	{
 		// no json: error code for you.
-		response.setStatus(400);
+		response.setStatus(404);
 	}
 
 	response.setCacheDisabled();
