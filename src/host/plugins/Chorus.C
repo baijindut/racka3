@@ -25,18 +25,15 @@
 #include <math.h>
 #include "Chorus.h"
 #include <stdio.h>
+#include "portaudio.h"
 
 Chorus::Chorus ()
 {
-
     dlk = 0;
     drk = 0;
     maxdelay = lrintf (MAX_CHORUS_DELAY / 1000.0 * SAMPLE_RATE);
     delayl = new float[maxdelay];
     delayr = new float[maxdelay];
-
-    Ppreset = 0;
-    setpreset (0,Ppreset);
 
     float tmp = 0.08f;
     ldelay = new delayline(tmp, 2);
@@ -54,10 +51,34 @@ Chorus::Chorus ()
     dl2 = getdelay (lfol);
     dr2 = getdelay (lfor);
     cleanup ();
+
+    registerPlugin("Chorus",
+    				   "Interpolating stereo chorus",
+    				   1);
+    //{64, 64, 33, 0,  0, 90,      40, 85, 64, 119, 0, 0},
+    registerParam(0,"Level","","","","",0,127,1,64);
+    registerParam(1,"Panning","","","","",0,127,1,64);
+    registerParam(2,"Tempo","","","","",0,600,1,33);
+    registerParam(3,"Randomness","","","","",0,127,1,0);
+    const char* lfoValues[] = {"Sine","Tri","Ramp Up","Ramp Down","ZigZag","M.Square","M.Saw","L.Fractal","L.Fractal XY","S/H Random",0};
+    registerParam(4,"LFO Type",lfoValues,0);
+    registerParam(5,"Stereo","","","","",0,127,1,90);
+    registerParam(6,"Depth","","","","",0,127,1,40);
+    registerParam(7,"Delay","","","","",0,127,1,85);
+    registerParam(8,"Feedback","","","","",0,127,1,64);
+    registerParam(9,"L/R Cross","","","left","right",0,127,1,119);
+    registerParam(10,"Flange Mode","","","off","on",0,1,1,0);
+    registerParam(11,"Subtract","","","no","yes",0,1,1,0);
+    registerParam(12,"Interpolation (hiQ)","","","no","yes",0,1,1,0);
+
 };
 
 Chorus::~Chorus ()
 {
+	delete[] delayl;
+	delete[] delayr;
+	delete ldelay;
+	delete rdelay;
 };
 
 /*
@@ -82,11 +103,7 @@ float Chorus::getdelay (float xlfo)
     return (result);
 };
 
-/*
- * Apply the effect
- */
-void
-Chorus::out (float * smpsl, float * smpsr)
+int Chorus::process(float* inLeft,float* inRight,float* outLeft,float* outRight,unsigned long framesPerBuffer)
 {
     int i;
     float tmp;
@@ -105,15 +122,15 @@ Chorus::out (float * smpsl, float * smpsr)
         for (i = 0; i < PERIOD; i++) {
             //Left
             mdel = (dl1 * (float)(PERIOD - i) + dl2 * (float)i) / fPERIOD;
-            tmp = smpsl[i] + oldl*fb;
-            efxoutl[i] = tmpsub*ldelay->delay(tmp, mdel, 0, 1, 0);
-            oldl = efxoutl[i];
+            tmp = inLeft[i] + oldl*fb;
+            outLeft[i] = tmpsub*ldelay->delay(tmp, mdel, 0, 1, 0);
+            oldl = outLeft[i];
 
             //Right
             mdel = (dr1 * (float)(PERIOD - i) + dr2 * (float)i) / fPERIOD;
-            tmp = smpsr[i] + oldr*fb;
-            efxoutr[i] = tmpsub*rdelay->delay(tmp, mdel, 0, 1, 0);
-            oldr =  efxoutr[i];
+            tmp = inRight[i] + oldr*fb;
+            outRight[i] = tmpsub*rdelay->delay(tmp, mdel, 0, 1, 0);
+            oldr =  outLeft[i];
         }
 
     } else {
@@ -121,8 +138,8 @@ Chorus::out (float * smpsl, float * smpsr)
         dl2 = getdelay (lfol);
         dr2 = getdelay (lfor);
         for (i = 0; i < PERIOD; i++) {
-            float inl = smpsl[i];
-            float inr = smpsr[i];
+            float inl = inLeft[i];
+            float inr = inRight[i];
             //LRcross
             float l = inl;
             float r = inr;
@@ -142,8 +159,8 @@ Chorus::out (float * smpsl, float * smpsr)
 
             dlhi2 = (dlhi - 1 + maxdelay) % maxdelay;
             dllo = 1.0f - fmodf (tmp, 1.0f);
-            efxoutl[i] = delayl[dlhi2] * dllo + delayl[dlhi] * (1.0f - dllo);
-            delayl[dlk] = inl + efxoutl[i] * fb;
+            outLeft[i] = delayl[dlhi2] * dllo + delayl[dlhi] * (1.0f - dllo);
+            delayl[dlk] = inl + outLeft[i] * fb;
 
             //Right channel
 
@@ -158,26 +175,28 @@ Chorus::out (float * smpsl, float * smpsr)
 
             dlhi2 = (dlhi - 1 + maxdelay) % maxdelay;
             dllo = 1.0f - fmodf (tmp, 1.0f);
-            efxoutr[i] = delayr[dlhi2] * dllo + delayr[dlhi] * (1.0f - dllo);
-            delayr[dlk] = inr + efxoutr[i] * fb;
+            outRight[i] = delayr[dlhi2] * dllo + delayr[dlhi] * (1.0f - dllo);
+            delayr[dlk] = inr + outRight[i] * fb;
 
         };
 
 
         if (Poutsub != 0)
             for (i = 0; i < PERIOD; i++) {
-                efxoutl[i] *= -1.0f;
-                efxoutr[i] *= -1.0f;
+                outLeft[i] *= -1.0f;
+                outRight[i] *= -1.0f;
             };
 
 
         for (int i = 0; i < PERIOD; i++) {
-            efxoutl[i] *= panning;
-            efxoutr[i] *= (1.0f - panning);
+            outLeft[i] *= panning;
+            outRight[i] *= (1.0f - panning);
         };
 
     } //end awesome_mode test
-};
+
+    return paContinue;
+}
 
 /*
  * Cleanup the effect
@@ -242,6 +261,7 @@ Chorus::setlrcross (int Plrcross)
     lrcross = (float)Plrcross / 127.0f;
 };
 
+/*
 void
 Chorus::setpreset (int dgui, int npreset)
 {
@@ -288,10 +308,11 @@ Chorus::setpreset (int dgui, int npreset)
 
 
 };
+*/
 
 
 void
-Chorus::changepar (int npar, int value)
+Chorus::setParam (int npar, int value)
 {
     switch (npar) {
     case 0:
@@ -350,7 +371,7 @@ Chorus::changepar (int npar, int value)
 };
 
 int
-Chorus::getpar (int npar)
+Chorus::getParam (int npar)
 {
     switch (npar) {
     case 0:

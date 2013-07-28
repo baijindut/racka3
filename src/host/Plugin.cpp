@@ -14,11 +14,19 @@ Plugin::Plugin() {
 	_version = 0;
 	_paramList = 0;
 	_instance = -1;
+	_position = -1;
 }
 
 Plugin::~Plugin() {
 
 
+	// free all parameter structures
+	PluginParam* param, *tmp;
+	HASH_ITER(hh, _paramList, param, tmp)
+	{
+		HASH_DEL(_paramList,param);
+		delete(param);
+	}
 
 }
 
@@ -132,6 +140,7 @@ int Plugin::getPluginJson(cJSON* jsonObject) {
 	cJSON_AddItemToObject(jsonObject,"description",cJSON_CreateString(_description));
 	cJSON_AddItemToObject(jsonObject,"version",cJSON_CreateNumber(_version));
 	cJSON_AddItemToObject(jsonObject,"instance",cJSON_CreateNumber(_instance));
+	cJSON_AddItemToObject(jsonObject,"position",cJSON_CreateNumber(_position));
 
 	cJSON* paramArray = cJSON_CreateArray();
 	PluginParam* pParam = _paramList;
@@ -148,6 +157,15 @@ int Plugin::getPluginJson(cJSON* jsonObject) {
 		cJSON_AddItemToObject(paramObject,"min",cJSON_CreateNumber((int)pParam->min));
 		cJSON_AddItemToObject(paramObject,"step",cJSON_CreateNumber((int)pParam->step));
 		cJSON_AddItemToObject(paramObject,"defaultValue",cJSON_CreateNumber((int)pParam->defaultValue));
+
+		cJSON* labelArray = cJSON_CreateArray();
+		for (vector<string>::iterator it = pParam->labels.begin();it!=pParam->labels.end();++it)
+		{
+			string s = *it;
+			const char* c = s.c_str();
+			cJSON_AddItemToArray(labelArray,cJSON_CreateString(c));
+		}
+		cJSON_AddItemToObject(paramObject,"labels",labelArray);
 
 		cJSON_AddItemToArray(paramArray,paramObject);
 		pParam = (PluginParam*)pParam->hh.next;
@@ -174,11 +192,43 @@ int Plugin::getInstance()
 	return _instance;
 }
 
-void Plugin::registerParam(int index,char* name, char* description, char* units,
+void Plugin::setPosition(int position)
+{
+	_position = position;
+}
+
+int Plugin::getPosition()
+{
+	return _position;
+}
+
+PluginParam* Plugin::registerParam(int index,char* name,const char* labels[],int value)
+{
+	// count the labels
+	int labelCount=0;
+	const char* label=labels[0];
+	while (label)
+	{
+		label = labels[++labelCount];
+	}
+
+	// create a parameter struct as normal
+	PluginParam* param = registerParam(index,name,"","","","",0,labelCount-1,1,value);
+
+	// now add the labels to the list
+	for (int i=0;i<labelCount;i++)
+	{
+		param->labels.push_back(labels[i]);
+	}
+
+	return param;
+}
+
+PluginParam* Plugin::registerParam(int index,char* name, char* description, char* units,
 		char* minName, char* maxName, int min, int max, int step,
 		int value) {
 
-	PluginParam* param = (PluginParam*)malloc(sizeof(PluginParam));
+	PluginParam* param = new PluginParam();
 
 	param->index=index;
 	strcpy(param->name,name);
@@ -197,4 +247,6 @@ void Plugin::registerParam(int index,char* name, char* description, char* units,
 
 	// actually set the parameter
 	param->plugin->setParam(index,value);
+
+	return param;
 }

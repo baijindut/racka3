@@ -27,7 +27,7 @@
 #include "global.h"
 #include "EffectLFO.h"
 #include "delayline.h"
-#include"../Plugin.h"
+#include "../Plugin.h"
 
 class Chorus : public Plugin
 {
@@ -35,15 +35,21 @@ class Chorus : public Plugin
 public:
     Chorus ();
     ~Chorus ();
-    void out (float * smpsl, float * smpsr);
 
-    void changepar (int npar, int value);
-    int getpar (int npar);
+	int process(float* inLeft,float* inRight,float* outLeft,float* outRight,
+			  unsigned long framesPerBuffer);
+private:
+	//void setParam (int npar, int value);
+	//int getParam (int npar);
+
+private:
+    void setParam (int npar, int value);
+    int getParam (int npar);
     void cleanup ();
 
-    float *efxoutl;
-    float *efxoutr;
     float outvolume;		//this is the volume of effect and is public because need it in system effect. The out volume of s
+
+
 
 private:
     //Parametrii Chorus
@@ -56,6 +62,7 @@ private:
     int Plrcross;	//feedback
     int Pflangemode;	//how the LFO is scaled, to result chorus or flange
     int Poutsub;	//if I wish to substract the output instead of the adding it
+
 
     //Control Parametrii
     void setvolume (int Pvolume);

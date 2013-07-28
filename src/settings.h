@@ -15,6 +15,7 @@
 #define PA_SAMPLE_TYPE      paFloat32
 #define FRAMES_PER_BUFFER   (256)
 #define PERIOD				 FRAMES_PER_BUFFER
+#define fPERIOD				 ((float)FRAMES_PER_BUFFER)
 typedef float SAMPLE;
 #define INTERLEAVED			paNonInterleaved
 

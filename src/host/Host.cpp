@@ -10,7 +10,8 @@
 
 
 #include "plugins/RBEcho.h"
-#include "plugins/FuzzTest.h"
+#include "plugins/Chorus.h"
+
 #include <stdio.h>
 #include <algorithm>
 using namespace std;
@@ -24,6 +25,7 @@ Host::Host()
 
 	// add all the plugins to the pool
 	createPluginIfNeeded("Echoverse",true);
+	createPluginIfNeeded("Chorus",true);
 	// TODO: add other plugins
 
 	// loop over pool and create all plugin json list
@@ -105,6 +107,20 @@ void Host::getAvailablePlugins(cJSON* json)
 	cJSON_AddItemReferenceToObject(json,"plugins",_jsonAllPlugins);
 }
 
+void Host::getPluginChain(cJSON* json)
+{
+	cJSON* pluginArray = cJSON_CreateArray();
+
+	for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
+	{
+		cJSON* pluginObject = cJSON_CreateObject();
+		(*it)->getPluginJson(pluginObject);
+		cJSON_AddItemToArray(pluginArray,pluginObject);
+	}
+
+	cJSON_AddItemToObject(json,"plugins",pluginArray);
+}
+
 void Host::removePlugin(cJSON* json)
 {
 	cJSON* jsonInstance = cJSON_GetObjectItem(json,"instance");
@@ -116,6 +132,9 @@ void Host::removePlugin(cJSON* json)
 		{
 			_plugins.erase(std::remove(_plugins.begin(), _plugins.end(), plugin),
 						   _plugins.end());
+
+			// renumber plugins since we could very well have removed one in the middle
+			renumberPlugins();
 		}
 		else
 		{
@@ -160,6 +179,9 @@ void Host::addPlugin(cJSON* json)
 					_plugins.push_back(plugin);
 				}
 
+				// renumber plugins before we return potentially incorrect json
+				renumberPlugins();
+
 				// add all plugin details to response - remove name.
 				cJSON_DeleteItemFromObject(json,"name");
 				plugin->getPluginJson(json);
@@ -180,24 +202,57 @@ void Host::addPlugin(cJSON* json)
 	}
 }
 
-void Host::swapPlugin(cJSON* json)
+void Host::movePlugin(cJSON* json)
 {
 	int from;
 	int to;
+	int instance;
 
-	// TODO: get from and to from JSON
+	cJSON* jsonInstance = cJSON_GetObjectItem(json,"instance");
+	cJSON* jsonPosition = cJSON_GetObjectItem(json,"position");
 
-	if (from >=0 && from < _plugins.size() &&
-		to >=0 && to < _plugins.size() &&
-		from!=to && _plugins.size()>=2)
+	if (jsonInstance && jsonInstance->type==cJSON_Number &&
+		jsonPosition && jsonPosition->type==cJSON_Number)
 	{
-		Plugin* a = _plugins[from];
-		Plugin* b = _plugins[to];
+		Plugin* plugin = getPluginFromInstance(jsonInstance->valueint);
 
-		_plugins[to] = a;
-		_plugins[from] = b;
+		from = plugin->getPosition();
+		to = jsonPosition->valueint;
+
+		if (plugin)
+		{
+			if (from >=0 && from < _plugins.size() &&
+				to >=0 && to < _plugins.size() &&
+				from!=to && _plugins.size()>=2)
+			{
+				Plugin* a = _plugins[from];
+				Plugin* b = _plugins[to];
+
+				_plugins[to] = a;
+				_plugins[from] = b;
+			}
+
+			renumberPlugins();
+		}
+		else
+		{
+			JSONERROR(json,"no such plugin instance");
+		}
+
 	}
+	else
+	{
+		JSONERROR(json,"instance and or position not specified");
+	}
+}
 
+void Host::renumberPlugins()
+{
+	int position =0;
+	for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
+	{
+		(*it)->setPosition(position++);
+	}
 }
 
 Plugin* Host::getPluginFromInstance(int instance)
@@ -245,9 +300,10 @@ Plugin* Host::createNewPlugin(char* name)
 {
 	Plugin* plugin =0;
 
-	if (0==strcmp(name,"Echoverse"))
-	{
+	if (0==strcmp(name,"Echoverse")) {
 		return new RBEcho();
+	} else if (0==strcmp(name,"Chorus")) {
+		return new Chorus();
 	}
 
 	return plugin;

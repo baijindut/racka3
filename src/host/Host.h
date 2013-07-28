@@ -28,9 +28,11 @@ public:
 
 	void getAvailablePlugins(cJSON* json);
 
-	void addPlugin(cJSON* json);
-	void removePlugin(cJSON* json);
-	void swapPlugin(cJSON* json);
+	void getPluginChain(cJSON* json);
+
+	void addPlugin(cJSON* json);			// name, position
+	void removePlugin(cJSON* json);		// instance
+	void movePlugin(cJSON* json);			// instance, position
 
 	void setPluginParam(cJSON* json);
 
@@ -44,6 +46,9 @@ private:
 
 	// get plugin by instance number
 	Plugin* getPluginFromInstance(int instance);
+
+	// give all plugins their correct position value
+	void renumberPlugins();
 
 	// pool of spare plugins
 	vector <Plugin*> _pool;

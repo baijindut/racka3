@@ -93,10 +93,12 @@ bool HttpServer::handleNewRequest(ServerHandlingEvent eventCode,
 		_pluginHost->addPlugin(json);
 	} else if (uri == string("/racka3/removeplugin")) {
 		_pluginHost->removePlugin(json);
-	} else if (uri == string("/racka3/swapPlugin")) {
-		// TODO
+	} else if (uri == string("/racka3/moveplugin")) {
+		_pluginHost->movePlugin(json);
 	} else if (uri == string("/racka3/setparamvalue")) {
 		_pluginHost->setPluginParam(json);
+	} else if (uri == string("/racka3/getpluginchain")) {
+		_pluginHost->getPluginChain(json);
 	}
 
 	// did we make any json?

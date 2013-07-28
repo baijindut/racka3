@@ -8,10 +8,13 @@ div.plugin
 	background-color:#eeeeff;
 	margin: 3px;
 }
-
+div.palette
+{
+	display:block;
+}
 div.rack
 {
-
+	display: block;
 }
 span.pluginName
 {
@@ -63,18 +66,6 @@ Array.prototype.insert = function (index, item) {
 </script>
 <script>
 
-/*
- * Supported host functions are:
- * 
- * getAllPlugins
- *  	
- * addPlugin
- * swapPlugin
- * 
- * setPluginParams
- * getPluginParameters
- * 
- */
 
 // holds JSON of all of the plugins
 var _allPlugins;
@@ -82,8 +73,21 @@ var _allPlugins;
 // things to do at startup
 $(document).ready(function() {
 	
+	// get all the available plugins supported
 	getAllPlugins();
-	console.log(_allPlugins.plugins.length + " plugins loaded.");
+	console.log(_allPlugins.length + " plugins available.");
+	
+	// create the 'palette' by which we add plugins to the chain
+	var html="";
+	_allPlugins.forEach(function(plugin) {
+		html+='<input type="button" value="+ '+plugin.name+'" onclick=\'addPlugin("'+plugin.name+'",0)\'/>';
+	});
+	
+	$(".palette").html(html);
+	
+	// there may already be a chain, update rack.
+	refreshRack();
+	
 });
 
 // get the plugins json for all plugins into global
@@ -94,7 +98,35 @@ function getAllPlugins() {
 		async: false
 	}).done( function(json) {
 		console.log(JSON.stringify(json));
-		_allPlugins = json;
+		_allPlugins = json.plugins;
+	});
+}
+
+function refreshRack() {
+	$.ajax({
+		url: "racka3/getpluginchain",
+		cache: false,
+		async: false
+	}).done( function(json) {
+		console.log("loaded "+json.plugins.length+" plugins for rack");
+		
+		$(".rack").empty();
+		
+		json.plugins.forEach(function(plugin) {
+
+			var html = createHtmlPlugin(plugin);
+			
+			// insert at correct place in rack
+			$(".rack").append(html);
+			
+			// knob render update
+			$(".knob").knob({
+				change : function (value) {
+					var id=this.$.context.id.split("|");
+					setParam(Number(id[0]),id[1],value);
+				}
+			});	
+		});
 	});
 }
 
@@ -154,9 +186,11 @@ function createHtmlPlugin(pluginObject) {
 
 	html+="<div class='plugin' id='plugin"+pluginObject.instance+"'>";
 	
-	html+='<a href="javascript:removePlugin('+pluginObject.instance+');">[x]</a>';
+	html+='<a href="javascript:removePlugin('+pluginObject.instance+');">[x]</a>&nbsp;';
+	html+='<a href="javascript:movePlugin('+pluginObject.instance+','+(pluginObject.position-1)+');">[up]</a>&nbsp;';
+	html+='<a href="javascript:movePlugin('+pluginObject.instance+','+(pluginObject.position+1)+');">[down]</a>&nbsp;';
 	
-	html+="<span class='pluginName'>instance "+pluginObject.instance+"</span>";
+	html+="<span class='pluginName'>instance "+pluginObject.instance+", original pos "+pluginObject.position+"</span>";
 	html+="<span class='pluginName'>"+pluginObject.name+"</span>";
 	html+="<span class='pluginDescription'>"+pluginObject.description+"</span>";
 	
@@ -188,6 +222,27 @@ function setParam(pluginInstance,paramName,paramValue) {
 	});	
 }
 
+function movePlugin(pluginInstance,newPosition)
+{
+	var json = {"instance": pluginInstance, "position":newPosition};
+	
+	$.ajax({
+		type: "POST",
+		url: "racka3/moveplugin",
+		async: false,
+		data: JSON.stringify(json)
+	}).done( function(json) {
+		if (json.error) {
+			alert(json.error);
+		} else {
+			//console.log("removed "+pluginInstance);
+			//$("#plugin"+pluginInstance).remove();
+			refreshRack();
+		}
+	});	
+	
+}
+
 function removePlugin(pluginInstance) {
 	
 	var json = {"instance": pluginInstance};
@@ -201,8 +256,9 @@ function removePlugin(pluginInstance) {
 		if (json.error) {
 			alert(json.error);
 		} else {
-			console.log("removed "+pluginInstance);
-			$("#plugin"+pluginInstance).remove();
+			//console.log("removed "+pluginInstance);
+			//$("#plugin"+pluginInstance).remove();
+			refreshRack();
 		}
 	});	
 }
@@ -221,20 +277,7 @@ function addPlugin(pluginName,chainPosition) {
 		if (json.error) {
 			alert(json.error);
 		} else {			
-			// create the plugin html
-			var html = createHtmlPlugin(json);
-			
-			// insert at correct place in rack
-			$(".rack .plugin:eq("+json.position+")").before(html);
-			
-			// knob render update
-			$(".knob").knob({
-				change : function (value) {
-					var id=this.$.context.id.split("|");
-					setParam(Number(id[0]),id[1],value);
-				}
-			});	
-			
+			refreshRack();
 		}
 	});
 }
@@ -248,11 +291,9 @@ function addPlugin(pluginName,chainPosition) {
 <body>
 <h1>Racka3</h1>
 
-<input type="button" value="+ Echoverse" onclick='addPlugin("Echoverse",0)'/>
+<div class="palette"></div>
 
-<div class="rack" id="rack">
-<div class="plugin" id="empty">&nbsp;</div>
-</div>
+<div class="rack" id="rack"></div>
 
 </body>
 </html>

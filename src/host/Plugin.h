@@ -11,6 +11,9 @@
 #include "portaudio.h"
 #include "cJSON.h"
 #include "uthash.h"
+#include <vector>
+#include <string>
+using namespace std;
 
 class Plugin;
 struct PluginParam
@@ -21,6 +24,7 @@ struct PluginParam
 	char units[64];				// "msec"
 	char minName[64];			// "none"  (could be "off" or "no" if this represented a button)
 	char maxName[64];			// "2000"  (could be "on" or "yes" if this represented a button)
+	vector<string> labels;		// labels, eg "sine","squar","tri"
 	int max;					// 2000.0
 	int min;					// 0.0
 	int step;					// 1.0
@@ -61,19 +65,25 @@ public:
 	void setInstance(int instance);
 	int getInstance();
 
+	void setPosition(int position);
+	int getPosition();
+
 protected:
 	void registerPlugin(char* name,
-						  char* description,
-						  int version);
+								  char* description,
+								  int version);
 
 	// called by actual plugin to setup json mapping
-	void registerParam(int index,
-						 char* name,
-						 char* description,
+	PluginParam* registerParam(int index,
+								 char* name,
+								 char* description,
 						 char* units,
 						 char* minName,
 						 char* maxName,
 						 int min,int max,int step,int value);
+
+	// alternative version to register multiposition knobs like 'lfo type' (sine, saw, square)
+	PluginParam* registerParam(int index,char* name,const char* labels[],int value);
 
 	// set or get a param by its index, called by the setParams() or getParams() function
 	virtual void setParam(int index,int value) =0;
@@ -83,7 +93,9 @@ private:
 	char _name[64];
 	char _description[256];
 	int _version;
+
 	int _instance;
+	int _position;
 
 	PluginParam* _paramList;
 
