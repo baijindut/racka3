@@ -23,11 +23,11 @@
 */
 
 #include <math.h>
-#include "Chorus.h"
+#include "PluginChorus.h"
 #include <stdio.h>
 #include "portaudio.h"
 
-Chorus::Chorus ()
+PluginChorus::PluginChorus ()
 {
     dlk = 0;
     drk = 0;
@@ -73,7 +73,7 @@ Chorus::Chorus ()
 
 };
 
-Chorus::~Chorus ()
+PluginChorus::~PluginChorus ()
 {
 	delete[] delayl;
 	delete[] delayr;
@@ -84,7 +84,7 @@ Chorus::~Chorus ()
 /*
  * get the delay value in samples; xlfo is the current lfo value
  */
-float Chorus::getdelay (float xlfo)
+float PluginChorus::getdelay (float xlfo)
 {
     float
     result;
@@ -96,14 +96,14 @@ float Chorus::getdelay (float xlfo)
     //check if it is too big delay(caused bu errornous setdelay() and setdepth()
     if ((result + 0.5) >= maxdelay) {
         fprintf (stderr, "%s",
-                 "WARNING: Chorus.C::getdelay(..) too big delay (see setdelay and setdepth funcs.)\n");
+                 "WARNING: PluginChorus.C::getdelay(..) too big delay (see setdelay and setdepth funcs.)\n");
         printf ("%f %d\n", result, maxdelay);
         result = (float) maxdelay - 1.0f;
     };
     return (result);
 };
 
-int Chorus::process(float* inLeft,float* inRight,float* outLeft,float* outRight,unsigned long framesPerBuffer)
+int PluginChorus::process(float* inLeft,float* inRight,float* outLeft,float* outRight,unsigned long framesPerBuffer)
 {
     int i;
     float tmp;
@@ -202,7 +202,7 @@ int Chorus::process(float* inLeft,float* inRight,float* outLeft,float* outRight,
  * Cleanup the effect
  */
 void
-Chorus::cleanup ()
+PluginChorus::cleanup ()
 {
     for (int i = 0; i < maxdelay; i++) {
         delayl[i] = 0.0;
@@ -215,28 +215,28 @@ Chorus::cleanup ()
  * Parameter control
  */
 void
-Chorus::setdepth (int Pdepth)
+PluginChorus::setdepth (int Pdepth)
 {
     this->Pdepth = Pdepth;
     depth = (powf (8.0f, ((float)Pdepth / 127.0f) * 2.0f) - 1.0f) / 1000.0f;	//seconds
 };
 
 void
-Chorus::setdelay (int Pdelay)
+PluginChorus::setdelay (int Pdelay)
 {
     this->Pdelay = Pdelay;
     delay = (powf (10.0f, ((float)Pdelay / 127.0f) * 2.0f) - 1.0f) / 1000.0f;	//seconds
 };
 
 void
-Chorus::setfb (int Pfb)
+PluginChorus::setfb (int Pfb)
 {
     this->Pfb = Pfb;
     fb = ((float)Pfb - 64.0f) / 64.1f;
 };
 
 void
-Chorus::setvolume (int Pvolume)
+PluginChorus::setvolume (int Pvolume)
 {
     this->Pvolume = Pvolume;
     if(awesome_mode) { //use interpolated delay line for better sound
@@ -248,14 +248,14 @@ Chorus::setvolume (int Pvolume)
 };
 
 void
-Chorus::setpanning (int Ppanning)
+PluginChorus::setpanning (int Ppanning)
 {
     this->Ppanning = Ppanning;
     panning = ((float)Ppanning +.5f) / 127.0f;
 };
 
 void
-Chorus::setlrcross (int Plrcross)
+PluginChorus::setlrcross (int Plrcross)
 {
     this->Plrcross = Plrcross;
     lrcross = (float)Plrcross / 127.0f;
@@ -263,7 +263,7 @@ Chorus::setlrcross (int Plrcross)
 
 /*
 void
-Chorus::setpreset (int dgui, int npreset)
+PluginChorus::setpreset (int dgui, int npreset)
 {
     const int PRESET_SIZE = 12;
     const int NUM_PRESETS = 10;
@@ -312,7 +312,7 @@ Chorus::setpreset (int dgui, int npreset)
 
 
 void
-Chorus::setParam (int npar, int value)
+PluginChorus::setParam (int npar, int value)
 {
     switch (npar) {
     case 0:
@@ -371,7 +371,7 @@ Chorus::setParam (int npar, int value)
 };
 
 int
-Chorus::getParam (int npar)
+PluginChorus::getParam (int npar)
 {
     switch (npar) {
     case 0:

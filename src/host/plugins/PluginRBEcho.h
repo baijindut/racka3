@@ -1,11 +1,13 @@
 /*
   ZynAddSubFX - a software synthesizer
 
-  Chorus.h - Chorus and Flange effects
+  Echo.h - Echo Effect
   Copyright (C) 2002-2005 Nasca Octavian Paul
   Author: Nasca Octavian Paul
 
   Modified for rakarrack by Josep Andreu
+
+  Reverse Echo by Transmogrifox
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of version 2 of the GNU General Public License
@@ -22,70 +24,64 @@
 
 */
 
-#ifndef CHORUS_H
-#define CHORUS_H
+#ifndef RBECHO_H
+#define RBECHO_H
+
 #include "global.h"
-#include "EffectLFO.h"
 #include "delayline.h"
-#include "../Plugin.h"
+#include"../Plugin.h"
 
-class Chorus : public Plugin
+class PluginRBEcho : public Plugin
 {
-
 public:
-    Chorus ();
-    ~Chorus ();
+    PluginRBEcho ();
+    ~PluginRBEcho ();
 
 	int process(float* inLeft,float* inRight,float* outLeft,float* outRight,
 			  unsigned long framesPerBuffer);
-private:
-	//void setParam (int npar, int value);
-	//int getParam (int npar);
 
 private:
+
+    //void out (float * smpsl, float * smpr);
     void setParam (int npar, int value);
     int getParam (int npar);
     void cleanup ();
 
-    float outvolume;		//this is the volume of effect and is public because need it in system effect. The out volume of s
+    float outvolume;
 
-
-
-private:
-    //Parametrii Chorus
-    EffectLFO lfo;		//lfo-ul chorus
-    int Pvolume;
-    int Ppanning;
-    int Pdepth;		//the depth of the Chorus(ms)
-    int Pdelay;		//the delay (ms)
-    int Pfb;		//feedback
-    int Plrcross;	//feedback
-    int Pflangemode;	//how the LFO is scaled, to result chorus or flange
-    int Poutsub;	//if I wish to substract the output instead of the adding it
-
-
-    //Control Parametrii
     void setvolume (int Pvolume);
     void setpanning (int Ppanning);
-    void setdepth (int Pdepth);
     void setdelay (int Pdelay);
-    void setfb (int Pfb);
+    void setlrdelay (int Plrdelay);
     void setlrcross (int Plrcross);
+    void setfb (int Pfb);
+    void sethidamp (int Phidamp);
+    void setreverse (int Preverse);
+    void initdelays ();
 
-    //Valorile interne
-    int maxdelay;
-    int dlk, drk, dlhi, dlhi2;
-    int awesome_mode;
+    //Parametrii
+    int Pvolume;	// E/R
+    int Ppanning;	//Panning
+    int Pdelay;
+    int Plrdelay;	// L/R delay difference
+    int Plrcross;	// L/R Mixing
+    int Pfb;		//Feed-back
+    int Phidamp;
+    int Preverse;
+    int Psubdiv;
+    int Pes;
 
-    float depth, delay, fb, lrcross, panning, oldr, oldl;
-    float dl1, dl2, dr1, dr2, lfol, lfor;
-    float *delayl, *delayr;
-    float getdelay (float xlfo);
-    float dllo, mdel;
+    int maxx_delay;
 
-    class FPreset *Fpre;
-    class delayline *ldelay, *rdelay;
+    float delay, lrdelay, ltime, rtime;
+    float fdelay, subdiv, pes, pingpong, ipingpong;
+    float rvl, rvr;
+    float rpanning, lpanning, lrcross, fb, hidamp, reverse, ireverse, lfeedback, rfeedback;
+    float oldl, oldr;		//pt. lpf
+    float  Srate_Attack_Coeff;
 
+    delayline *ldelay, *rdelay;
 };
+
 
 #endif

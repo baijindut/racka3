@@ -1,4 +1,4 @@
-src/host/plugins/RBEcho.o: src/host/plugins/RBEcho.C /usr/include/stdio.h \
+src/host/plugins/PluginRBEcho.o: src/host/plugins/PluginRBEcho.C /usr/include/stdio.h \
  /usr/include/features.h /usr/include/i386-linux-gnu/bits/predefs.h \
  /usr/include/i386-linux-gnu/sys/cdefs.h \
  /usr/include/i386-linux-gnu/bits/wordsize.h \
@@ -29,7 +29,7 @@ src/host/plugins/RBEcho.o: src/host/plugins/RBEcho.C /usr/include/stdio.h \
  /usr/include/i386-linux-gnu/bits/nan.h \
  /usr/include/i386-linux-gnu/bits/mathdef.h \
  /usr/include/i386-linux-gnu/bits/mathcalls.h /usr/include/string.h \
- src/host/plugins/RBEcho.h src/host/plugins/global.h \
+ src/host/plugins/PluginRBEcho.h src/host/plugins/global.h \
  src/host/plugins/../../settings.h libs/portaudio/include/portaudio.h \
  src/host/plugins/delayline.h src/host/plugins/../Plugin.h src/cJSON.h \
  src/uthash.h /usr/include/inttypes.h \

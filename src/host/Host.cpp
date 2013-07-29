@@ -9,8 +9,9 @@
 #include <string.h>
 
 
-#include "plugins/RBEcho.h"
-#include "plugins/Chorus.h"
+#include "plugins/PluginRBEcho.h"
+#include "plugins/PluginChorus.h"
+#include "plugins/PluginNoiseGate.h"
 
 #include <stdio.h>
 #include <algorithm>
@@ -26,6 +27,7 @@ Host::Host()
 	// add all the plugins to the pool
 	createPluginIfNeeded("Echoverse",true);
 	createPluginIfNeeded("Chorus",true);
+	createPluginIfNeeded("Noise Gate",true);
 	// TODO: add other plugins
 
 	// loop over pool and create all plugin json list
@@ -301,9 +303,11 @@ Plugin* Host::createNewPlugin(char* name)
 	Plugin* plugin =0;
 
 	if (0==strcmp(name,"Echoverse")) {
-		return new RBEcho();
+		return new PluginRBEcho();
 	} else if (0==strcmp(name,"Chorus")) {
-		return new Chorus();
+		return new PluginChorus();
+	} else if (0==strcmp(name,"Noise Gate")) {
+		return new PluginNoiseGate();
 	}
 
 	return plugin;
