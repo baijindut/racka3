@@ -82,6 +82,8 @@ src/host/plugins/PluginChorus.o: src/host/plugins/PluginChorus.C /usr/include/ma
  /usr/include/i386-linux-gnu/bits/environments.h \
  /usr/include/i386-linux-gnu/bits/confname.h /usr/include/getopt.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
- /usr/include/c++/4.6/bits/basic_string.tcc /usr/include/libio.h \
- /usr/include/_G_config.h /usr/include/i386-linux-gnu/bits/stdio_lim.h \
+ /usr/include/c++/4.6/bits/basic_string.tcc \
+ src/host/plugins/../StereoBuffer.h src/host/plugins/../StereoBuffer.h \
+ /usr/include/libio.h /usr/include/_G_config.h \
+ /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h

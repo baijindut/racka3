@@ -30,6 +30,7 @@
 #include "global.h"
 #include "delayline.h"
 #include"../Plugin.h"
+#include "../StereoBuffer.h"
 
 class PluginRBEcho : public Plugin
 {
@@ -37,8 +38,7 @@ public:
     PluginRBEcho ();
     ~PluginRBEcho ();
 
-	int process(float* inLeft,float* inRight,float* outLeft,float* outRight,
-			  unsigned long framesPerBuffer);
+	int process(StereoBuffer* input);
 
 private:
 

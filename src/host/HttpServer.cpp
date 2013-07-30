@@ -70,7 +70,6 @@ bool HttpServer::handleNewRequest(ServerHandlingEvent eventCode,
 			buffer.push_back(c);
 		}
 
-		printf("received POST:\n%s\n",buffer.c_str());
 		json = cJSON_Parse(buffer.c_str());
 
 		// if we couldnt parse the json? make empty json

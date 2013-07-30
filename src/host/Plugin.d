@@ -72,4 +72,5 @@ src/host/Plugin.o: src/host/Plugin.cpp src/host/Plugin.h \
  /usr/include/i386-linux-gnu/bits/environments.h \
  /usr/include/i386-linux-gnu/bits/confname.h /usr/include/getopt.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
- /usr/include/c++/4.6/bits/basic_string.tcc
+ /usr/include/c++/4.6/bits/basic_string.tcc src/host/StereoBuffer.h \
+ src/host/../settings.h

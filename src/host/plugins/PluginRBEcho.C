@@ -52,12 +52,12 @@ PluginRBEcho::PluginRBEcho ()
     ldelay = new delayline(2.0f, 3);
     rdelay = new delayline(2.0f, 3);
 
-	registerPlugin("Echoverse",
+	registerPlugin(1,"Echoverse",
 				   "A flexible temp-syncing reversible echo",
 				   1);
 
 	registerParam(0,"Level","","","off","",0,127,1,64);
-    registerParam(1,"Pan","","","far left","far right",-64,64,1,0);
+    registerParam(1,"Pan","","","far left","far right",0,127,1,64);
     registerParam(2,"Tempo","","BPM","","",0,600,1,120);
     registerParam(3,"LR Delay","","","","",0,127,1,80);
     registerParam(4,"Angle","","far left","far right","",-64,64,1,0);
@@ -117,9 +117,13 @@ PluginRBEcho::initdelays ()
 
 };
 
-int PluginRBEcho::process(float* inLeft,float* inRight,float* outLeft,float* outRight,
-		  unsigned long framesPerBuffer)
+int PluginRBEcho::process(StereoBuffer* input)
 {
+	float* inLeft = input->left;
+	float* inRight = input->right;
+	float* outLeft = _outputBuffers[0]->left;
+	float* outRight = _outputBuffers[0]->right;
+
     int i;
     float ldl, rdl;
     float avg, ldiff, rdiff, tmp;

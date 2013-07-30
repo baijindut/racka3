@@ -28,6 +28,7 @@
 #include "EffectLFO.h"
 #include "delayline.h"
 #include "../Plugin.h"
+#include "../StereoBuffer.h"
 
 class PluginChorus : public Plugin
 {
@@ -36,8 +37,8 @@ public:
     PluginChorus ();
     ~PluginChorus ();
 
-	int process(float* inLeft,float* inRight,float* outLeft,float* outRight,
-			  unsigned long framesPerBuffer);
+	int process(StereoBuffer* input);
+
 private:
 	//void setParam (int npar, int value);
 	//int getParam (int npar);

@@ -72,8 +72,8 @@ src/host/HttpServer.o: src/host/HttpServer.cpp src/host/HttpServer.h \
  /usr/include/i386-linux-gnu/bits/environments.h \
  /usr/include/i386-linux-gnu/bits/confname.h /usr/include/getopt.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
- /usr/include/c++/4.6/bits/basic_string.tcc src/host/../settings.h \
- src/host/mongcpp.h /usr/include/c++/4.6/cstddef \
+ /usr/include/c++/4.6/bits/basic_string.tcc src/host/StereoBuffer.h \
+ src/host/../settings.h src/host/mongcpp.h /usr/include/c++/4.6/cstddef \
  /usr/include/c++/4.6/cstdlib src/host/mongoose.h /usr/include/libio.h \
  /usr/include/_G_config.h /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h /usr/include/c++/4.6/map \

@@ -43,7 +43,7 @@ PluginNoiseGate::PluginNoiseGate ()
     state = CLOSED;
     hold_count = 0;
 
-    registerPlugin("Noise Gate",
+    registerPlugin(1,"Noise Gate",
      			   "Filter and gate",
      				1);
     //    {0, -10, 1, 2, 6703, 76, 2},
@@ -160,16 +160,26 @@ int PluginNoiseGate::getParam(int np)
 
 }
 
-int PluginNoiseGate::process(float* inLeft,float* inRight,float* outLeft,float* outRight,
-								  unsigned long framesPerBuffer)
+int PluginNoiseGate::process(StereoBuffer* input)
 {
+	float* inLeft = input->left;
+	float* inRight = input->right;
+	float* outLeft = _outputBuffers[0]->left;
+	float* outRight = _outputBuffers[0]->right;
+
     int i;
     float sum;
 
-    lpfl->filterout (inLeft);
-    hpfl->filterout (inLeft);
-    lpfr->filterout (inRight);
-    hpfr->filterout (inRight);
+    for (i=0;i<PERIOD;i++)
+    {
+    	outLeft[i]=inLeft[i];
+    	outRight[i]=inRight[i];
+    }
+
+    lpfl->filterout (outLeft);
+    hpfl->filterout (outLeft);
+    lpfr->filterout (outRight);
+    hpfr->filterout (outRight);
 
     for (i = 0; i < PERIOD; i++) {
 
@@ -209,8 +219,8 @@ int PluginNoiseGate::process(float* inLeft,float* inRight,float* outLeft,float* 
             }
         }
 
-        outLeft[i] = inLeft[i] * (cut * (1.0f - gate) + gate);
-        outRight[i] = inRight[i] * (cut * (1.0f - gate) + gate);
+        outLeft[i] *= (cut * (1.0f - gate) + gate);
+        outRight[i] *= (cut * (1.0f - gate) + gate);
 
     }
 };

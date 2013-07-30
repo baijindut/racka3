@@ -72,10 +72,10 @@ src/host/Host.o: src/host/Host.cpp src/host/Host.h \
  /usr/include/i386-linux-gnu/bits/environments.h \
  /usr/include/i386-linux-gnu/bits/confname.h /usr/include/getopt.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
- /usr/include/c++/4.6/bits/basic_string.tcc src/host/../settings.h \
- src/host/plugins/PluginRBEcho.h src/host/plugins/global.h \
- src/host/plugins/../../settings.h /usr/include/math.h \
- /usr/include/i386-linux-gnu/bits/huge_val.h \
+ /usr/include/c++/4.6/bits/basic_string.tcc src/host/StereoBuffer.h \
+ src/host/../settings.h src/host/plugins/PluginRBEcho.h \
+ src/host/plugins/global.h src/host/plugins/../../settings.h \
+ /usr/include/math.h /usr/include/i386-linux-gnu/bits/huge_val.h \
  /usr/include/i386-linux-gnu/bits/huge_valf.h \
  /usr/include/i386-linux-gnu/bits/huge_vall.h \
  /usr/include/i386-linux-gnu/bits/inf.h \
@@ -83,9 +83,10 @@ src/host/Host.o: src/host/Host.cpp src/host/Host.h \
  /usr/include/i386-linux-gnu/bits/mathdef.h \
  /usr/include/i386-linux-gnu/bits/mathcalls.h \
  src/host/plugins/delayline.h src/host/plugins/../Plugin.h \
- src/host/plugins/PluginChorus.h src/host/plugins/EffectLFO.h \
- src/host/plugins/PluginNoiseGate.h src/host/plugins/AnalogFilter.h \
- src/host/plugins/Filter_.h /usr/include/libio.h /usr/include/_G_config.h \
+ src/host/plugins/../StereoBuffer.h src/host/plugins/PluginChorus.h \
+ src/host/plugins/EffectLFO.h src/host/plugins/PluginNoiseGate.h \
+ src/host/plugins/AnalogFilter.h src/host/plugins/Filter_.h \
+ /usr/include/libio.h /usr/include/_G_config.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
  /usr/include/c++/4.6/algorithm /usr/include/c++/4.6/utility \

@@ -82,11 +82,12 @@ src/main.o: src/main.cpp /usr/include/stdio.h /usr/include/features.h \
  /usr/include/i386-linux-gnu/bits/environments.h \
  /usr/include/i386-linux-gnu/bits/confname.h /usr/include/getopt.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
- /usr/include/c++/4.6/bits/basic_string.tcc src/host/../settings.h \
- src/host/HttpServer.h src/host/Host.h src/host/mongcpp.h \
- /usr/include/c++/4.6/cstddef /usr/include/c++/4.6/cstdlib \
- src/host/mongoose.h /usr/include/c++/4.6/map \
- /usr/include/c++/4.6/bits/stl_tree.h /usr/include/c++/4.6/bits/stl_map.h \
+ /usr/include/c++/4.6/bits/basic_string.tcc src/host/StereoBuffer.h \
+ src/host/../settings.h src/host/HttpServer.h src/host/Host.h \
+ src/host/mongcpp.h /usr/include/c++/4.6/cstddef \
+ /usr/include/c++/4.6/cstdlib src/host/mongoose.h \
+ /usr/include/c++/4.6/map /usr/include/c++/4.6/bits/stl_tree.h \
+ /usr/include/c++/4.6/bits/stl_map.h \
  /usr/include/c++/4.6/bits/stl_multimap.h /usr/include/c++/4.6/memory \
  /usr/include/c++/4.6/bits/stl_tempbuf.h \
  /usr/include/c++/4.6/bits/stl_raw_storage_iter.h \

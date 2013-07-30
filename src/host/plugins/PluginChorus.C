@@ -52,7 +52,7 @@ PluginChorus::PluginChorus ()
     dr2 = getdelay (lfor);
     cleanup ();
 
-    registerPlugin("Chorus",
+    registerPlugin(1,"Chorus",
     				   "Interpolating stereo chorus",
     				   1);
     //{64, 64, 33, 0,  0, 90,      40, 85, 64, 119, 0, 0},
@@ -103,8 +103,13 @@ float PluginChorus::getdelay (float xlfo)
     return (result);
 };
 
-int PluginChorus::process(float* inLeft,float* inRight,float* outLeft,float* outRight,unsigned long framesPerBuffer)
+int PluginChorus::process(StereoBuffer* input)
 {
+	float* inLeft = input->left;
+	float* inRight = input->right;
+	float* outLeft = _outputBuffers[0]->left;
+	float* outRight = _outputBuffers[0]->right;
+
     int i;
     float tmp;
     dl1 = dl2;

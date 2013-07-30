@@ -13,6 +13,7 @@
 #include "uthash.h"
 #include <vector>
 #include <string>
+#include "StereoBuffer.h"
 using namespace std;
 
 class Plugin;
@@ -38,9 +39,8 @@ public:
 	Plugin();
 	virtual ~Plugin();
 
-	// process an input buffer into supplied output buffer
-	virtual int process(float* inLeft,float* inRight,float* outLeft,float* outRight,
-						  unsigned long framesPerBuffer) =0;
+	// process an input buffer into internal output buffers(s)
+	virtual int process(StereoBuffer* input) =0;
 
 	char* getName();
 	int getVersion();
@@ -68,10 +68,21 @@ public:
 	void setPosition(int position);
 	int getPosition();
 
+	// mixing and routing
+	int getOutputBufferCount();
+	StereoBuffer* getOutputBuffer(int i);
+
+	int getDesiredSourceInstance();
+	void setDesiredSourceInstance(int instance);
+
+	int getDesiredSourceChannel();
+	void setDesiredSourceChannel(int channel);
+
 protected:
-	void registerPlugin(char* name,
-								  char* description,
-								  int version);
+	void registerPlugin(int outputCount,
+						char* name,
+						char* description,
+						int version);
 
 	// called by actual plugin to setup json mapping
 	PluginParam* registerParam(int index,
@@ -89,6 +100,11 @@ protected:
 	virtual void setParam(int index,int value) =0;
 	virtual int getParam(int index)=0;
 
+protected:
+	vector<StereoBuffer*> _outputBuffers;
+	int _desiredSourceInstance;
+	int _desiredSourceChannel;
+
 private:
 	char _name[64];
 	char _description[256];
@@ -98,7 +114,6 @@ private:
 	int _position;
 
 	PluginParam* _paramList;
-
 };
 
 #endif /* PLUGIN_H_ */

@@ -33,6 +33,7 @@
 #include "global.h"
 #include "AnalogFilter.h"
 #include "../Plugin.h"
+#include "../StereoBuffer.h"
 
 class PluginNoiseGate : public Plugin
 {
@@ -42,8 +43,7 @@ public:
     PluginNoiseGate ();
     ~PluginNoiseGate ();
 
-	int process(float* inLeft,float* inRight,float* outLeft,float* outRight,
-			  unsigned long framesPerBuffer);
+	int process(StereoBuffer* input);
 
 private:
     void setParam (int npar, int value);

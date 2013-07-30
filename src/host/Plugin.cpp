@@ -6,6 +6,7 @@
  */
 
 #include "Plugin.h"
+#include "../settings.h"
 
 Plugin::Plugin() {
 
@@ -15,6 +16,9 @@ Plugin::Plugin() {
 	_paramList = 0;
 	_instance = -1;
 	_position = -1;
+
+	_desiredSourceInstance = -1;
+	_desiredSourceChannel = 0;
 }
 
 Plugin::~Plugin() {
@@ -27,6 +31,10 @@ Plugin::~Plugin() {
 		HASH_DEL(_paramList,param);
 		delete(param);
 	}
+
+	// free all output buffers
+	for (vector<StereoBuffer*>::iterator it = _outputBuffers.begin();it != _outputBuffers.end(); ++it)
+		delete (*it);
 
 }
 
@@ -176,10 +184,25 @@ int Plugin::getPluginJson(cJSON* jsonObject) {
 	return 1;
 }
 
-void Plugin::registerPlugin(char* name, char* description, int version) {
+void Plugin::registerPlugin(int outputCount,char* name, char* description, int version) {
 	strcpy(_name,name);
 	strcpy(_description,description);
 	_version = version;
+
+	// create output buffers, and add to vector
+	for (int i=0;i<outputCount;i++) {
+		StereoBuffer* buffer = new StereoBuffer(FRAMES_PER_BUFFER); // <-- this isnt the best
+		_outputBuffers.push_back(buffer);
+	}
+}
+
+int Plugin::getOutputBufferCount()
+{
+	return _outputBuffers.size();
+}
+StereoBuffer* Plugin::getOutputBuffer(int i)
+{
+	return _outputBuffers[i];
 }
 
 void Plugin::setInstance(int instance)
@@ -200,6 +223,22 @@ void Plugin::setPosition(int position)
 int Plugin::getPosition()
 {
 	return _position;
+}
+
+int Plugin::getDesiredSourceInstance() {
+	return _desiredSourceInstance;
+}
+
+void Plugin::setDesiredSourceInstance(int instance) {
+	_desiredSourceInstance = instance;
+}
+
+int Plugin::getDesiredSourceChannel() {
+	return _desiredSourceChannel;
+}
+
+void Plugin::setDesiredSourceChannel(int channel) {
+	_desiredSourceChannel = channel;
 }
 
 PluginParam* Plugin::registerParam(int index,char* name,const char* labels[],int value)
