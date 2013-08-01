@@ -443,7 +443,7 @@ Copyright (C) 2010 Free Software Foundation, Inc.
 This config.status script is free software; the Free Software Foundation
 gives unlimited permission to copy, distribute and modify it."
 
-ac_pwd='/home/gnuvebox/workspace/racka3/libs/portaudio'
+ac_pwd='/home/lenovo/workspace/racka3/libs/portaudio'
 srcdir='.'
 INSTALL='/usr/bin/install -c'
 AWK='mawk'
@@ -668,7 +668,7 @@ postuninstall_cmds=''
 finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
 finish_eval=''
 hardcode_into_libs='yes'
-sys_lib_search_path_spec='/usr/lib/gcc/i686-linux-gnu/4.7 /usr/lib/i386-linux-gnu /usr/lib /lib/i386-linux-gnu /lib '
+sys_lib_search_path_spec='/usr/lib/gcc/i686-linux-gnu/4.6 /usr/lib/i386-linux-gnu /usr/lib /lib/i386-linux-gnu /lib '
 sys_lib_dlsearch_path_spec='/lib /usr/lib /usr/lib/i386-linux-gnu/mesa /lib/i386-linux-gnu /usr/lib/i386-linux-gnu /lib/i686-linux-gnu /usr/lib/i686-linux-gnu /usr/local/lib '
 hardcode_action='immediate'
 enable_dlopen='unknown'

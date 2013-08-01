@@ -86,8 +86,8 @@ src/host/Host.o: src/host/Host.cpp src/host/Host.h \
  src/host/plugins/../StereoBuffer.h src/host/plugins/PluginChorus.h \
  src/host/plugins/EffectLFO.h src/host/plugins/PluginNoiseGate.h \
  src/host/plugins/AnalogFilter.h src/host/plugins/Filter_.h \
- /usr/include/libio.h /usr/include/_G_config.h \
- /usr/include/i386-linux-gnu/bits/stdio_lim.h \
+ src/host/plugins/PluginBackingTrack.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
  /usr/include/c++/4.6/algorithm /usr/include/c++/4.6/utility \
  /usr/include/c++/4.6/bits/stl_relops.h \
