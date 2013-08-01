@@ -87,7 +87,7 @@ void PluginBackingTrack::setParam(int npar, int value)
 		_fLevel =  2.0 * (_nLevel / 127.0 );
 		break;
 	case 1:	// play
-		_nPlaying = value < 0 ? 0 : value > 1 ? 1: value;
+		_nPlaying = value;
 		_bPlaying = (bool)_nPlaying;
 		break;
 	default:
@@ -103,7 +103,7 @@ int PluginBackingTrack::getParam(int npar)
 		return _nLevel;
 		break;
 	case 1:	// play
-		return _nPlaying;
+		return (int)_bPlaying;
 		break;
 	default:
 		break;
