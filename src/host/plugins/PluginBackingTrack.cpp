@@ -89,6 +89,7 @@ void PluginBackingTrack::setParam(int npar, int value)
 	case 1:	// play
 		_nPlaying = value;
 		_bPlaying = (bool)_nPlaying;
+		_rawAudioPos=0;
 		break;
 	default:
 		break;
