@@ -75,7 +75,6 @@ private:
 	pthread_mutex_t _chainActionCompleted;
 
 	int _nextInstance;
-
 };
 
 #endif /* HOST_H_ */

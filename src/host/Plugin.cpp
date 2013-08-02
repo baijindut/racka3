@@ -66,7 +66,10 @@ int Plugin::setParam(cJSON* jsonItem)
 		if (pPluginParam)
 		{
 			// actually set the value
-			pPluginParam->plugin->setParam(pPluginParam->index,jsonValue->valueint);
+			if (pPluginParam->index==PARAM_MIX)
+				pPluginParam->plugin->setMix(jsonValue->valueint);
+			else
+				pPluginParam->plugin->setParam(pPluginParam->index,jsonValue->valueint);
 		}
 		else
 		{
@@ -123,7 +126,12 @@ int Plugin::getParams(cJSON* jsonParamArray) {
 				cJSON_DeleteItemFromObject(jsonItem,"value");
 
 				// actually get the value from the plugin
-				int value = pPluginParam->plugin->getParam(pPluginParam->index);
+				int value;
+
+				if (pPluginParam->index==PARAM_MIX)
+					value = pPluginParam->plugin->getMix();
+				else
+					value = pPluginParam->plugin->getParam(pPluginParam->index);
 
 				// create a new value
 				cJSON* jsonValue = cJSON_CreateNumber((double)value);
@@ -225,6 +233,16 @@ int Plugin::getPosition()
 	return _position;
 }
 
+int Plugin::getMix()
+{
+	return _mix;
+}
+
+void Plugin::setMix(int mix)
+{
+	_mix = mix;
+}
+
 int Plugin::getDesiredSourceInstance() {
 	return _desiredSourceInstance;
 }
@@ -288,4 +306,11 @@ PluginParam* Plugin::registerParam(int index,char* name, char* description, char
 	param->plugin->setParam(index,value);
 
 	return param;
+}
+
+int Plugin::master(StereoBuffer* input)
+{
+	// todo: depending on _mix, split inpu
+
+	return process(input);
 }

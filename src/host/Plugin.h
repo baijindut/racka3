@@ -16,6 +16,9 @@
 #include "StereoBuffer.h"
 using namespace std;
 
+#define PARAM_MIX 900
+
+class Host;
 class Plugin;
 struct PluginParam
 {
@@ -36,11 +39,12 @@ struct PluginParam
 
 class Plugin {
 public:
+
 	Plugin();
 	virtual ~Plugin();
 
 	// process an input buffer into internal output buffers(s)
-	virtual int process(StereoBuffer* input) =0;
+	int master(StereoBuffer* input);
 
 	char* getName();
 	int getVersion();
@@ -69,6 +73,9 @@ public:
 	int getPosition();
 
 	// mixing and routing
+	int getMix();
+	void setMix(int mix);
+
 	int getOutputBufferCount();
 	StereoBuffer* getOutputBuffer(int i);
 
@@ -78,7 +85,6 @@ public:
 	int getDesiredSourceChannel();
 	void setDesiredSourceChannel(int channel);
 
-protected:
 	void registerPlugin(int outputCount,
 						char* name,
 						char* description,
@@ -88,13 +94,17 @@ protected:
 	PluginParam* registerParam(int index,
 								 char* name,
 								 char* description,
-						 char* units,
-						 char* minName,
-						 char* maxName,
-						 int min,int max,int step,int value);
+								 char* units,
+								 char* minName,
+								 char* maxName,
+								 int min,int max,int step,int value);
 
 	// alternative version to register multiposition knobs like 'lfo type' (sine, saw, square)
 	PluginParam* registerParam(int index,char* name,const char* labels[],int value);
+
+protected:
+
+	virtual int process(StereoBuffer* input) =0;
 
 	// set or get a param by its index, called by the setParams() or getParams() function
 	virtual void setParam(int index,int value) =0;
@@ -104,6 +114,7 @@ protected:
 	vector<StereoBuffer*> _outputBuffers;
 	int _desiredSourceInstance;
 	int _desiredSourceChannel;
+	int _mix;
 
 private:
 	char _name[64];

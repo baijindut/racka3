@@ -124,7 +124,7 @@ int Host::process(const float *inputBuffer,
 		}
 
 		// process
-		plugin->process(&scopedBuffer);
+		plugin->master(&scopedBuffer);
 
 		finalOutput.initWrapper(plugin->getOutputBuffer(0));
 
@@ -234,7 +234,7 @@ void Host::delegatedAddPlugin(cJSON* json)
 
 	Plugin* plugin = createPluginIfNeeded(name);
 	plugin->setInstance(_nextInstance++);
-	// todo: init plugin to defaults
+	// todo: init plugin to defaults -- this seems to be done though. how?
 
 	if (_plugins.size())
 	{
@@ -420,13 +420,19 @@ Plugin* Host::createNewPlugin(char* name)
 	Plugin* plugin =0;
 
 	if (0==strcmp(name,"Echoverse")) {
-		return new PluginRBEcho();
+		plugin = new PluginRBEcho();
 	} else if (0==strcmp(name,"Chorus")) {
-		return new PluginChorus();
+		plugin = new PluginChorus();
 	} else if (0==strcmp(name,"Noise Gate")) {
-		return new PluginNoiseGate();
+		plugin = new PluginNoiseGate();
 	} else if (0==strcmp(name,"Backing Track")) {
-		return new PluginBackingTrack();
+		plugin = new PluginBackingTrack();
+	}
+
+	if (plugin)
+	{
+		// all plugins must have a dry/wet mix
+		plugin->registerParam(PARAM_MIX,"Mix","Dry/Wet Mix","","Dry","Wet",0,127,1,127);
 	}
 
 	return plugin;
