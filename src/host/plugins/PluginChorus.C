@@ -40,8 +40,8 @@ PluginChorus::PluginChorus ()
     rdelay = new delayline(tmp, 2);
     ldelay -> set_averaging(0.005f);
     rdelay -> set_averaging(0.005f);
-    ldelay->set_mix( 0.5f );
-    rdelay->set_mix( 0.5f );
+    ldelay->set_mix( 0 );
+    rdelay->set_mix( 0 );
 
     oldr = 0.0f;
     oldl = 0.0f;
@@ -56,7 +56,6 @@ PluginChorus::PluginChorus ()
     				   "Interpolating stereo chorus",
     				   1);
     //{64, 64, 33, 0,  0, 90,      40, 85, 64, 119, 0, 0},
-    registerParam(0,"Level","","","","",0,127,1,64);
     registerParam(1,"Panning","","","","",0,127,1,64);
     registerParam(2,"Tempo","","","","",0,600,1,33);
     registerParam(3,"Randomness","","","","",0,127,1,0);
@@ -241,18 +240,6 @@ PluginChorus::setfb (int Pfb)
 };
 
 void
-PluginChorus::setvolume (int Pvolume)
-{
-    this->Pvolume = Pvolume;
-    if(awesome_mode) { //use interpolated delay line for better sound
-        outvolume = 0.0f;
-        ldelay->set_mix( ((float)Pvolume / 128.0f) );
-        rdelay->set_mix( ((float)Pvolume / 128.0f) );
-    } else   outvolume = (float)Pvolume / 127.0f;
-
-};
-
-void
 PluginChorus::setpanning (int Ppanning)
 {
     this->Ppanning = Ppanning;
@@ -320,9 +307,6 @@ void
 PluginChorus::setParam (int npar, int value)
 {
     switch (npar) {
-    case 0:
-        setvolume (value);
-        break;
     case 1:
         setpanning (value);
         break;
@@ -367,10 +351,9 @@ PluginChorus::setParam (int npar, int value)
     case 12:
         awesome_mode = value;
         if(awesome_mode) {
-            outvolume = 0.0f;
-            ldelay->set_mix(((float)Pvolume/128.0f) );
-            rdelay->set_mix(((float)Pvolume/128.0f) );
-        } else outvolume = (float)Pvolume / 127.0f;
+            ldelay->set_mix(0);
+            rdelay->set_mix(0);
+        }
         break;
     };
 };
@@ -379,9 +362,6 @@ int
 PluginChorus::getParam (int npar)
 {
     switch (npar) {
-    case 0:
-        return (Pvolume);
-        break;
     case 1:
         return (Ppanning);
         break;
@@ -419,7 +399,8 @@ PluginChorus::getParam (int npar)
         return (awesome_mode);
         break;
     default:
-        return (0);
+        break;
     };
 
+    return (0);
 };

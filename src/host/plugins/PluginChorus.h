@@ -40,22 +40,13 @@ public:
 	int process(StereoBuffer* input);
 
 private:
-	//void setParam (int npar, int value);
-	//int getParam (int npar);
-
-private:
     void setParam (int npar, int value);
     int getParam (int npar);
     void cleanup ();
 
-    float outvolume;		//this is the volume of effect and is public because need it in system effect. The out volume of s
-
-
-
 private:
     //Parametrii Chorus
     EffectLFO lfo;		//lfo-ul chorus
-    int Pvolume;
     int Ppanning;
     int Pdepth;		//the depth of the Chorus(ms)
     int Pdelay;		//the delay (ms)

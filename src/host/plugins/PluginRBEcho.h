@@ -42,14 +42,10 @@ public:
 
 private:
 
-    //void out (float * smpsl, float * smpr);
     void setParam (int npar, int value);
     int getParam (int npar);
     void cleanup ();
 
-    float outvolume;
-
-    void setvolume (int Pvolume);
     void setpanning (int Ppanning);
     void setdelay (int Pdelay);
     void setlrdelay (int Plrdelay);

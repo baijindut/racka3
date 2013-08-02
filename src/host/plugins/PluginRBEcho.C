@@ -32,7 +32,6 @@
 PluginRBEcho::PluginRBEcho ()
 {
 	//default values
-    Pvolume = 100;
     Ppanning = 64;
     Pdelay = 60;
     Plrdelay = 100;
@@ -56,7 +55,6 @@ PluginRBEcho::PluginRBEcho ()
 				   "A flexible temp-syncing reversible echo",
 				   1);
 
-	registerParam(0,"Level","","","off","",0,127,1,64);
     registerParam(1,"Pan","","","far left","far right",0,127,1,64);
     registerParam(2,"Tempo","","BPM","","",0,600,1,120);
     registerParam(3,"LR Delay","","","","",0,127,1,80);
@@ -178,78 +176,6 @@ int PluginRBEcho::process(StereoBuffer* input)
 	return paContinue;
 }
 
-/*
- * Effect output
- */
-#if 0
-void
-PluginRBEcho::out (float * smpsl, float * smpsr)
-{
-    int i;
-    float ldl, rdl;
-    float avg, ldiff, rdiff, tmp;
-
-
-    for (i = 0; i < PERIOD; i++) {
-
-        //LowPass Filter
-        ldl = lfeedback * hidamp + oldl * (1.0f - hidamp);
-        rdl = rfeedback * hidamp + oldr * (1.0f - hidamp);
-        oldl = ldl + DENORMAL_GUARD;
-        oldr = rdl + DENORMAL_GUARD;
-
-        ldl = ldelay->delay_simple((ldl + smpsl[i]), delay, 0, 1, 0);
-        rdl = rdelay->delay_simple((rdl + smpsr[i]), delay, 0, 1, 0);
-
-
-        if(Preverse) {
-            rvl = ldelay->delay_simple(oldl, delay, 1, 0, 1)*ldelay->envelope();
-            rvr = rdelay->delay_simple(oldr, delay, 1, 0, 1)*rdelay->envelope();
-            ldl = ireverse*ldl + reverse*rvl;
-            rdl = ireverse*rdl + reverse*rvr;
-
-        }
-
-
-        lfeedback = lpanning * fb * ldl;
-        rfeedback = rpanning * fb * rdl;
-
-        if(Pes) {
-            ldl *= cosf(lrcross);
-            rdl *= sinf(lrcross);
-
-            avg = (ldl + rdl) * 0.5f;
-            ldiff = ldl - avg;
-            rdiff = rdl - avg;
-
-            tmp = avg + ldiff * pes;
-            ldl = 0.5 * tmp;
-
-            tmp = avg + rdiff * pes;
-            rdl = 0.5f * tmp;
-
-
-        }
-        efxoutl[i] = (ipingpong*ldl + pingpong *ldelay->delay_simple(0.0f, ltime, 2, 0, 0)) * lpanning;
-        efxoutr[i] = (ipingpong*rdl + pingpong *rdelay->delay_simple(0.0f, rtime, 2, 0, 0)) * rpanning;
-
-    };
-
-};
-#endif
-
-
-/*
- * Parameter control
- */
-void
-PluginRBEcho::setvolume (int Pvolume)
-{
-    this->Pvolume = Pvolume;
-    outvolume = (float)Pvolume / 127.0f;
-
-};
-
 void
 PluginRBEcho::setpanning (int Ppanning)
 {
@@ -323,9 +249,6 @@ void
 PluginRBEcho::setParam (int npar, int value)
 {
     switch (npar) {
-    case 0:
-        setvolume (value);
-        break;
     case 1:
         setpanning (value);
         break;
@@ -364,9 +287,6 @@ int
 PluginRBEcho::getParam (int npar)
 {
     switch (npar) {
-    case 0:
-        return (Pvolume);
-        break;
     case 1:
         return (Ppanning);
         break;
