@@ -19,6 +19,8 @@ Plugin::Plugin() {
 
 	_desiredSourceInstance = -1;
 	_desiredSourceChannel = 0;
+
+	_mix=127;
 }
 
 Plugin::~Plugin() {
@@ -240,7 +242,7 @@ int Plugin::getMix()
 
 void Plugin::setMix(int mix)
 {
-	_mix = mix;
+	_mix = mix < 0 ? 0 : mix > 127 ? 127 : mix;
 }
 
 int Plugin::getDesiredSourceInstance() {
@@ -310,7 +312,51 @@ PluginParam* Plugin::registerParam(int index,char* name, char* description, char
 
 int Plugin::master(StereoBuffer* input)
 {
-	// todo: depending on _mix, split inpu
+	if (_mix == 127)
+	{
+		// wet. use only the output of the effect
+		return process(input);
+	}
+	else if (_mix==0)
+	{
+		// dry. use only the input - dont process effect at all
+		for (int c=0;c<_outputBuffers.size();c++)
+		{
+			float* outLeft = _outputBuffers[c]->left;
+			float* outRight = _outputBuffers[c]->right;
 
-	return process(input);
+			for (int i =0;i<input->length;i++)
+			{
+				outLeft[i]=input->left[i];
+				outRight[i]=input->right[i];
+			}
+		}
+	}
+	else
+	{
+		// some blend between wet and dry.
+		float wet = _mix / 127.0;
+		float dry = 1.0 - wet;
+
+		// process the input into the output
+		process(input);
+
+		for (int c=0;c<_outputBuffers.size();c++)
+		{
+			float* outLeft = _outputBuffers[c]->left;
+			float* outRight = _outputBuffers[c]->right;
+			for (int i =0;i<input->length;i++)
+			{
+				// reduce volume of output
+				outLeft[i] *= wet;
+				outRight[i] *= wet;
+
+				// add dry signal
+				outLeft[i] += dry * input->left[i];
+				outRight[i] += dry * input->right[i];
+			}
+		}
+	}
+
+	return paContinue;
 }
