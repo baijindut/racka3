@@ -88,6 +88,12 @@ PluginRBEcho::cleanup ()
     oldr = 0.0;
 };
 
+void PluginRBEcho::panic()
+{
+	Plugin::panic();
+	initdelays();
+	cleanup();
+}
 
 /*
  * Initialize the delays

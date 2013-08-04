@@ -73,6 +73,7 @@ private:
 	cJSON* _chainAction;
 	pthread_mutex_t _chainActionMutex;
 	pthread_mutex_t _chainActionCompleted;
+	pthread_mutex_t _chainSpinner;
 
 	int _nextInstance;
 };

@@ -215,6 +215,12 @@ PluginChorus::cleanup ()
 
 };
 
+void PluginChorus::panic()
+{
+	cleanup();
+	Plugin::panic();
+}
+
 /*
  * Parameter control
  */

@@ -46,6 +46,9 @@ public:
 	// process an input buffer into internal output buffers(s)
 	int master(StereoBuffer* input);
 
+	// waah! clean buffers in an attempt to prevent pops
+	void panic();
+
 	char* getName();
 	int getVersion();
 

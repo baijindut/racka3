@@ -40,6 +40,8 @@ public:
 
 	int process(StereoBuffer* input);
 
+	void panic();
+
 private:
 
     void setParam (int npar, int value);

@@ -73,6 +73,12 @@ void PluginNoiseGate::cleanup()
     hpfr->cleanup ();
 }
 
+void PluginNoiseGate::panic()
+{
+	cleanup();
+	Plugin::panic();
+}
+
 void PluginNoiseGate::setlpf (int value)
 {
     Plpf = value;

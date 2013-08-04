@@ -360,3 +360,12 @@ int Plugin::master(StereoBuffer* input)
 
 	return paContinue;
 }
+
+void Plugin::panic()
+{
+	for (int b=0;b<_outputBuffers.size();b++)
+	{
+		_outputBuffers[b]->silence();
+	}
+}
+

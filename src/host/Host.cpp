@@ -44,6 +44,11 @@ Host::Host()
 	_chainAction = NULL;
 	pthread_mutex_init(&_chainActionMutex,0);
 	pthread_mutex_init(&_chainActionCompleted,0);
+
+	pthread_mutexattr_t Attr;
+	pthread_mutexattr_init(&Attr);
+	pthread_mutexattr_settype(&Attr, PTHREAD_MUTEX_RECURSIVE);
+	pthread_mutex_init(&_chainSpinner, &Attr);
 }
 
 Host::~Host()
@@ -78,14 +83,17 @@ int Host::process(const float *inputBuffer,
 		// if there is an action
 		if (_chainAction)
 		{
+			// silence all buffers
+			for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
+				(*it)->panic();
+
 			delegatedChainAction(_chainAction);
 			_chainAction = 0;
-		}
 
-		// silence all buffers
-		for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
-			for (int b=0;b<(*it)->getOutputBufferCount();b++)
-				(*it)->getOutputBuffer(b)->silence();
+			// silence all buffers
+			for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
+				(*it)->panic();
+		}
 
 		pthread_mutex_unlock(&_chainActionMutex);
 	}
@@ -187,6 +195,8 @@ void Host::addPlugin(cJSON* json)
 // blocks until complete
 void Host::invokeChainAction(cJSON* json,char* action)
 {
+	pthread_mutex_lock(&_chainSpinner);
+
 	// add action to json, we know what to do later
 	cJSON_AddItemToObject(json,"action",cJSON_CreateString(action));
 
@@ -201,6 +211,8 @@ void Host::invokeChainAction(cJSON* json,char* action)
 	// wait until action is done
 	pthread_mutex_lock(&_chainActionCompleted);
 	pthread_mutex_unlock(&_chainActionCompleted);
+
+	pthread_mutex_unlock(&_chainSpinner);
 }
 
 void Host::delegatedChainAction(cJSON* json)
@@ -234,7 +246,6 @@ void Host::delegatedAddPlugin(cJSON* json)
 
 	Plugin* plugin = createPluginIfNeeded(name);
 	plugin->setInstance(_nextInstance++);
-	// todo: init plugin to defaults -- this seems to be done though. how?
 
 	if (_plugins.size())
 	{
@@ -458,6 +469,7 @@ Plugin* Host::createPluginIfNeeded(char* name,bool addToPoolImmediately)
 	if (!plugin)
 	{
 		plugin = createNewPlugin(name);
+		plugin->panic();
 		if (addToPoolImmediately && plugin)
 		{
 			_pool.push_back(plugin);
