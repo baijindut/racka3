@@ -41,10 +41,6 @@ Host::Host()
 		cJSON_AddItemToArray(_jsonAllPlugins,jsonObject);
 	}
 
-	_chainAction = NULL;
-	pthread_mutex_init(&_chainActionMutex,0);
-	pthread_mutex_init(&_chainActionCompleted,0);
-
 	pthread_mutexattr_t Attr;
 	pthread_mutexattr_init(&Attr);
 	pthread_mutexattr_settype(&Attr, PTHREAD_MUTEX_RECURSIVE);
@@ -77,82 +73,69 @@ int Host::process(const float *inputBuffer,
 	float *outLeft = ((float **) outputBuffer)[0];
 	float *outRight = ((float **) outputBuffer)[1];
 
-	// any delegated chain action to do? (trylock rather than lock so we never block here)
-	if (pthread_mutex_trylock(&_chainActionMutex) == 0)
+	// if we cannot get the lock, someone is someone doing a chain-related action.
+	if (pthread_mutex_trylock(&_chainSpinner) !=0 )
 	{
-		// if there is an action
-		if (_chainAction)
-		{
-			// silence all buffers
-			for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
-				(*it)->panic();
-
-			delegatedChainAction(_chainAction);
-			_chainAction = 0;
-
-			// silence all buffers
-			for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
-				(*it)->panic();
-		}
-
-		pthread_mutex_unlock(&_chainActionMutex);
+		// no processing, no output.
+		for (int i=0;i<framesPerBuffer;i++)
+			outLeft[i]=outRight[i]=0.0;
 	}
-
-	// keep a note of the final output bufer
-	StereoBuffer finalOutput = StereoBuffer(inLeft,inRight,framesPerBuffer);
-
-	// process all plugins
-	Plugin* plugin = 0;
-	Plugin* previousPlugin = 0;
-	bool bFirst = true;
-	for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
+	else
 	{
-		StereoBuffer scopedBuffer;
+		// it is safe to do the actual processing
 
-		// get pointer to this plugin
-		plugin = *it;
+		// keep a note of the final output bufer
+		StereoBuffer finalOutput = StereoBuffer(inLeft,inRight,framesPerBuffer);
 
-		// determine where it wants to get its source audio from
-		if (bFirst)
+		// process all plugins
+		Plugin* plugin = 0;
+		Plugin* previousPlugin = 0;
+		bool bFirst = true;
+		for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
 		{
-			// if its the first plugin, it has to get its audio from the input
-			scopedBuffer.initWrapper(inLeft,inRight,framesPerBuffer);
-			bFirst = false;
-		}
-		else
-		{
-			// the plugin has a preference as to where it wants to get its input from
-			int sourceInstance = plugin->getDesiredSourceInstance();
-			int sourceChannel = plugin->getDesiredSourceChannel();
+			StereoBuffer scopedBuffer;
 
-			if (sourceInstance == -1)
-				scopedBuffer.initWrapper(previousPlugin->getOutputBuffer(0));
+			// get pointer to this plugin
+			plugin = *it;
+
+			// determine where it wants to get its source audio from
+			if (bFirst)
+			{
+				// if its the first plugin, it has to get its audio from the input
+				scopedBuffer.initWrapper(inLeft,inRight,framesPerBuffer);
+				bFirst = false;
+			}
 			else
-				scopedBuffer.initWrapper(getPluginFromInstance(sourceInstance)->getOutputBuffer(sourceChannel));
+			{
+				// the plugin has a preference as to where it wants to get its input from
+				int sourceInstance = plugin->getDesiredSourceInstance();
+				int sourceChannel = plugin->getDesiredSourceChannel();
+
+				if (sourceInstance == -1)
+					scopedBuffer.initWrapper(previousPlugin->getOutputBuffer(0));
+				else
+					scopedBuffer.initWrapper(getPluginFromInstance(sourceInstance)->getOutputBuffer(sourceChannel));
+			}
+
+			// process
+			plugin->master(&scopedBuffer);
+
+			finalOutput.initWrapper(plugin->getOutputBuffer(0));
+
+			// remember last plugin
+			previousPlugin = plugin;
 		}
 
-		// process
-		plugin->master(&scopedBuffer);
+		// copy to output buffer
+		memcpy(outLeft,finalOutput.left,framesPerBuffer*sizeof(float));
+		memcpy(outRight,finalOutput.right,framesPerBuffer*sizeof(float));
 
-		finalOutput.initWrapper(plugin->getOutputBuffer(0));
-
-		// remember last plugin
-		previousPlugin = plugin;
+		pthread_mutex_unlock(&_chainSpinner);
 	}
-
-	// copy to output buffer
-	memcpy(outLeft,finalOutput.left,framesPerBuffer*sizeof(float));
-	memcpy(outRight,finalOutput.right,framesPerBuffer*sizeof(float));
 
 	return paContinue;
 }
 
-// these 2 are easy. they are fast, and all the work can happen in the audio thread
-void Host::removePlugin(cJSON* json) {invokeChainAction(json,"removeplugin");}
-void Host::movePlugin(cJSON* json) {invokeChainAction(json,"moveplugin");}
-
-// add is trickier: we may need to create a new plugin instance if there isnt one in the pool,
-// so that we dont do the possibly lengthy plugin construction in the sudio thread
 void Host::addPlugin(cJSON* json)
 {
 	// parse json, and if its all good, ensure there is a plugin instance in the pool
@@ -163,18 +146,45 @@ void Host::addPlugin(cJSON* json)
 	cJSON* jsonName = cJSON_GetObjectItem(json,"name");
 	cJSON* jsonPosition = cJSON_GetObjectItem(json,"position");
 
+	// get values from JSON
 	if (jsonName && jsonName->type==cJSON_String && jsonName->valuestring &&
 		jsonPosition && jsonPosition->type==cJSON_Number)
 	{
 		name = jsonName->valuestring;
 		before = jsonPosition->valueint;
 
+		// OOB check
 		if ( (_plugins.size()==0 && before == 0) || (before < _plugins.size() && before >= 0))
 		{
-			if (createPluginIfNeeded(name,true))
+			// create the instance
+			Plugin* plugin = createPluginIfNeeded(name);
+			if (plugin)
 			{
-				// cause it to be done
-				invokeChainAction(json,"addplugin");
+				plugin->setInstance(_nextInstance++);
+
+				pthread_mutex_lock(&_chainSpinner);
+
+				// add to the chain in the appropriate way
+				if (_plugins.size())
+				{
+					vector<Plugin*>::iterator it=_plugins.begin();
+					for (int i=0;i<before;i++)
+						it++;
+					_plugins.insert(it,plugin);
+				}
+				else
+				{
+					_plugins.push_back(plugin);
+				}
+
+				// renumber plugins before we return potentially incorrect json
+				renumberPlugins();
+
+				pthread_mutex_unlock(&_chainSpinner);
+
+				// add all plugin details to response - remove name.
+				cJSON_DeleteItemFromObject(json,"name");
+				plugin->getPluginJson(json);
 			}
 			else
 			{
@@ -192,82 +202,7 @@ void Host::addPlugin(cJSON* json)
 	}
 }
 
-// blocks until complete
-void Host::invokeChainAction(cJSON* json,char* action)
-{
-	pthread_mutex_lock(&_chainSpinner);
-
-	// add action to json, we know what to do later
-	cJSON_AddItemToObject(json,"action",cJSON_CreateString(action));
-
-	// this tells the audio thread to do the action
-	pthread_mutex_lock(&_chainActionMutex);
-	pthread_mutex_lock(&_chainActionCompleted);
-	_chainAction = json;
-	pthread_mutex_unlock(&_chainActionMutex);
-
-	// sometime now, the audio thread will unlock the completion mutex
-
-	// wait until action is done
-	pthread_mutex_lock(&_chainActionCompleted);
-	pthread_mutex_unlock(&_chainActionCompleted);
-
-	pthread_mutex_unlock(&_chainSpinner);
-}
-
-void Host::delegatedChainAction(cJSON* json)
-{
-	cJSON* jsonAction = cJSON_GetObjectItem(json,"action");
-	char* action;
-
-	if (jsonAction && jsonAction->type==cJSON_String && jsonAction->string)
-	{
-		action = jsonAction->valuestring;
-
-		if (strcmp(action,"addplugin")==0)
-			delegatedAddPlugin(json);
-		if (strcmp(action,"removeplugin")==0)
-			delegatedRemovePlugin(json);
-		if (strcmp(action,"moveplugin")==0)
-			delegatedMovePlugin(json);
-	}
-
-	// now the action has been done, unlock the completed mutex to allow waiting thread to fall through
-	pthread_mutex_unlock(&_chainActionCompleted);
-}
-
-void Host::delegatedAddPlugin(cJSON* json)
-{
-	// no need to check json is ok - we have already done this
-	cJSON* jsonName = cJSON_GetObjectItem(json,"name");
-	cJSON* jsonPosition = cJSON_GetObjectItem(json,"position");
-	char* name = jsonName->valuestring;
-	int before = jsonPosition->valueint;
-
-	Plugin* plugin = createPluginIfNeeded(name);
-	plugin->setInstance(_nextInstance++);
-
-	if (_plugins.size())
-	{
-		vector<Plugin*>::iterator it=_plugins.begin();
-		for (int i=0;i<before;i++)
-			it++;
-		_plugins.insert(it,plugin);
-	}
-	else
-	{
-		_plugins.push_back(plugin);
-	}
-
-	// renumber plugins before we return potentially incorrect json
-	renumberPlugins();
-
-	// add all plugin details to response - remove name.
-	cJSON_DeleteItemFromObject(json,"name");
-	plugin->getPluginJson(json);
-}
-
-void Host::delegatedRemovePlugin(cJSON* json)
+void Host::removePlugin(cJSON* json)
 {
 	cJSON* jsonInstance = cJSON_GetObjectItem(json,"instance");
 
@@ -276,6 +211,8 @@ void Host::delegatedRemovePlugin(cJSON* json)
 		Plugin* plugin = getPluginFromInstance(jsonInstance->valueint);
 		if (plugin)
 		{
+			pthread_mutex_lock(&_chainSpinner);
+
 			_plugins.erase(std::remove(_plugins.begin(), _plugins.end(), plugin),
 						   _plugins.end());
 
@@ -284,6 +221,8 @@ void Host::delegatedRemovePlugin(cJSON* json)
 
 			// renumber plugins since we could very well have removed one in the middle
 			renumberPlugins();
+
+			pthread_mutex_unlock(&_chainSpinner);
 		}
 		else
 		{
@@ -296,7 +235,7 @@ void Host::delegatedRemovePlugin(cJSON* json)
 	}
 }
 
-void Host::delegatedMovePlugin(cJSON* json)
+void Host::movePlugin(cJSON* json)
 {
 	int from;
 	int to;
@@ -315,6 +254,8 @@ void Host::delegatedMovePlugin(cJSON* json)
 
 		if (plugin)
 		{
+			pthread_mutex_lock(&_chainSpinner);
+
 			if (from >=0 && from < _plugins.size() &&
 				to >=0 && to < _plugins.size() &&
 				from!=to && _plugins.size()>=2)
@@ -327,6 +268,8 @@ void Host::delegatedMovePlugin(cJSON* json)
 			}
 
 			renumberPlugins();
+
+			pthread_mutex_unlock(&_chainSpinner);
 		}
 		else
 		{

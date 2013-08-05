@@ -50,17 +50,6 @@ private:
 	// give all plugins their correct position value
 	void renumberPlugins();
 
-	// causes the chain action to be carried out later by the audio thread.
-	void invokeChainAction(cJSON* json,char* action);
-
-	// handles delegated action. called from audio processing thread.
-	void delegatedChainAction(cJSON* json);
-
-	// specific delegated action handlers, corresponding to public functions
-	void delegatedAddPlugin(cJSON* json);
-	void delegatedRemovePlugin(cJSON* json);
-	void delegatedMovePlugin(cJSON* json);
-
 	// pool of spare plugins
 	vector <Plugin*> _pool;
 
@@ -69,10 +58,7 @@ private:
 
 	cJSON* _jsonAllPlugins;
 
-	// chain actions
-	cJSON* _chainAction;
-	pthread_mutex_t _chainActionMutex;
-	pthread_mutex_t _chainActionCompleted;
+	// chain action lock
 	pthread_mutex_t _chainSpinner;
 
 	int _nextInstance;
