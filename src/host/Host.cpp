@@ -162,7 +162,7 @@ void Host::addPlugin(cJSON* json)
 			{
 				plugin->setInstance(_nextInstance++);
 
-				pthread_mutex_lock(&_chainSpinner);
+				chainLock();
 
 				// add to the chain in the appropriate way
 				if (_plugins.size())
@@ -177,10 +177,7 @@ void Host::addPlugin(cJSON* json)
 					_plugins.push_back(plugin);
 				}
 
-				// renumber plugins before we return potentially incorrect json
-				renumberPlugins();
-
-				pthread_mutex_unlock(&_chainSpinner);
+				chainUnlock();
 
 				// add all plugin details to response - remove name.
 				cJSON_DeleteItemFromObject(json,"name");
@@ -211,7 +208,7 @@ void Host::removePlugin(cJSON* json)
 		Plugin* plugin = getPluginFromInstance(jsonInstance->valueint);
 		if (plugin)
 		{
-			pthread_mutex_lock(&_chainSpinner);
+			chainLock();
 
 			_plugins.erase(std::remove(_plugins.begin(), _plugins.end(), plugin),
 						   _plugins.end());
@@ -222,7 +219,7 @@ void Host::removePlugin(cJSON* json)
 			// renumber plugins since we could very well have removed one in the middle
 			renumberPlugins();
 
-			pthread_mutex_unlock(&_chainSpinner);
+			chainUnlock();
 		}
 		else
 		{
@@ -254,7 +251,7 @@ void Host::movePlugin(cJSON* json)
 
 		if (plugin)
 		{
-			pthread_mutex_lock(&_chainSpinner);
+			chainLock();
 
 			if (from >=0 && from < _plugins.size() &&
 				to >=0 && to < _plugins.size() &&
@@ -267,9 +264,7 @@ void Host::movePlugin(cJSON* json)
 				_plugins[from] = b;
 			}
 
-			renumberPlugins();
-
-			pthread_mutex_unlock(&_chainSpinner);
+			chainUnlock();
 		}
 		else
 		{
@@ -422,3 +417,17 @@ Plugin* Host::createPluginIfNeeded(char* name,bool addToPoolImmediately)
 	return plugin;
 }
 
+void Host::chainLock()
+{
+	pthread_mutex_lock(&_chainSpinner);
+}
+
+void Host::chainUnlock()
+{
+	for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
+		(*it)->panic();
+
+	renumberPlugins();
+	pthread_mutex_unlock(&_chainSpinner);
+
+}

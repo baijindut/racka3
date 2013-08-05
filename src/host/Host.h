@@ -60,6 +60,8 @@ private:
 
 	// chain action lock
 	pthread_mutex_t _chainSpinner;
+	void chainLock();
+	void chainUnlock();
 
 	int _nextInstance;
 };
