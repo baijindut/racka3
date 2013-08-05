@@ -13,6 +13,7 @@
 #include "plugins/PluginChorus.h"
 #include "plugins/PluginNoiseGate.h"
 #include "plugins/PluginBackingTrack.h"
+#include "plugins/PluginCompressor.h"
 
 #include <stdio.h>
 #include <algorithm>
@@ -30,6 +31,7 @@ Host::Host()
 	createPluginIfNeeded("Chorus",true);
 	createPluginIfNeeded("Noise Gate",true);
 	createPluginIfNeeded("Backing Track",true);
+	createPluginIfNeeded("Compressor",true);
 	// TODO: add other plugins
 
 	// loop over pool and create all plugin json list
@@ -376,6 +378,8 @@ Plugin* Host::createNewPlugin(char* name)
 		plugin = new PluginNoiseGate();
 	} else if (0==strcmp(name,"Backing Track")) {
 		plugin = new PluginBackingTrack();
+	} else if (0==strcmp(name,"Compressor")) {
+		plugin = new PluginCompressor();
 	}
 
 	if (plugin)

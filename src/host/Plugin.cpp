@@ -166,6 +166,8 @@ int Plugin::getPluginJson(cJSON* jsonObject) {
 	{
 		cJSON* paramObject = cJSON_CreateObject();
 
+		int value = pParam->index == PARAM_MIX ? getMix():getParam(pParam->index);
+
 		cJSON_AddItemToObject(paramObject,"name",cJSON_CreateString(pParam->name));
 		cJSON_AddItemToObject(paramObject,"description",cJSON_CreateString(pParam->description));
 		cJSON_AddItemToObject(paramObject,"units",cJSON_CreateString(pParam->units));
@@ -174,7 +176,8 @@ int Plugin::getPluginJson(cJSON* jsonObject) {
 		cJSON_AddItemToObject(paramObject,"max",cJSON_CreateNumber((int)pParam->max));
 		cJSON_AddItemToObject(paramObject,"min",cJSON_CreateNumber((int)pParam->min));
 		cJSON_AddItemToObject(paramObject,"step",cJSON_CreateNumber((int)pParam->step));
-		cJSON_AddItemToObject(paramObject,"defaultValue",cJSON_CreateNumber((int)pParam->defaultValue));
+		//cJSON_AddItemToObject(paramObject,"defaultValue",cJSON_CreateNumber((int)pParam->defaultValue));
+		cJSON_AddItemToObject(paramObject,"value",cJSON_CreateNumber(value));
 
 		cJSON* labelArray = cJSON_CreateArray();
 		for (vector<string>::iterator it = pParam->labels.begin();it!=pParam->labels.end();++it)

@@ -142,7 +142,7 @@ function createHtmlKnob(instance,param) {
 	// do we want a toggle button or a knob?
 	if ( Math.abs(Number(param.max) - Number(param.min)) == Number(param.step) )
 	{
-		var checked = param.defaultValue==param.min ? '': 'checked="checked"' ;
+		var checked = param.value==param.min ? '': 'checked="checked"' ;
 		html+='<fieldset class="toggle">';
 		html+='<input id="'+knobId+'" type="checkbox" '+checked+' ';
 		html+='onclick="setParam('+instance+',\''+param.name+'\',this.checked?'+param.max+':'+param.min+')"';
@@ -165,7 +165,7 @@ function createHtmlKnob(instance,param) {
 		html+='data-angleArc="250" ';
 		html+='data-min="'+param.min+'" ';
 		html+='data-max="'+param.max+'" ';
-		html+='value='+param.defaultValue+' ';
+		html+='value='+param.value+' ';
 		html+='/>';
 	}
 	
