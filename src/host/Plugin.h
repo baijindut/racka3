@@ -42,7 +42,7 @@ enum PluginType
 	PLUGIN_PROCESSOR=0,
 	PLUGIN_SPLITTER,
 	PLUGIN_SOURCE,
-	PLUGIN_COMBINER
+	PLUGIN_COLLECTOR
 };
 
 class Plugin {
@@ -58,6 +58,7 @@ public:
 	void panic();
 
 	char* getName();
+	PluginType getType();
 	int getVersion();
 
 	// called by host to set plugin parameters as per supplied json of format, eg:
@@ -90,11 +91,8 @@ public:
 	int getOutputBufferCount();
 	StereoBuffer* getOutputBuffer(int i);
 
-	int getDesiredSourceInstance();
-	void setDesiredSourceInstance(int instance);
-
-	int getDesiredSourceChannel();
-	void setDesiredSourceChannel(int channel);
+	void setFriend(int mate);
+	int getFriend();
 
 	void registerPlugin(int outputCount,
 						char* name,
@@ -136,6 +134,8 @@ private:
 
 	int _instance;
 	int _position;
+
+	int _friend;
 
 	PluginParam* _paramList;
 };

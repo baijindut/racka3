@@ -28,15 +28,17 @@ int PluginMixSplitter::process(StereoBuffer* input)
     int i;
 	float* inLeft = input->left;
 	float* inRight = input->right;
+
 	float* outLeftA = _outputBuffers[0]->left;
 	float* outRightA = _outputBuffers[0]->right;
+
 	float* outLeftB = _outputBuffers[1]->left;
 	float* outRightB = _outputBuffers[1]->right;
 
 	// special case for equal split
 	if (_nSplit==63)
 	{
-		for (i=0;i<input->length;input++)
+		for (i=0;i<input->length;i++)
 		{
 			outLeftA[i] = outLeftB[i] = (inLeft[i] * 0.5);
 			outRightA[i] = outRightB[i] = (inRight[i] * 0.5);
@@ -44,7 +46,7 @@ int PluginMixSplitter::process(StereoBuffer* input)
 	}
 	else
 	{
-		for (i=0;i<input->length;input++)
+		for (i=0;i<input->length;i++)
 		{
 			outLeftA[i] = inLeft[i] * _fA;
 			outRightA[i] = inRight[i] * _fA;

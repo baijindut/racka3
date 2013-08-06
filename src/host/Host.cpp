@@ -15,6 +15,8 @@
 #include "plugins/PluginBackingTrack.h"
 #include "plugins/PluginCompressor.h"
 #include "plugins/PluginMixSplitter.h"
+#include "plugins/PluginSource.h"
+#include "plugins/PluginCollector.h"
 
 #include <stdio.h>
 #include <algorithm>
@@ -111,14 +113,7 @@ int Host::process(const float *inputBuffer,
 			}
 			else
 			{
-				// the plugin has a preference as to where it wants to get its input from
-				int sourceInstance = plugin->getDesiredSourceInstance();
-				int sourceChannel = plugin->getDesiredSourceChannel();
-
-				if (sourceInstance == -1)
-					scopedBuffer.initWrapper(previousPlugin->getOutputBuffer(0));
-				else
-					scopedBuffer.initWrapper(getPluginFromInstance(sourceInstance)->getOutputBuffer(sourceChannel));
+				scopedBuffer.initWrapper(previousPlugin->getOutputBuffer(0));
 			}
 
 			// process
@@ -171,14 +166,50 @@ void Host::addPlugin(cJSON* json)
 				// add to the chain in the appropriate way
 				if (_plugins.size())
 				{
+					// move to the position in the chain
 					vector<Plugin*>::iterator it=_plugins.begin();
 					for (int i=0;i<before;i++)
 						it++;
-					_plugins.insert(it,plugin);
+
+					// is this a splitter?
+					if (plugin->getType()==PLUGIN_SPLITTER)
+					{
+						// add collector and source
+						Plugin* collector = new PluginCollector();
+						collector->setFriend(plugin->getInstance());
+						collector->setInstance(_nextInstance++);
+						Plugin* source = new PluginSource();
+						source->setFriend(plugin->getInstance());
+						source->setInstance(_nextInstance++);
+						plugin->setFriend(collector->getInstance());
+
+						Plugin* arr[3] = {plugin,source,collector};
+						_plugins.insert(it,arr,arr+3 );
+					}
+					else
+					{
+						_plugins.insert(it,plugin);
+					}
 				}
 				else
 				{
 					_plugins.push_back(plugin);
+
+					// is this a splitter?
+					if (plugin->getType()==PLUGIN_SPLITTER)
+					{
+						// add collector and source
+						Plugin* collector = new PluginCollector();
+						collector->setFriend(plugin->getInstance());
+						collector->setInstance(_nextInstance++);
+						Plugin* source = new PluginSource();
+						source->setFriend(plugin->getInstance());
+						source->setInstance(_nextInstance++);
+						plugin->setFriend(collector->getInstance());
+
+						_plugins.push_back(source);
+						_plugins.push_back(collector);
+					}
 				}
 
 				chainUnlock();
@@ -212,18 +243,32 @@ void Host::removePlugin(cJSON* json)
 		Plugin* plugin = getPluginFromInstance(jsonInstance->valueint);
 		if (plugin)
 		{
-			chainLock();
+			if (plugin->getType()==PLUGIN_PROCESSOR ||
+				plugin->getType()==PLUGIN_SPLITTER)
+			{
 
-			_plugins.erase(std::remove(_plugins.begin(), _plugins.end(), plugin),
-						   _plugins.end());
+				chainLock();
 
-			// put the plugin back into the pool
-			_pool.push_back(plugin);
+				if (plugin->getType()==PLUGIN_PROCESSOR)
+				{
+					_plugins.erase(std::remove(_plugins.begin(), _plugins.end(), plugin),
+								   _plugins.end());
 
-			// renumber plugins since we could very well have removed one in the middle
-			renumberPlugins();
+					// put the plugin back into the pool
+					_pool.push_back(plugin);
+				}
+				else if (plugin->getType()==PLUGIN_SPLITTER)
+				{
+					// todo: locate later collector plugin, and delete all inbetween
 
-			chainUnlock();
+				}
+
+				chainUnlock();
+			}
+			else
+			{
+				JSONERROR(json,"must delete splitter");
+			}
 		}
 		else
 		{
@@ -255,6 +300,8 @@ void Host::movePlugin(cJSON* json)
 
 		if (plugin)
 		{
+			// todo: prevent movement outside bounds if splitter combinor
+
 			chainLock();
 
 			if (from >=0 && from < _plugins.size() &&
@@ -384,12 +431,21 @@ Plugin* Host::createNewPlugin(char* name)
 		plugin = new PluginCompressor();
 	} else if (0==strcmp(name,"Mix Splitter")) {
 		plugin = new PluginMixSplitter();
+	} else if (0==strcmp(name,"Channel B")) {
+		plugin = new PluginSource();
+	} else if (0==strcmp(name,"Collector")) {
+		plugin = new PluginCollector();
 	}
 
 	if (plugin)
 	{
-		// all plugins must have a dry/wet mix
-		plugin->registerParam(PARAM_MIX,"Mix","Dry/Wet Mix","","Dry","Wet",0,127,1,127);
+		// processing plugins must have a dry/wet mix
+		if (plugin->getType()==PLUGIN_PROCESSOR)
+		{
+			plugin->registerParam(PARAM_MIX,"Mix","Dry/Wet Mix","","Dry","Wet",0,127,1,127);
+		}
+
+		//
 	}
 
 	return plugin;

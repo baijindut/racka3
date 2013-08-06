@@ -160,6 +160,7 @@ int Plugin::getPluginJson(cJSON* jsonObject) {
 	cJSON_AddItemToObject(jsonObject,"version",cJSON_CreateNumber(_version));
 	cJSON_AddItemToObject(jsonObject,"instance",cJSON_CreateNumber(_instance));
 	cJSON_AddItemToObject(jsonObject,"position",cJSON_CreateNumber(_position));
+	cJSON_AddItemToObject(jsonObject,"friend",cJSON_CreateNumber(_friend));
 
 	cJSON* paramArray = cJSON_CreateArray();
 	PluginParam* pParam = _paramList;
@@ -249,20 +250,19 @@ void Plugin::setMix(int mix)
 	_mix = mix < 0 ? 0 : mix > 127 ? 127 : mix;
 }
 
-int Plugin::getDesiredSourceInstance() {
-	return _desiredSourceInstance;
+void Plugin::setFriend(int mate)
+{
+	_friend = mate;
 }
 
-void Plugin::setDesiredSourceInstance(int instance) {
-	_desiredSourceInstance = instance;
+int Plugin::getFriend()
+{
+	return _friend;
 }
 
-int Plugin::getDesiredSourceChannel() {
-	return _desiredSourceChannel;
-}
-
-void Plugin::setDesiredSourceChannel(int channel) {
-	_desiredSourceChannel = channel;
+PluginType Plugin::getType()
+{
+	return _type;
 }
 
 PluginParam* Plugin::registerParam(int index,char* name,const char* labels[],int value)
