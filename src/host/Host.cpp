@@ -14,6 +14,7 @@
 #include "plugins/PluginNoiseGate.h"
 #include "plugins/PluginBackingTrack.h"
 #include "plugins/PluginCompressor.h"
+#include "plugins/PluginMixSplitter.h"
 
 #include <stdio.h>
 #include <algorithm>
@@ -32,6 +33,7 @@ Host::Host()
 	createPluginIfNeeded("Noise Gate",true);
 	createPluginIfNeeded("Backing Track",true);
 	createPluginIfNeeded("Compressor",true);
+	createPluginIfNeeded("Mix Splitter",true);
 	// TODO: add other plugins
 
 	// loop over pool and create all plugin json list
@@ -380,6 +382,8 @@ Plugin* Host::createNewPlugin(char* name)
 		plugin = new PluginBackingTrack();
 	} else if (0==strcmp(name,"Compressor")) {
 		plugin = new PluginCompressor();
+	} else if (0==strcmp(name,"Mix Splitter")) {
+		plugin = new PluginMixSplitter();
 	}
 
 	if (plugin)

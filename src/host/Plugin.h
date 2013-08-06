@@ -37,6 +37,14 @@ struct PluginParam
 	UT_hash_handle hh;
 };
 
+enum PluginType
+{
+	PLUGIN_PROCESSOR=0,
+	PLUGIN_SPLITTER,
+	PLUGIN_SOURCE,
+	PLUGIN_COMBINER
+};
+
 class Plugin {
 public:
 
@@ -114,6 +122,8 @@ protected:
 	virtual int getParam(int index)=0;
 
 protected:
+	PluginType _type;
+
 	vector<StereoBuffer*> _outputBuffers;
 	int _desiredSourceInstance;
 	int _desiredSourceChannel;

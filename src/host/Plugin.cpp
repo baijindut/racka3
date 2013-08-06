@@ -21,6 +21,7 @@ Plugin::Plugin() {
 	_desiredSourceChannel = 0;
 
 	_mix=127;
+	_type=PLUGIN_PROCESSOR;
 }
 
 Plugin::~Plugin() {

@@ -92,8 +92,9 @@ src/host/Host.o: src/host/Host.cpp src/host/Host.h \
  src/host/plugins/EffectLFO.h src/host/plugins/PluginNoiseGate.h \
  src/host/plugins/AnalogFilter.h src/host/plugins/Filter_.h \
  src/host/plugins/PluginBackingTrack.h \
- src/host/plugins/PluginCompressor.h /usr/include/libio.h \
- /usr/include/_G_config.h /usr/include/i386-linux-gnu/bits/stdio_lim.h \
+ src/host/plugins/PluginCompressor.h src/host/plugins/PluginMixSplitter.h \
+ src/host/Plugin.h /usr/include/libio.h /usr/include/_G_config.h \
+ /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
  /usr/include/i386-linux-gnu/bits/stdio2.h /usr/include/c++/4.6/algorithm \
  /usr/include/c++/4.6/utility /usr/include/c++/4.6/bits/stl_relops.h \
