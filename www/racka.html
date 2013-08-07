@@ -184,7 +184,14 @@ function createHtmlPlugin(pluginObject) {
 	
 	var html = "";
 
-	html+="<div class='plugin' id='plugin"+pluginObject.instance+"'>";
+	if (pluginObject.name == "Mix Splitter" ||
+		pluginObject.name == "Collector" ||
+		pluginObject.name == "Channel B")
+	{
+		html+="<div class='plugin' style='background-color:#ffdede;' id='plugin"+pluginObject.instance+"'>";
+	} else {
+		html+="<div class='plugin' id='plugin"+pluginObject.instance+"'>";
+	}
 	
 	html+='<a href="javascript:removePlugin('+pluginObject.instance+');">[x]</a>&nbsp;';
 	html+='<a href="javascript:movePlugin('+pluginObject.instance+','+(pluginObject.position-1)+');">[up]</a>&nbsp;';
