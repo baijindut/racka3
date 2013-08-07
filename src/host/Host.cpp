@@ -325,12 +325,26 @@ void Host::movePlugin(cJSON* json)
 				maxPos = _plugins.size();
 				break;
 			case PLUGIN_SPLITTER:	// cannot move below its  associated channel b
-
+			{
+				Plugin* source = findPluginFromFriendAndType(plugin->getInstance(),PLUGIN_SOURCE);
+				maxPos = source->getPosition()-1;
 				break;
-			case PLUGIN_SOURCE:
+			}
+			case PLUGIN_SOURCE:	// cannot move above splitter or below collector
+			{
+				Plugin* splitter = getPluginFromInstance(plugin->getFriend());
+				Plugin* collector = getPluginFromInstance(splitter->getFriend());
+				minPos = splitter->getPosition()+1;
+				maxPos = collector->getPosition()-1;
 				break;
-			case PLUGIN_COLLECTOR:
+			}
+			case PLUGIN_COLLECTOR: // cannot move above channelB
+			{
+				Plugin* source = findPluginFromFriendAndType(plugin->getFriend(),PLUGIN_SOURCE);
+				minPos= source->getPosition()+1;
+				maxPos = _plugins.size();
 				break;
+			}
 			default:
 				break;
 			}
@@ -533,5 +547,18 @@ void Host::chainUnlock()
 
 	renumberPlugins();
 	pthread_mutex_unlock(&_chainSpinner);
+}
 
+Plugin* Host::findPluginFromFriendAndType(int friendInstance,PluginType type)
+{
+	for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
+	{
+		Plugin* plugin = *it;
+		if (plugin->getFriend() == friendInstance &&
+			plugin->getType() == type)
+		{
+			return plugin;
+		}
+	}
+	return 0;
 }

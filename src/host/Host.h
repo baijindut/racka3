@@ -47,6 +47,8 @@ private:
 	// get plugin by instance number
 	Plugin* getPluginFromInstance(int instance);
 
+	Plugin* findPluginFromFriendAndType(int friendInstance,PluginType type);
+
 	// give all plugins their correct position value
 	void renumberPlugins();
 
