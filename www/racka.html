@@ -39,6 +39,7 @@ span.paramName
 </style>
 <script src="jquery-1.10.2.min.js"></script>
 <script src="jquery.knob.js"></script>
+<script src="jquery.sortable.min.js"></script>
 <script>
 JSON.stringify = JSON.stringify || function (obj) {
     var t = typeof (obj);
@@ -125,7 +126,10 @@ function refreshRack() {
 					var id=this.$.context.id.split("|");
 					setParam(Number(id[0]),id[1],value);
 				}
-			});	
+			});
+			
+			// http://farhadi.ir/projects/html5sortable/
+    		$('.sortable').sortable();
 		});
 	});
 }
