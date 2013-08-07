@@ -259,15 +259,29 @@ void Host::removePlugin(cJSON* json)
 				}
 				else if (plugin->getType()==PLUGIN_SPLITTER)
 				{
-					// todo: locate later collector plugin, and delete all inbetween
+					int startPos = plugin->getPosition();
+					int endPos = getPluginFromInstance(plugin->getFriend())->getPosition();
 
+					// delete / move plugins to pool
+					for (int i=startPos;i<=endPos;i++)
+					{
+						Plugin* remove = _plugins[i];
+						if (remove->getType()==PLUGIN_PROCESSOR ||
+							remove->getType()==PLUGIN_SPLITTER)
+							_pool.push_back(remove);
+						else
+							delete remove;
+					}
+
+					// erase entries from chain
+					_plugins.erase(_plugins.begin()+startPos,_plugins.begin()+endPos+1);
 				}
 
 				chainUnlock();
 			}
 			else
 			{
-				JSONERROR(json,"must delete splitter");
+				JSONERROR(json,"must delete parent splitter");
 			}
 		}
 		else
@@ -300,22 +314,48 @@ void Host::movePlugin(cJSON* json)
 
 		if (plugin)
 		{
-			// todo: prevent movement outside bounds if splitter combinor
+			int minPos=0;
+			int maxPos=0;
 
-			chainLock();
-
-			if (from >=0 && from < _plugins.size() &&
-				to >=0 && to < _plugins.size() &&
-				from!=to && _plugins.size()>=2)
+			// enforce bounds
+			switch (plugin->getType())
 			{
-				Plugin* a = _plugins[from];
-				Plugin* b = _plugins[to];
+			case PLUGIN_PROCESSOR:	// can move anywhere
+				minPos = 0;
+				maxPos = _plugins.size();
+				break;
+			case PLUGIN_SPLITTER:	// cannot move below its  associated channel b
 
-				_plugins[to] = a;
-				_plugins[from] = b;
+				break;
+			case PLUGIN_SOURCE:
+				break;
+			case PLUGIN_COLLECTOR:
+				break;
+			default:
+				break;
 			}
 
-			chainUnlock();
+			if (to >= minPos && to <= maxPos)
+			{
+				chainLock();
+
+				if (from >=0 && from < _plugins.size() &&
+					to >=0 && to < _plugins.size() &&
+					from!=to && _plugins.size()>=2)
+				{
+					Plugin* a = _plugins[from];
+					Plugin* b = _plugins[to];
+
+					_plugins[to] = a;
+					_plugins[from] = b;
+				}
+
+				chainUnlock();
+			}
+			else
+			{
+				JSONERROR(json,"attempting to move OOB");
+			}
 		}
 		else
 		{
@@ -359,7 +399,7 @@ void Host::renumberPlugins()
 	}
 
 	/// debug
-	/*
+
 	printf("------------\n");
 	printf("%d in pool, %d in chain\n",_pool.size(),_plugins.size());
 	position=0;
@@ -370,7 +410,7 @@ void Host::renumberPlugins()
 	position=0;
 	for(it=_pool.begin(); it!=_pool.end();++it)
 		printf("pool %d: %s\n",position++,(*it)->getName());
-	*/
+
 
 }
 
