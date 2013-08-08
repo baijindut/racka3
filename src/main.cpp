@@ -35,14 +35,30 @@ static int gNumNoInputs = 0;
 ** It may be called at interrupt level on some machines so don't do anything
 ** that could mess up the system like calling malloc() or free().
 */
+float* spareRightBuffer=0;
+
 static int processCallback( const void *inputBuffer, void *outputBuffer,
                          unsigned long framesPerBuffer,
                          const PaStreamCallbackTimeInfo* timeInfo,
                          PaStreamCallbackFlags statusFlags,
                          void *userData )
 {
-    float *inLeft = ((float **) inputBuffer)[0];
-    float *inRight = ((float **) inputBuffer)[1];
+	float *inLeft,*inRight;
+
+	if (!spareRightBuffer) // <-- implies we are in stereo mode
+	{
+		inLeft = ((float **) inputBuffer)[0];
+    	inRight = ((float **) inputBuffer)[1];
+	}
+	else // we are in mono mode.
+	{
+		inLeft = ((float**)inputBuffer)[0];
+		inRight = spareRightBuffer;
+
+    	for (int t=0;t<framesPerBuffer;t++)
+    		inRight[t]=inLeft[t];
+	}
+
     float *outLeft = ((float **) outputBuffer)[0];
     float *outRight = ((float **) outputBuffer)[1];
 
@@ -53,6 +69,7 @@ static int processCallback( const void *inputBuffer, void *outputBuffer,
 
     if( inputBuffer == NULL )
     {
+
         for( i=0; i<framesPerBuffer; i++ )
         {
             *outLeft++ = 0;  /* left - silent */
@@ -96,8 +113,7 @@ static int processCallback( const void *inputBuffer, void *outputBuffer,
     		}
 
     		// processing here
-    		return data->host.process((const float*)inputBuffer,
-    									(float*)outputBuffer,
+    		return data->host.process(inLeft,inRight,outLeft,outRight,
     									framesPerBuffer,
     									timeInfo,
     									statusFlags);
@@ -230,7 +246,31 @@ int main(int argc,char* argv[])
               paClipOff,
               processCallback,
               &data );
-    if( err != paNoError ) goto error;
+    if( err != paNoError )
+    {
+    	printf("trying again with mono input...\n");
+
+    	inputParameters.channelCount = 1;
+        err = Pa_OpenStream(
+                  &stream,
+                  &inputParameters,
+                  &outputParameters,
+                  SAMPLE_RATE,
+                  FRAMES_PER_BUFFER,
+                  paClipOff,
+                  processCallback,
+                  &data );
+
+        if( err != paNoError )
+        {
+        	goto error;
+        }
+        else
+        {
+        	spareRightBuffer = (float*)malloc(sizeof(float)*FRAMES_PER_BUFFER);
+        	memset(spareRightBuffer,0,sizeof(float)*FRAMES_PER_BUFFER);
+        }
+    }
 
     printf("pause for effect...\n");
     sleep(2);
@@ -246,6 +286,9 @@ int main(int argc,char* argv[])
     printf("Finished. gNumNoInputs = %d\n", gNumNoInputs );
     Pa_Terminate();
     server.stop();
+
+    if (spareRightBuffer)
+    	free(spareRightBuffer);
     return 0;
 
 error:

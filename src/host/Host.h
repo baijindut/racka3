@@ -20,8 +20,7 @@ public:
 	Host();
 	virtual ~Host();
 
-	int process(const float *inputBuffer,
-				 float *outputBuffer,
+	int process(float* inLeft,float* inRight,float* outLeft,float* outRight,
                  unsigned long framesPerBuffer,
                  const PaStreamCallbackTimeInfo* timeInfo,
                  PaStreamCallbackFlags statusFlags);

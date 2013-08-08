@@ -66,18 +66,12 @@ Host::~Host()
 	cJSON_Delete(_jsonAllPlugins);
 }
 
-int Host::process(const float *inputBuffer,
-			 float *outputBuffer,
+int Host::process(float* inLeft,float* inRight,float* outLeft,float* outRight,
              unsigned long framesPerBuffer,
              const PaStreamCallbackTimeInfo* timeInfo,
              PaStreamCallbackFlags statusFlags)
 {
 	int i;
-
-	float *inLeft = ((float **) inputBuffer)[0];
-	float *inRight = ((float **) inputBuffer)[1];
-	float *outLeft = ((float **) outputBuffer)[0];
-	float *outRight = ((float **) outputBuffer)[1];
 
 	// if we cannot get the lock, someone is someone doing a chain-related action.
 	if (pthread_mutex_trylock(&_chainSpinner) !=0 )
