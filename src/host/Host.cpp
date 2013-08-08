@@ -110,7 +110,7 @@ int Host::process(float* inLeft,float* inRight,float* outLeft,float* outRight,
 				scopedBuffer.initWrapper(previousPlugin->getOutputBuffer(0));
 			}
 
-			// process
+			// make the plugin process whatever input
 			plugin->master(&scopedBuffer);
 
 			finalOutput.initWrapper(plugin->getOutputBuffer(0));
