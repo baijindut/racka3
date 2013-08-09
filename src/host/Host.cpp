@@ -29,21 +29,22 @@ Host::Host()
 	Plugin* plugin;
 	_nextInstance=0;
 
-	// add all the plugins to the pool
-	createPluginIfNeeded("Echoverse",true);
-	createPluginIfNeeded("Chorus",true);
-	createPluginIfNeeded("Noise Gate",true);
-	createPluginIfNeeded("Backing Track",true);
-	createPluginIfNeeded("Compressor",true);
-	createPluginIfNeeded("Mix Splitter",true);
-	// TODO: add other plugins
+	// add names of all plugins to list
+	_pluginNames.push_back("Echoverse");
+	_pluginNames.push_back("Chorus");
+	_pluginNames.push_back("Noise Gate");
+	_pluginNames.push_back("Backing Track");
+	_pluginNames.push_back("Compressor");
+	_pluginNames.push_back("Mix Splitter");
 
-	// loop over pool and create all plugin json list
+	// loop over all names and create all plugin json list
 	_jsonAllPlugins = cJSON_CreateArray();
-	for(vector<Plugin*>::iterator it=_pool.begin(); it!=_pool.end();++it)
+	for(vector<string>::iterator it=_pluginNames.begin(); it!=_pluginNames.end();++it)
 	{
 		cJSON* jsonObject = cJSON_CreateObject();
-		(*it)->getPluginJson(jsonObject);
+		Plugin* plugin = createNewPlugin(*it);
+		plugin->getPluginJson(jsonObject);
+		delete plugin;
 		cJSON_AddItemToArray(_jsonAllPlugins,jsonObject);
 	}
 
@@ -58,9 +59,6 @@ Host::~Host()
 	vector<Plugin*>::iterator it;
 
 	for(it=_plugins.begin(); it!=_plugins.end();++it)
-		delete *it;
-
-	for(it=_pool.begin(); it!=_pool.end();++it)
 		delete *it;
 
 	cJSON_Delete(_jsonAllPlugins);
@@ -178,7 +176,7 @@ void Host::addPlugin(cJSON* json)
 		if ( (_plugins.size()==0 && before == 0) || (before < _plugins.size() && before >= 0))
 		{
 			// create the instance
-			Plugin* plugin = createPluginIfNeeded(name);
+			Plugin* plugin = createNewPlugin(string(name));
 			if (plugin)
 			{
 				plugin->setInstance(_nextInstance++);
@@ -276,8 +274,7 @@ void Host::removePlugin(cJSON* json)
 					_plugins.erase(std::remove(_plugins.begin(), _plugins.end(), plugin),
 								   _plugins.end());
 
-					// put the plugin back into the pool
-					_pool.push_back(plugin);
+					delete plugin;
 				}
 				else if (plugin->getType()==PLUGIN_SPLITTER)
 				{
@@ -288,11 +285,7 @@ void Host::removePlugin(cJSON* json)
 					for (int i=startPos;i<=endPos;i++)
 					{
 						Plugin* remove = _plugins[i];
-						if (remove->getType()==PLUGIN_PROCESSOR ||
-							remove->getType()==PLUGIN_SPLITTER)
-							_pool.push_back(remove);
-						else
-							delete remove;
+						delete remove;
 					}
 
 					// erase entries from chain
@@ -435,19 +428,13 @@ void Host::renumberPlugins()
 	}
 
 	/// debug
-
+	/*
 	printf("------------\n");
 	printf("%d in pool, %d in chain\n",_pool.size(),_plugins.size());
 	position=0;
 	for(it=_plugins.begin(); it!=_plugins.end();++it)
 		printf("chain %d: %s\n",position++,(*it)->getName());
-
-	printf("\n");
-	position=0;
-	for(it=_pool.begin(); it!=_pool.end();++it)
-		printf("pool %d: %s\n",position++,(*it)->getName());
-
-
+	 */
 }
 
 Plugin* Host::getPluginFromInstance(int instance)
@@ -491,25 +478,25 @@ void Host::setPluginParam(cJSON* json)
 	}
 }
 
-Plugin* Host::createNewPlugin(char* name)
+Plugin* Host::createNewPlugin(string name)
 {
 	Plugin* plugin =0;
 
-	if (0==strcmp(name,"Echoverse")) {
+	if (name == "Echoverse") {
 		plugin = new PluginRBEcho();
-	} else if (0==strcmp(name,"Chorus")) {
+	} else if (name=="Chorus") {
 		plugin = new PluginChorus();
-	} else if (0==strcmp(name,"Noise Gate")) {
+	} else if (name=="Noise Gate") {
 		plugin = new PluginNoiseGate();
-	} else if (0==strcmp(name,"Backing Track")) {
+	} else if (name=="Backing Track") {
 		plugin = new PluginBackingTrack();
-	} else if (0==strcmp(name,"Compressor")) {
+	} else if (name=="Compressor") {
 		plugin = new PluginCompressor();
-	} else if (0==strcmp(name,"Mix Splitter")) {
+	} else if (name=="Mix Splitter") {
 		plugin = new PluginMixSplitter();
-	} else if (0==strcmp(name,"Channel B")) {
+	} else if (name=="Channel B") {
 		plugin = new PluginSource();
-	} else if (0==strcmp(name,"Collector")) {
+	} else if (name=="Collector") {
 		plugin = new PluginCollector();
 	}
 
@@ -522,36 +509,6 @@ Plugin* Host::createNewPlugin(char* name)
 		}
 
 		//
-	}
-
-	return plugin;
-}
-
-Plugin* Host::createPluginIfNeeded(char* name,bool addToPoolImmediately)
-{
-	Plugin* plugin=0;
-	vector<Plugin*>::iterator it;
-
-	// look in pool
-	for(it=_pool.begin(); it!=_pool.end();++it)
-	{
-		if (0==strcmp(name,(*it)->getName()))
-		{
-			plugin = *it;
-			_pool.erase(it);
-			break;
-		}
-	}
-
-	// if not found in pool
-	if (!plugin)
-	{
-		plugin = createNewPlugin(name);
-		plugin->panic();
-		if (addToPoolImmediately && plugin)
-		{
-			_pool.push_back(plugin);
-		}
 	}
 
 	return plugin;

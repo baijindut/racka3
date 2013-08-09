@@ -37,11 +37,8 @@ public:
 
 private:
 
-	// create a plugin from its name (unless there is one available in the pool, in which case you get it, and it is removed
-	Plugin* createPluginIfNeeded(char* name,bool addToPoolImmediately=false);
-
-	// definately create a new plugin instance
-	Plugin* createNewPlugin(char* name);
+	// create a new plugin instance
+	Plugin* createNewPlugin(string name);
 
 	// get plugin by instance number
 	Plugin* getPluginFromInstance(int instance);
@@ -52,7 +49,7 @@ private:
 	void renumberPlugins();
 
 	// pool of spare plugins
-	vector <Plugin*> _pool;
+	vector <string> _pluginNames;
 
 	// the plugins in the chain
 	vector <Plugin*> _plugins;
