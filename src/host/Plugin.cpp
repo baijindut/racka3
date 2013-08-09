@@ -365,6 +365,27 @@ int Plugin::master(StereoBuffer* input)
 	return paContinue;
 }
 
+int Plugin::master(StereoBuffer* inputA,StereoBuffer* inputB)
+{
+	// perform simple mix
+	float* inLeftA = inputA->left;
+	float* inRightA = inputA->right;
+	float* inLeftB = inputB->left;
+	float* inRightB = inputB->right;
+	float* outLeft = _outputBuffers[0]->left;
+	float* outRight = _outputBuffers[0]->right;
+
+	int len = _outputBuffers[0]->length;
+
+	for (int i=0;i<len;i++)
+	{
+		outLeft[i] = inLeftA[i] + inLeftB[i];
+		outRight[i] = inRightA[i] + inRightB[i];
+	}
+
+	return paContinue;
+}
+
 void Plugin::panic()
 {
 	for (int b=0;b<_outputBuffers.size();b++)

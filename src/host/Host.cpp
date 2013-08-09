@@ -90,32 +90,60 @@ int Host::process(float* inLeft,float* inRight,float* outLeft,float* outRight,
 		// process all plugins
 		Plugin* plugin = 0;
 		Plugin* previousPlugin = 0;
-		bool bFirst = true;
+
+		// loop over plugins
 		for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
 		{
-			StereoBuffer scopedBuffer;
+			// this will hold the buffer to input to the current plugin
+			StereoBuffer inputBuffer;
 
 			// get pointer to this plugin
 			plugin = *it;
 
-			// determine where it wants to get its source audio from
-			if (bFirst)
+			// 1. determine where it wants to get its source audio from
+			if (plugin->getPosition()==0)
 			{
 				// if its the first plugin, it has to get its audio from the input
-				scopedBuffer.initWrapper(inLeft,inRight,framesPerBuffer);
-				bFirst = false;
+				inputBuffer.initWrapper(inLeft,inRight,framesPerBuffer);
 			}
 			else
 			{
-				scopedBuffer.initWrapper(previousPlugin->getOutputBuffer(0));
+				// most plugins just get audio from the previous plugin...
+				if (previousPlugin->getType() != PLUGIN_SOURCE)
+				{
+					// .. get output buffer of previous plugin
+					inputBuffer.initWrapper(previousPlugin->getOutputBuffer(0));
+				}
+				else // EXCEPT if the previous plugin is a CHANNEL B (source) plugin.
+				{
+					// get channel B buffer from associated splitter
+					Plugin* splitter = getPluginFromInstance(previousPlugin->getFriend());
+					inputBuffer.initWrapper(splitter->getOutputBuffer(1));
+				}
 			}
 
-			// make the plugin process whatever input
-			plugin->master(&scopedBuffer);
+			// 2. processing.
+			// Most plugins operate on one stereo buffer
+			if (plugin->getType()!=PLUGIN_COLLECTOR)
+			{
+				// process the input buffer
+				plugin->master(&inputBuffer);
+			}
+			else
+			{
+				// collector must get the channel B and A and do a mix.
+				// channel B is easy; it is just the output of the previous plugin.
+				// channel A is the output of the plugin just before the Source plugin
+				// (which is effectively the channel A collector.)
+				StereoBuffer* channelABuffer;
+				Plugin* source = findPluginFromFriendAndType(plugin->getFriend(),PLUGIN_SOURCE);
+				Plugin* before = _plugins[source->getPosition()-1];
 
+				plugin->master(before->getOutputBuffer(0),&inputBuffer);
+			}
+
+			// store the output of the last plugin we process and remember last plugin
 			finalOutput.initWrapper(plugin->getOutputBuffer(0));
-
-			// remember last plugin
 			previousPlugin = plugin;
 		}
 

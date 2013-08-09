@@ -21,7 +21,7 @@ PluginCollector::~PluginCollector()
 
 int PluginCollector::process(StereoBuffer* input)
 {
-	// should never be called
+	// should never be called.)
 	return paContinue;
 }
 

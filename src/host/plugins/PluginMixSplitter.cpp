@@ -70,8 +70,8 @@ void PluginMixSplitter::setParam(int npar, int value)
 	{
 	case 1:
 		_nSplit = value <= 0 ? 0 : value > 127 ? 127 : value;
-		_fA = _nSplit / 127.0;
-		_fB = 1 - _fA;
+		_fB = _nSplit / 127.0;
+		_fA = 1 - _fB;
 		break;
 	default:
 		break;
