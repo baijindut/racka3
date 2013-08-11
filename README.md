@@ -43,4 +43,6 @@ Rakkarack
 cJSON library
 UTHASH
 Mongoose webserver
+JQuery Knob - Anthony Terrien - http://anthonyterrien.com/knob/
+HTML5 sotable  - Ali Farhadi- http://farhadi.ir/projects/html5sortable/
 

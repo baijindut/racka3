@@ -2,11 +2,63 @@
 <head>
 <LINK href="toggle.css" rel="stylesheet" type="text/css">
 <style>
+ul, li
+{
+	list-style-type: none;
+
+}
+.icon
+{
+	color: #ffa500;
+	text-decoration: none;
+	font-size: 22px;
+}
+div.pluginHolder
+{
+	position: relative;
+	outline-style:solid;
+	margin: 3px;
+	background-color: #000000;
+	width: 750px;
+}
+div.gripper
+{
+	border-color: #ffa500;
+	border-top-style: none;
+	border-right-style: solid;
+	border-bottom-style: none;
+	border-left-style: solid;
+	position: absolute;
+	top: 4px;
+	bottom: 4px;
+	left: 4px;
+	border-width: 2px;
+}
+div.pluginHandle
+{
+	background-color: #000000;
+	float: left;
+	width: 20px;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+
+}
+div.pluginBar
+{
+	background-color: #000000;
+	float: right;
+	width: 20px;
+	text-align: center;
+}
 div.plugin
 {
-	outline-style:solid;
-	background-color:#eeeeff;
+	background-color: #000000;
 	margin: 3px;
+	float: left;
+	width:700px;
+	padding-left: 24px;
 }
 div.palette
 {
@@ -111,14 +163,14 @@ function refreshRack() {
 	}).done( function(json) {
 		console.log("loaded "+json.plugins.length+" plugins for rack");
 		
-		$(".rack").empty();
+		$("#rack").empty();
 		
 		json.plugins.forEach(function(plugin) {
 
 			var html = createHtmlPlugin(plugin);
 			
 			// insert at correct place in rack
-			$(".rack").append(html);
+			$("#rack").append(html);
 			
 			// knob render update
 			$(".knob").knob({
@@ -128,8 +180,14 @@ function refreshRack() {
 				}
 			});
 			
-			// http://farhadi.ir/projects/html5sortable/
-    		$('.sortable').sortable();
+			// update the sortables
+    		$('.sortable').sortable({
+				handle: '.pluginHandle'
+			});
+			$('.sortable').sortable().bind('sortupdate', function() {
+		    	// todo: get position and whatnot, to perform the actual move	    	
+			});
+			
 		});
 	});
 }
@@ -186,8 +244,16 @@ function createHtmlPlugin(pluginObject) {
 		return null;
 	}
 	
-	var html = "";
-
+	var position = pluginObject.position;
+	var instance = pluginObject.instance;
+	
+	var html = "<li><div class='pluginHolder'>";
+	
+	// 1. handle (left)
+	html+="<div class='pluginHandle'>";
+	html+='<div class="gripper">&nbsp;</div>';
+	html+="</div>";
+	
 	if (pluginObject.name == "Mix Splitter" ||
 		pluginObject.name == "Collector" ||
 		pluginObject.name == "Channel B")
@@ -196,11 +262,7 @@ function createHtmlPlugin(pluginObject) {
 	} else {
 		html+="<div class='plugin' id='plugin"+pluginObject.instance+"'>";
 	}
-	
-	html+='<a href="javascript:removePlugin('+pluginObject.instance+');">[x]</a>&nbsp;';
-	html+='<a href="javascript:movePlugin('+pluginObject.instance+','+(pluginObject.position-1)+');">[up]</a>&nbsp;';
-	html+='<a href="javascript:movePlugin('+pluginObject.instance+','+(pluginObject.position+1)+');">[down]</a>&nbsp;';
-	
+		
 	html+="<span class='pluginName'>instance "+pluginObject.instance+", original pos "+pluginObject.position+"</span>";
 	html+="<span class='pluginName'>"+pluginObject.name+"</span>";
 	html+="<span class='pluginDescription'>"+pluginObject.description+"</span>";
@@ -209,8 +271,18 @@ function createHtmlPlugin(pluginObject) {
 		html+=createHtmlKnob(pluginObject.instance,param);
 	});
 	
-	html+='<br style="clear: left;" />';
+	html+='<br style="clear: left;"/>';
 	html+="</div>";
+	
+	// 3. controls bar (right)
+	html+="<div class='pluginBar'>";
+	html+='<a class="icon" href="javascript:removePlugin('+instance+');">&#10799;</a></br/>';
+	html+='<a class="icon" href="javascript:movePlugin('+instance+','+(position-1)+');">&#11014;</a><br/>';
+	html+='<a class="icon" href="javascript:movePlugin('+instance+','+(position+1)+');">&#11015;</a><br/>';
+	html+="</div>";
+	
+	
+	html+="<br style='clear: left;'/></div></li>";
 	
 	return html;
 }
@@ -299,12 +371,12 @@ function addPlugin(pluginName,chainPosition) {
 <title>Racka3</title>
 </head>
 
-<body>
+<body text="white">
 <h1>Racka3</h1>
 
 <div class="palette"></div>
 
-<div class="rack" id="rack"></div>
+<ul class="sortable" id="rack"></ul>
 
 </body>
 </html>
