@@ -5,7 +5,6 @@
 ul, li
 {
 	list-style-type: none;
-
 }
 .icon
 {
@@ -76,7 +75,6 @@ span.pluginDescription
 {
 	display: block;
 }
-
 div.knobHolder
 {
 	background-color:#ffffff;
@@ -87,6 +85,18 @@ div.knobHolder
 span.paramName
 {
 	display:block;
+}
+.sortable-dragging
+{
+	
+}
+.sortable-placeholder
+{
+	outline-style: dotted;
+	border: 2px;
+	background-color: #ffffff;
+	border-color: #000000;
+	height: 150px;
 }
 </style>
 <script src="jquery-1.10.2.min.js"></script>
@@ -184,10 +194,12 @@ function refreshRack() {
     		$('.sortable').sortable({
 				handle: '.pluginHandle'
 			});
-			$('.sortable').sortable().bind('sortupdate', function() {
-		    	// todo: get position and whatnot, to perform the actual move	    	
-			});
-			
+			$('.sortable').sortable().unbind();
+			$('.sortable').sortable().bind('sortupdate', function(e,ui) { 				
+   				var instance = ui.item[0].id;
+   				var newPos = ui.item.parent().children('li').index(ui.item);
+   				movePlugin(instance,newPos);
+			});			
 		});
 	});
 }
@@ -247,7 +259,7 @@ function createHtmlPlugin(pluginObject) {
 	var position = pluginObject.position;
 	var instance = pluginObject.instance;
 	
-	var html = "<li><div class='pluginHolder'>";
+	var html = "<li id='"+instance+"'><div class='pluginHolder'>";
 	
 	// 1. handle (left)
 	html+="<div class='pluginHandle'>";
@@ -307,7 +319,9 @@ function setParam(pluginInstance,paramName,paramValue) {
 
 function movePlugin(pluginInstance,newPosition)
 {
-	var json = {"instance": pluginInstance, "position":newPosition};
+	console.log("moving plugin, instance "+pluginInstance+" new pos = "+newPosition);
+	
+	var json = {"instance": Number(pluginInstance), "position":Number(newPosition)};
 	
 	$.ajax({
 		type: "POST",
@@ -320,10 +334,10 @@ function movePlugin(pluginInstance,newPosition)
 		} else {
 			//console.log("removed "+pluginInstance);
 			//$("#plugin"+pluginInstance).remove();
-			refreshRack();
 		}
 	});	
 	
+	refreshRack();
 }
 
 function removePlugin(pluginInstance) {
