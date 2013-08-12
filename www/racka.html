@@ -44,19 +44,12 @@ div.pluginHandle
 	left: 0px;
 
 }
-div.pluginBar
-{
-	background-color: #000000;
-	float: right;
-	width: 20px;
-	text-align: center;
-}
 div.plugin
 {
 	background-color: #000000;
 	margin: 3px;
 	float: left;
-	width:700px;
+	width:720px;
 	padding-left: 24px;
 }
 div.palette
@@ -69,22 +62,34 @@ div.rack
 }
 span.pluginName
 {
-	display: block;
+	font-family: sans-serif;
+	font-size: 16px;
+	font-weight: bolder;
+	color: #ffa500;
+	float:left;
 }
-span.pluginDescription
+div.pluginTitleBar
 {
-	display: block;
+	float: left;
+}
+div.pluginIconBar
+{
+	float: right;
 }
 div.knobHolder
 {
-	background-color:#ffffff;
-	outline-style:solid;
 	float: left;
-	margin:2px;
+	padding: 4px;
 }
 span.paramName
 {
 	display:block;
+	padding-bottom: 4px;
+	font-family: sans-serif;
+	font-size: 10px;
+	font-weight: bold;
+	color: #ffffff;
+	text-align: center;
 }
 .sortable-dragging
 {
@@ -217,23 +222,19 @@ function createHtmlKnob(instance,param) {
 	if ( Math.abs(Number(param.max) - Number(param.min)) == Number(param.step) )
 	{
 		var checked = param.value==param.min ? '': 'checked="checked"' ;
-		html+='<fieldset class="toggle">';
+		html+='<span class="paramName">'+param.name.toLowerCase()+'</span>';
 		html+='<input id="'+knobId+'" type="checkbox" '+checked+' ';
 		html+='onclick="setParam('+instance+',\''+param.name+'\',this.checked?'+param.max+':'+param.min+')"';
 		html+='/>';
-		html+='<label for="'+knobId+'">';
-		html+='<div class="toggle-button"><div class="toggle-tab"></div></div>';
-		html+=param.name;
-		html+='</label>';
-		html+='</fieldset>';
 	} else { 
-		html+='<span class="paramName">'+param.name+'</span>';
+		html+='<span class="paramName">'+param.name.toLowerCase()+'</span>';
 		html+='<input class="knob" id="'+knobId+'" '; 
 		html+='data-width="48" ';
 		html+='data-height="48" ';
 		html+='data-cursor="true" ';
 		html+='data-thickness="0.3" ';
-		html+='data-fgColor="#222222" ';
+		html+='data-fgColor="#ffa500" ';
+		html+='data-bgColor="#404040" ';
 		html+='data-step="'+param.step+'" ';
 		html+='data-angleOffset="-125" ';
 		html+='data-angleArc="250" ';
@@ -270,29 +271,34 @@ function createHtmlPlugin(pluginObject) {
 		pluginObject.name == "Collector" ||
 		pluginObject.name == "Channel B")
 	{
-		html+="<div class='plugin' style='background-color:#ffdede;' id='plugin"+pluginObject.instance+"'>";
+		html+="<div class='plugin' id='plugin"+pluginObject.instance+"'>";
 	} else {
 		html+="<div class='plugin' id='plugin"+pluginObject.instance+"'>";
 	}
 		
-	html+="<span class='pluginName'>instance "+pluginObject.instance+", original pos "+pluginObject.position+"</span>";
-	html+="<span class='pluginName'>"+pluginObject.name+"</span>";
-	html+="<span class='pluginDescription'>"+pluginObject.description+"</span>";
+	// 2. title bar
+	html+="<div class='pluginBar'>";
 	
+	html+="<div class='pluginTitleBar'>";
+	html+="<span class='pluginName'>"+pluginObject.name+"</span>";
+	html+="</div>";
+	
+	html+="<div class='pluginIconBar'>";
+	html+='<a class="icon" href="javascript:movePlugin('+instance+','+(position-1)+');">&#11014;</a>';
+	html+='<a class="icon" href="javascript:movePlugin('+instance+','+(position+1)+');">&#11015;</a>';
+	html+='<a class="icon" href="javascript:removePlugin('+instance+');">&#10799;</a>';
+	html+="</div>";
+	
+	html+='<br style="clear: both;"/>';
+	html+="</div>";
+	
+	// 3. add the controls
 	pluginObject.params.forEach(function(param) {
 		html+=createHtmlKnob(pluginObject.instance,param);
 	});
 	
 	html+='<br style="clear: left;"/>';
 	html+="</div>";
-	
-	// 3. controls bar (right)
-	html+="<div class='pluginBar'>";
-	html+='<a class="icon" href="javascript:removePlugin('+instance+');">&#10799;</a></br/>';
-	html+='<a class="icon" href="javascript:movePlugin('+instance+','+(position-1)+');">&#11014;</a><br/>';
-	html+='<a class="icon" href="javascript:movePlugin('+instance+','+(position+1)+');">&#11015;</a><br/>';
-	html+="</div>";
-	
 	
 	html+="<br style='clear: left;'/></div></li>";
 	
