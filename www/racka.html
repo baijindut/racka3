@@ -54,7 +54,7 @@ div.plugin
 }
 div.palette
 {
-	display:block;
+	
 }
 div.rack
 {
@@ -148,7 +148,7 @@ $(document).ready(function() {
 	// create the 'palette' by which we add plugins to the chain
 	var html="";
 	_allPlugins.forEach(function(plugin) {
-		html+='<input type="button" value="+ '+plugin.name+'" onclick=\'addPlugin("'+plugin.name+'",0)\'/>';
+		html+='<input type="button" value="+ '+plugin.name+'" onclick=\'addPlugin("'+plugin.name+'",0)\'/><br/>';
 	});
 	
 	$(".palette").html(html);
@@ -390,13 +390,16 @@ function addPlugin(pluginName,chainPosition) {
 </script>
 <title>Racka3</title>
 </head>
-
 <body text="white">
-<h1>Racka3</h1>
 
-<div class="palette"></div>
-
-<ul class="sortable" id="rack"></ul>
-
+	<div class="layoutMaster" style="width:1000px">
+		<div class="palette" style="float: left; width=250px;">
+			&nbsp;
+		</div>
+		<div class="layoutRackContainer" style="float: left; width= 750px;">
+			<ul class="sortable" id="rack"></ul>
+		</div>
+		<br style="float: clear;"/>
+	</div>
 </body>
 </html>
