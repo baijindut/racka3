@@ -62,7 +62,7 @@ int PluginBackingTrack::process(StereoBuffer* input)
 			outLeft[i] = _rawAudio[_rawAudioPos++] * _fLevel;
 			outRight[i] = _rawAudio[_rawAudioPos++] * _fLevel;
 
-			if (_rawAudioPos >= _rawAudioLen)
+			if (_rawAudioPos >= _rawAudioLen/2)
 				_rawAudioPos=0;
 		}
 	}
