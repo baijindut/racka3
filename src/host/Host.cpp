@@ -18,6 +18,7 @@
 #include "plugins/PluginSource.h"
 #include "plugins/PluginCollector.h"
 #include "plugins/PluginXOverSplitter.h"
+#include "plugins/PluginArpie.h"
 
 #include <stdio.h>
 #include <algorithm>
@@ -38,6 +39,7 @@ Host::Host()
 	_pluginNames.push_back("Compressor");
 	_pluginNames.push_back("Mix Splitter");
 	_pluginNames.push_back("Crossover Splitter");
+	_pluginNames.push_back("Arpie");
 
 	// loop over all names and create all plugin json list
 	_jsonAllPlugins = cJSON_CreateArray();
@@ -502,6 +504,8 @@ Plugin* Host::createNewPlugin(string name)
 		plugin = new PluginCollector();
 	} else if (name=="Crossover Splitter") {
 		plugin = new PluginXOver();
+	} else if (name=="Arpie") {
+		plugin = new PluginArpie();
 	}
 
 	if (plugin)
