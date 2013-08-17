@@ -52,10 +52,11 @@ Host::Host()
 		cJSON_AddItemToArray(_jsonAllPlugins,jsonObject);
 	}
 
-	pthread_mutexattr_t Attr;
-	pthread_mutexattr_init(&Attr);
-	pthread_mutexattr_settype(&Attr, PTHREAD_MUTEX_RECURSIVE);
-	pthread_mutex_init(&_chainSpinner, &Attr);
+//	pthread_mutexattr_t Attr;
+//	pthread_mutexattr_init(&Attr);
+//	pthread_mutexattr_settype(&Attr, PTHREAD_MUTEX_RECURSIVE);
+//	pthread_mutex_init(&_chainSpinner, &Attr);
+	pthread_mutex_init(&_chainSpinner,0);
 }
 
 Host::~Host()
