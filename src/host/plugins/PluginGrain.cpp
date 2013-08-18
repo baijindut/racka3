@@ -386,6 +386,8 @@ PluginGrain::PluginGrain()
 	_leftProcesor = new GrainScatter(SAMPLE_RATE);
 	_rightProcesor = new GrainScatter(SAMPLE_RATE);
 
+	panic();
+
 	registerPlugin(1, "Grain", "Grain Scatter", 1);
 	//{64, 64, 33, 0,  0, 90,      40, 85, 64, 119, 0, 0},
 	registerParam(1, "Density", "", "grain/s", "", "", 1, 10, 1, 1);
@@ -416,7 +418,8 @@ int PluginGrain::process(StereoBuffer* input)
 
 void PluginGrain::panic()
 {
-
+	_leftProcesor->activateGrainScatter();
+	_rightProcesor->activateGrainScatter();
 	Plugin::panic();
 }
 
