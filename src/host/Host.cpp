@@ -19,6 +19,7 @@
 #include "plugins/PluginCollector.h"
 #include "plugins/PluginXOverSplitter.h"
 #include "plugins/PluginArpie.h"
+#include "plugins/PluginGrain.h"
 
 #include <stdio.h>
 #include <algorithm>
@@ -40,6 +41,7 @@ Host::Host()
 	_pluginNames.push_back("Mix Splitter");
 	_pluginNames.push_back("Crossover Splitter");
 	_pluginNames.push_back("Arpie");
+	_pluginNames.push_back("Grain");
 
 	// loop over all names and create all plugin json list
 	_jsonAllPlugins = cJSON_CreateArray();
@@ -507,6 +509,8 @@ Plugin* Host::createNewPlugin(string name)
 		plugin = new PluginXOver();
 	} else if (name=="Arpie") {
 		plugin = new PluginArpie();
+	} else if (name=="Grain") {
+		plugin = new PluginGrain();
 	}
 
 	if (plugin)

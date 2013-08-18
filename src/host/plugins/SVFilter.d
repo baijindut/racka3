@@ -18,6 +18,6 @@ src/host/plugins/SVFilter.o: src/host/plugins/SVFilter.C /usr/include/math.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
- src/host/plugins/SVFilter.h src/host/plugins/global.h \
- src/host/plugins/../../settings.h libs/portaudio/include/portaudio.h \
- src/host/plugins/Filter_.h
+ /usr/include/i386-linux-gnu/bits/stdio2.h src/host/plugins/SVFilter.h \
+ src/host/plugins/global.h src/host/plugins/../../settings.h \
+ libs/portaudio/include/portaudio.h src/host/plugins/Filter_.h

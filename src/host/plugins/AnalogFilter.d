@@ -18,6 +18,7 @@ src/host/plugins/AnalogFilter.o: src/host/plugins/AnalogFilter.C /usr/include/ma
  /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
+ /usr/include/i386-linux-gnu/bits/stdio2.h \
  src/host/plugins/AnalogFilter.h src/host/plugins/global.h \
  src/host/plugins/../../settings.h libs/portaudio/include/portaudio.h \
  src/host/plugins/Filter_.h
