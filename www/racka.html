@@ -1,6 +1,7 @@
 <html>
 <head>
 <LINK href="toggle.css" rel="stylesheet" type="text/css">
+<LINK href="jquery.selectBox.css" rel="stylesheet" type="text/css">
 <style>
 ul, li
 {
@@ -107,6 +108,7 @@ span.paramName
 <script src="jquery-1.10.2.min.js"></script>
 <script src="jquery.knob.js"></script>
 <script src="jquery.sortable.min.js"></script>
+<script src="jquery.selectBox.min.js"></script>
 <script>
 JSON.stringify = JSON.stringify || function (obj) {
     var t = typeof (obj);
@@ -186,7 +188,7 @@ function refreshRack() {
 			
 			// insert at correct place in rack
 			$("#rack").append(html);
-			
+				
 			// knob render update
 			$(".knob").knob({
 				change : function (value) {
@@ -204,8 +206,13 @@ function refreshRack() {
    				var instance = ui.item[0].id;
    				var newPos = ui.item.parent().children('li').index(ui.item);
    				movePlugin(instance,newPos);
-			});			
+			});
 		});
+		
+		//$('select').selectBox({
+   		//	menuSpeed: 'fast'
+		//});
+		
 	});
 }
 
@@ -221,7 +228,16 @@ function createHtmlKnob(instance,param) {
 	// do we want a toggle button or a knob or a list?
 	if (param.labels.length != 0)
 	{
-		// todo: add sleectbox: http://marcj.github.io/jquery-selectBox/
+		html+='<span class="paramName">'+param.name.toLowerCase()+'</span>';
+		html+='<select id="'+knobId+'" style="width: 100px;" ';
+		html+='onchange="setParam('+instance+',\''+param.name+'\',this.value)"';
+		html+='>';
+		var i=0;
+		param.labels.forEach(function(label) {
+            html+='<option value="'+i+'">'+label+'</option>';
+            i++;
+		});
+		html+='</select>';
 	}
 	else if ( Math.abs(Number(param.max) - Number(param.min)) == Number(param.step) )
 	{
@@ -311,8 +327,10 @@ function createHtmlPlugin(pluginObject) {
 
 function setParam(pluginInstance,paramName,paramValue) {
 	
-	var json = {"instance": pluginInstance, "param": paramName, "value": paramValue};
+	var json = {"instance": Number(pluginInstance), "param": String(paramName), "value": Number(paramValue)};
 	
+	console.log(json);
+
 	$.ajax({
 		type: "POST",
 		url: "racka3/setparamvalue",
@@ -320,7 +338,7 @@ function setParam(pluginInstance,paramName,paramValue) {
 		data: JSON.stringify(json)
 	}).done( function(json) {
 		if (json.error) {
-			alert(json.error);
+			alert("host sez: "+json.error);
 		} else {
 			console.log("set "+pluginInstance+":"+paramName+" = "+paramValue);
 		}
