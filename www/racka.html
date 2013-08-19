@@ -218,8 +218,12 @@ function createHtmlKnob(instance,param) {
 	// knob or toggle, it always goes in a knob holder.
 	html+='<div class="knobHolder">';
 	
-	// do we want a toggle button or a knob?
-	if ( Math.abs(Number(param.max) - Number(param.min)) == Number(param.step) )
+	// do we want a toggle button or a knob or a list?
+	if (param.labels.length != 0)
+	{
+		// todo: add sleectbox: http://marcj.github.io/jquery-selectBox/
+	}
+	else if ( Math.abs(Number(param.max) - Number(param.min)) == Number(param.step) )
 	{
 		var checked = param.value==param.min ? '': 'checked="checked"' ;
 		html+='<span class="paramName">'+param.name.toLowerCase()+'</span>';
