@@ -21,6 +21,8 @@ private:
     void setParam (int npar, int value);
     int getParam (int npar);
 
+    void loadFile(char* fname);
+
 private:
     int _nLevel;
     float _fLevel;

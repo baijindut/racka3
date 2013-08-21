@@ -17,32 +17,7 @@ PluginBackingTrack::PluginBackingTrack()
     registerParam(0,"Level","","","","",0,127,1,64);
     registerParam(1,"Playing","","","stop","play",0,1,1,0);
 
-    _rawAudio=0;
-	FILE* f = fopen("data/riff41.raw","r");
-	if (f)
-	{
-		fseek(f,0,SEEK_END);
-		int size = ftell(f);
-		rewind(f);
-
-		int frames = size / sizeof(unsigned short);
-
-		_rawAudio = (float*)malloc(frames*sizeof(float)*2);
-		_rawAudioPos=0;
-		_rawAudioLen=0;
-
-		for (int i=0;i<frames;i++)
-		{
-			unsigned short frame[2];
-			fread(frame,sizeof(frame),1,f);
-
-			_rawAudio[_rawAudioLen++] = frame[0] / 65535.0;
-			_rawAudio[_rawAudioLen++] = frame[1] / 65535.0;
-		}
-
-		fclose(f);
-	}
-
+    loadFile("data/riff41.raw");
 }
 
 PluginBackingTrack::~PluginBackingTrack()
@@ -110,4 +85,34 @@ int PluginBackingTrack::getParam(int npar)
 		break;
 	}
 	return 0;
+}
+
+void PluginBackingTrack::loadFile(char* fname)
+{
+    _rawAudio=0;
+	FILE* f = fopen(fname,"r");
+	if (f)
+	{
+		fseek(f,0,SEEK_END);
+		int size = ftell(f);
+		rewind(f);
+
+		int frames = size / sizeof(unsigned short);
+
+		_rawAudio = (float*)malloc(frames*sizeof(float)*2);
+		_rawAudioPos=0;
+		_rawAudioLen=0;
+
+		for (int i=0;i<frames;i++)
+		{
+			unsigned short frame[2];
+			fread(frame,sizeof(frame),1,f);
+
+			_rawAudio[_rawAudioLen++] = frame[0] / 65535.0;
+			_rawAudio[_rawAudioLen++] = frame[1] / 65535.0;
+		}
+
+		fclose(f);
+	}
+
 }

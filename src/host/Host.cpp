@@ -154,9 +154,12 @@ int Host::process(float* inLeft,float* inRight,float* outLeft,float* outRight,
 			previousPlugin = plugin;
 		}
 
-		// copy to output buffer
-		memcpy(outLeft,finalOutput.left,framesPerBuffer*sizeof(float));
-		memcpy(outRight,finalOutput.right,framesPerBuffer*sizeof(float));
+		// copy to output buffer with emergency limit
+		for (i=0;i<framesPerBuffer;i++)
+		{
+			outLeft[i] = finalOutput.left[i] > 0.9999999 ? 0.9999999 : finalOutput.left[i];
+			outRight[i] = finalOutput.right[i] > 0.9999999 ? 0.9999999 : finalOutput.right[i];
+		}
 
 		pthread_mutex_unlock(&_chainSpinner);
 	}

@@ -10,11 +10,13 @@ PluginReverb::PluginReverb ()
     				   "Freeverb",
     				   1);
 
+    _model.setdry(0.0);
+
     registerParam(1,"Freeze","","","","",0,1,1,0);
-    registerParam(2,"Room Size","","","","",0,127,1,63);
+    registerParam(2,"Room Size","","","","",0,100,1,63);
     registerParam(3,"Damping","","","","",	0,127,1,63);
-    registerParam(4,"Wet","","","","",		0,127,1,63);
-    registerParam(5,"Dry","","","","",		0,127,1,63);
+//    registerParam(4,"Wet","","","","",		0,127,1,63);
+//    registerParam(5,"Dry","","","","",		0,127,1,63);
     registerParam(6,"Width","","","","",	0,127,1,63);
 
 };
@@ -48,6 +50,7 @@ PluginReverb::setParam (int npar, int value)
     	break;
     case 2:
     	_model.setroomsize(value / 127.0);
+    	_model.setwet(0.26 - (value/ 1270.0)); // subtract some volume, because increasing room size adds it
     	break;
     case 3:
     	_model.setdamp(value / 127.0);
