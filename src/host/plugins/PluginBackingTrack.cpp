@@ -106,7 +106,9 @@ void PluginBackingTrack::loadFile(char* fname)
 		for (int i=0;i<frames;i++)
 		{
 			unsigned short frame[2];
-			fread(frame,sizeof(frame),1,f);
+
+			if (1!=fread(frame,sizeof(frame),1,f))
+				break;
 
 			_rawAudio[_rawAudioLen++] = frame[0] / 65535.0;
 			_rawAudio[_rawAudioLen++] = frame[1] / 65535.0;

@@ -209,6 +209,12 @@ void Plugin::registerPlugin(int outputCount,char* name, char* description, int v
 		StereoBuffer* buffer = new StereoBuffer(FRAMES_PER_BUFFER); // <-- this isnt the best
 		_outputBuffers.push_back(buffer);
 	}
+
+	// create persistant storage file for presets
+	string presetFileName = string("presets/");
+	presetFileName+=string(_name);
+	presetFileName+=".json";
+	_presetFile = new JsonFile(presetFileName.c_str());
 }
 
 int Plugin::getOutputBufferCount()

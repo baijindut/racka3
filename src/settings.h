@@ -21,5 +21,7 @@ static float cSAMPLE_RATE = 1 / (44100.0);
 typedef float SAMPLE;
 #define INTERLEAVED			paNonInterleaved
 
+#define STORAGE_DIR			"www/data/"
+
 
 #endif /* SETTINGS_H_ */

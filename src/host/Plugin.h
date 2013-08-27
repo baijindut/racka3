@@ -14,6 +14,7 @@
 #include <vector>
 #include <string>
 #include "StereoBuffer.h"
+#include "JsonFile.h"
 using namespace std;
 
 #define PARAM_MIX 900
@@ -139,6 +140,8 @@ private:
 	int _friend;
 
 	PluginParam* _paramList;
+
+	JsonFile* _presetFile;
 };
 
 #endif /* PLUGIN_H_ */
