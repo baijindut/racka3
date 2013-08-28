@@ -579,10 +579,17 @@ void Host::updatePluginPresets(Plugin* plugin)
 
 		// get preset count
 		int presetCount = 0;
-		// todo: loop over children of presets
+		cJSON* preset = presets->child;
+		vector<string> presetNames;
+		while (preset)
+		{
+			presetNames.push_back(string(preset->string));
+			presetCount++;
+			preset = preset->child;
+		}
 
 		// create char* array as needed by label-initialising register param
-		// todo
+
 
 		// delete old parameter and register new one to replace it
 		plugin->unRegisterParam("preset");
