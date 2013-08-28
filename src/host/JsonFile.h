@@ -18,7 +18,7 @@
 class JsonFile
 {
 public:
-	JsonFile(const char* fname);
+	JsonFile(std::string fname);
 	virtual ~JsonFile();
 
 	// get pointer to json object

@@ -38,7 +38,6 @@ Plugin::~Plugin() {
 	// free all output buffers
 	for (vector<StereoBuffer*>::iterator it = _outputBuffers.begin();it != _outputBuffers.end(); ++it)
 		delete (*it);
-
 }
 
 char* Plugin::getName() {
@@ -210,11 +209,6 @@ void Plugin::registerPlugin(int outputCount,char* name, char* description, int v
 		_outputBuffers.push_back(buffer);
 	}
 
-	// create persistant storage file for presets
-	string presetFileName = string("presets/");
-	presetFileName+=string(_name);
-	presetFileName+=".json";
-	_presetFile = new JsonFile(presetFileName.c_str());
 }
 
 int Plugin::getOutputBufferCount()
@@ -400,3 +394,23 @@ void Plugin::panic()
 	}
 }
 
+PluginParam* Plugin::getRegisteredParam(char* name)
+{
+	PluginParam* pPluginParam = 0;
+	HASH_FIND_STR(_paramList,name,pPluginParam);
+	return pPluginParam;
+}
+
+bool Plugin::unRegisterParam(char* name)
+{
+	PluginParam* pPluginParam = 0;
+	HASH_FIND_STR(_paramList,name,pPluginParam);
+	if (pPluginParam)
+	{
+		HASH_DEL(_paramList,pPluginParam);
+		delete(pPluginParam);
+
+		return true;
+	}
+	return false;
+}

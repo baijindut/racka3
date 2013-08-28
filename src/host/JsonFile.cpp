@@ -13,10 +13,16 @@
 
 using namespace std;
 
-JsonFile::JsonFile(const char* fname)
+JsonFile::JsonFile(string fname)
 {
 	_name = string(STORAGE_DIR);
-	_name += string(fname);
+	for (int i=0;i<fname.length();i++)
+	{
+		char c = tolower(fname[i]);
+		if ( (c>='a' && c<='z') || c=='/')
+			_name+=c;
+	}
+	_name+=".json";
 
 	_json = cJSON_CreateObject();
 
@@ -92,10 +98,6 @@ bool JsonFile::reload()
 {
 	bool ret = false;
 
-	if (_json)
-		cJSON_Delete(_json);
-	_json = 0;
-
 	FILE* h = fopen(_name.c_str(),"r");
 	if (h)
 	{
@@ -110,6 +112,9 @@ bool JsonFile::reload()
 
 		if (ret)
 		{
+			if (_json)
+				cJSON_Delete(_json);
+
 			_json = cJSON_Parse(buffer);
 			if (_json)
 				ret = true;

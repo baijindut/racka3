@@ -48,6 +48,9 @@ private:
 	// give all plugins their correct position value
 	void renumberPlugins();
 
+	// update (or create if necesary) the plugins preset parameter
+	void updatePluginPresets(Plugin* plugin);
+
 	// pool of spare plugins
 	vector <string> _pluginNames;
 

@@ -520,15 +520,16 @@ Plugin* Host::createNewPlugin(string name)
 		plugin = new PluginReverb();
 	}
 
+	// do extra stuff for plugin
 	if (plugin)
 	{
-		// processing plugins must have a dry/wet mix
+		// processing plugins must have a dry/wet mix and presets
 		if (plugin->getType()==PLUGIN_PROCESSOR)
 		{
 			plugin->registerParam(PARAM_MIX,"Mix","Dry/Wet Mix","","Dry","Wet",0,127,1,127);
-		}
 
-		//
+			updatePluginPresets(plugin);
+		}
 	}
 
 	return plugin;
@@ -560,4 +561,35 @@ Plugin* Host::findPluginFromFriendAndType(int friendInstance,PluginType type)
 		}
 	}
 	return 0;
+}
+
+void Host::updatePluginPresets(Plugin* plugin)
+{
+	JsonFile* jsfile = new JsonFile( string("presets/")+string(plugin->getName()) );
+
+	if (jsfile)
+	{
+		// get preset object, create if needed
+		cJSON* presets = cJSON_GetObjectItem(jsfile->json(),"presets");
+		if (!presets)
+		{
+			presets = cJSON_CreateObject();
+			cJSON_AddItemToObject(jsfile->json(),"presets",presets);
+		}
+
+		// get preset count
+		int presetCount = 0;
+		// todo: loop over children of presets
+
+		// create char* array as needed by label-initialising register param
+		// todo
+
+		// delete old parameter and register new one to replace it
+		plugin->unRegisterParam("preset");
+		// todo: register new one
+
+
+		// flush and dispose
+		delete jsfile;
+	}
 }

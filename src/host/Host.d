@@ -78,9 +78,14 @@ src/host/Host.o: src/host/Host.cpp src/host/Host.h \
  /usr/include/i386-linux-gnu/bits/unistd.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
  /usr/include/c++/4.6/bits/basic_string.tcc src/host/StereoBuffer.h \
- src/host/../settings.h src/host/plugins/PluginRBEcho.h \
- src/host/plugins/global.h src/host/plugins/../../settings.h \
- /usr/include/math.h /usr/include/i386-linux-gnu/bits/huge_val.h \
+ src/host/JsonFile.h /usr/include/i386-linux-gnu/sys/stat.h \
+ /usr/include/i386-linux-gnu/bits/stat.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/i386-linux-gnu/bits/stdio_lim.h \
+ /usr/include/i386-linux-gnu/bits/sys_errlist.h \
+ /usr/include/i386-linux-gnu/bits/stdio2.h src/host/../settings.h \
+ src/host/plugins/PluginRBEcho.h src/host/plugins/global.h \
+ src/host/plugins/../../settings.h /usr/include/math.h \
+ /usr/include/i386-linux-gnu/bits/huge_val.h \
  /usr/include/i386-linux-gnu/bits/huge_valf.h \
  /usr/include/i386-linux-gnu/bits/huge_vall.h \
  /usr/include/i386-linux-gnu/bits/inf.h \
@@ -100,11 +105,8 @@ src/host/Host.o: src/host/Host.cpp src/host/Host.h \
  src/host/plugins/Freeverb/revmodel.h src/host/plugins/Freeverb/comb.h \
  src/host/plugins/Freeverb/denormals.h \
  src/host/plugins/Freeverb/allpass.h src/host/plugins/Freeverb/tuning.h \
- /usr/include/libio.h /usr/include/_G_config.h \
- /usr/include/i386-linux-gnu/bits/stdio_lim.h \
- /usr/include/i386-linux-gnu/bits/sys_errlist.h \
- /usr/include/i386-linux-gnu/bits/stdio2.h /usr/include/c++/4.6/algorithm \
- /usr/include/c++/4.6/utility /usr/include/c++/4.6/bits/stl_relops.h \
+ /usr/include/c++/4.6/algorithm /usr/include/c++/4.6/utility \
+ /usr/include/c++/4.6/bits/stl_relops.h \
  /usr/include/c++/4.6/bits/stl_algo.h /usr/include/c++/4.6/cstdlib \
  /usr/include/c++/4.6/bits/algorithmfwd.h \
  /usr/include/c++/4.6/bits/stl_heap.h \

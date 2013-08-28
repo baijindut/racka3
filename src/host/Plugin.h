@@ -18,6 +18,7 @@
 using namespace std;
 
 #define PARAM_MIX 900
+#define PARAM_PRESET 901
 
 class Host;
 class Plugin;
@@ -113,6 +114,10 @@ public:
 	// alternative version to register multiposition knobs like 'lfo type' (sine, saw, square)
 	PluginParam* registerParam(int index,char* name,const char* labels[],int value);
 
+	PluginParam* getRegisteredParam(char* name);
+
+	bool unRegisterParam(char* name);
+
 protected:
 
 	virtual int process(StereoBuffer* input) =0;
@@ -140,8 +145,6 @@ private:
 	int _friend;
 
 	PluginParam* _paramList;
-
-	JsonFile* _presetFile;
 };
 
 #endif /* PLUGIN_H_ */
