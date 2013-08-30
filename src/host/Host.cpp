@@ -567,19 +567,32 @@ void Host::updatePluginPresets(Plugin* plugin)
 {
 	JsonFile* jsfile = new JsonFile( string("presets/")+string(plugin->getName()) );
 
+	// delete old parameter
+	plugin->unRegisterParam("preset");
+
 	if (jsfile)
 	{
 		// get preset object, create if needed
 		cJSON* presets = cJSON_GetObjectItem(jsfile->json(),"presets");
 		if (!presets)
 		{
+			// create presets object
 			presets = cJSON_CreateObject();
 			cJSON_AddItemToObject(jsfile->json(),"presets",presets);
 		}
 
+		cJSON* preset;
+
+		// create default preset. do this every time, in case we change the hardcoded values
+		// in the registerParam() calls, or add or change the parameters themserves.
+		cJSON_DeleteItemFromObject(presets,"default");
+		preset = cJSON_CreateObject();
+		plugin->getAllParams(preset);
+		cJSON_AddItemToObject(presets,"default",preset);
+
 		// get preset count
 		int presetCount = 0;
-		cJSON* preset = presets->child;
+		preset = presets->child;
 		vector<string> presetNames;
 		while (preset)
 		{
@@ -588,12 +601,8 @@ void Host::updatePluginPresets(Plugin* plugin)
 			preset = preset->child;
 		}
 
-		// create char* array as needed by label-initialising register param
-
-
-		// delete old parameter and register new one to replace it
-		plugin->unRegisterParam("preset");
-		// todo: register new one
+		// register new parameter
+		plugin->registerParam(PARAM_PRESET,"preset",presetNames,0);
 
 
 		// flush and dispose

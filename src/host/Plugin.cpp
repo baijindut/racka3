@@ -101,6 +101,18 @@ int Plugin::setParams(cJSON* jsonParamArray) {
 	return ok;
 }
 
+void Plugin::getAllParams(cJSON* jsonParams)
+{
+	PluginParam* param = _paramList;
+
+	while (param)
+	{
+		cJSON* value = cJSON_CreateNumber(getParam(param->index));
+		cJSON_AddItemToObject(jsonParams,param->name,value);
+		param = (PluginParam*)param->hh.next;
+	}
+}
+
 int Plugin::getParams(cJSON* jsonParamArray) {
 
 	int ok = 1;
@@ -263,6 +275,23 @@ int Plugin::getFriend()
 PluginType Plugin::getType()
 {
 	return _type;
+}
+
+PluginParam* Plugin::registerParam(int index,char* name,vector<string> labels,int value)
+{
+	// count the labels
+	int labelCount=labels.size();
+
+	// create a parameter struct as normal
+	PluginParam* param = registerParam(index,name,"","","","",0,labelCount-1,1,value);
+
+	// now add the labels to the list
+	for (int i=0;i<labelCount;i++)
+	{
+		param->labels.push_back(labels[i]);
+	}
+
+	return param;
 }
 
 PluginParam* Plugin::registerParam(int index,char* name,const char* labels[],int value)

@@ -59,6 +59,11 @@ static void _mkdir(const char *dir)
 	mkdir(tmp, S_IRWXU);
 }
 
+cJSON* JsonFile::json()
+{
+	return _json;
+}
+
 void JsonFile::ensureDirectories()
 {
 	// get dir for file

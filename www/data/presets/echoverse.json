@@ -1,2 +1,16 @@
 {
+	"presets":	{
+		"default":	{
+			"Pan":	64,
+			"Tempo":	120,
+			"LR Delay":	80,
+			"Angle":	0,
+			"Feedback":	80,
+			"Damping":	10,
+			"Reverse":	0,
+			"Tempo Subdivision":	0,
+			"E.S.":	100,
+			"Mix":	0
+		}
+	}
 }

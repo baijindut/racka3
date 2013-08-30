@@ -1,2 +1,19 @@
 {
+	"presets":	{
+		"default":	{
+			"Panning":	64,
+			"Tempo":	33,
+			"Randomness":	0,
+			"LFO Type":	0,
+			"Stereo":	90,
+			"Depth":	40,
+			"Delay":	85,
+			"Feedback":	64,
+			"L/R Cross":	119,
+			"Flange Mode":	0,
+			"Subtract":	0,
+			"Interpolation (hiQ)":	0,
+			"Mix":	0
+		}
+	}
 }

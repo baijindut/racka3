@@ -1,2 +1,11 @@
 {
+	"presets":	{
+		"default":	{
+			"Freeze":	0,
+			"Room Size":	63,
+			"Damping":	63,
+			"Width":	63,
+			"Mix":	0
+		}
+	}
 }

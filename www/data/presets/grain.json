@@ -1,2 +1,11 @@
 {
+	"presets":	{
+		"default":	{
+			"Density":	1,
+			"Scatter":	100,
+			"Grain Length":	64,
+			"Grain Attack":	9,
+			"Mix":	0
+		}
+	}
 }

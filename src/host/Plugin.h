@@ -78,6 +78,8 @@ public:
 	// [{param="volume",value=111},{param="pan",value=150}]
 	int getParams(cJSON* jsonParamArray);
 
+	void getAllParams(cJSON* jsonParams);
+
 	// creates the JSON describing the plugin and all its details
 	int getPluginJson(cJSON* jsonObject);
 
@@ -113,6 +115,7 @@ public:
 
 	// alternative version to register multiposition knobs like 'lfo type' (sine, saw, square)
 	PluginParam* registerParam(int index,char* name,const char* labels[],int value);
+	PluginParam* registerParam(int index,char* name,vector<string> labels,int value);
 
 	PluginParam* getRegisteredParam(char* name);
 

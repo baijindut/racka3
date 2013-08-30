@@ -1,2 +1,16 @@
 {
+	"presets":	{
+		"default":	{
+			"Threshold":	-30,
+			"Ratio":	2,
+			"Output":	-6,
+			"Attack":	20,
+			"Release":	120,
+			"Auto Output":	1,
+			"Knee":	0,
+			"Stereo":	0,
+			"Peak":	0,
+			"Mix":	0
+		}
+	}
 }

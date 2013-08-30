@@ -1,2 +1,17 @@
 {
+	"presets":	{
+		"default":	{
+			"Panning":	64,
+			"Tempo":	120,
+			"LR Delay":	0,
+			"LR Cross":	0,
+			"Feedback":	0,
+			"HF Damping":	0,
+			"Arpies":	0,
+			"Harmonics":	2,
+			"Pattern":	0,
+			"Subdiv":	1,
+			"Mix":	0
+		}
+	}
 }
