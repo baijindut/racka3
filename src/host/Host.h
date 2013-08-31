@@ -37,6 +37,8 @@ public:
 
 	bool setPluginPreset(Plugin* plugin,int nPreset);
 
+	void storePreset(cJSON* json);
+
 private:
 
 	// create a new plugin instance

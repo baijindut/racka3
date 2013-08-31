@@ -343,6 +343,24 @@ function createHtmlPlugin(pluginObject) {
 function savePreset(pluginInstance,name)
 {
 	console.log("save plugin instance "+pluginInstance+" preset as name "+name);
+	
+	var json = {"instance": Number(pluginInstance), "pluginName": String(name)};
+	
+	console.log(json);
+
+	$.ajax({
+		type: "POST",
+		url: "racka3/storePreset",
+		async: false,
+		data: JSON.stringify(json)
+	}).done( function(json) {
+		if (json.error) {
+			alert("host sez: "+json.error);
+		} else {
+			console.log("set "+pluginInstance+":"+paramName+" = "+paramValue);
+			refreshRack();
+		}
+	});	
 }
 
 function setParam(pluginInstance,paramName,paramValue) {

@@ -98,6 +98,8 @@ bool HttpServer::handleNewRequest(ServerHandlingEvent eventCode,
 		_pluginHost->setPluginParam(json);
 	} else if (uri == string("/racka3/getpluginchain")) {
 		_pluginHost->getPluginChain(json);
+	} else if (uri == string("/racka3/storePreset")) {
+		_pluginHost->storePreset(json);
 	}
 
 	// did we make any json?

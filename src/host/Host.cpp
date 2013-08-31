@@ -583,6 +583,47 @@ void Host::chainLock()
 	pthread_mutex_lock(&_chainSpinner);
 }
 
+void Host::storePreset(cJSON* json)
+{
+	cJSON* jsonInstance = cJSON_GetObjectItem(json,"instance");
+	cJSON* jsonName = cJSON_GetObjectItem(json,"presetName");
+
+	if (jsonInstance && jsonInstance->type==cJSON_Number &&
+		jsonName && jsonName->type==cJSON_String)
+	{
+		char* presetName = jsonName->valuestring;
+		Plugin* plugin = getPluginFromInstance(jsonInstance->valueint);
+		if (!plugin)
+		{
+			JSONERROR(json,"no such plugin instance");
+		}
+		else
+		{
+			JsonFile* jsfile = new JsonFile( string("presets/")+string(plugin->getName()) );
+			if (jsfile)
+			{
+				// get preset object, create if needed
+				cJSON* presets = cJSON_GetObjectItem(jsfile->json(),"presets");
+				if (presets)
+				{
+					// delete the old preset with this name (if existant)
+					cJSON_DeleteItemFromObject(jsfile->json(),presetName);
+
+					// make new one
+					cJSON* preset = cJSON_CreateObject();
+					plugin->getAllParams(preset);
+
+					// add it
+					cJSON_AddItemToObject(presets,presetName,preset);
+				}
+
+				// flush and dispose
+				delete jsfile;
+			}
+		}
+	}
+}
+
 void Host::chainUnlock()
 {
 	for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
