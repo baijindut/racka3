@@ -461,6 +461,38 @@ Plugin* Host::getPluginFromInstance(int instance)
 	return 0;
 }
 
+bool Host::setPluginPreset(Plugin* plugin,int nPreset)
+{
+	bool ret = false;
+
+	PluginParam* presetParam = plugin->getRegisteredParam("preset");
+
+	if (presetParam && nPreset>=0 && nPreset<presetParam->labels.size())
+	{
+		// get preset file
+		JsonFile* jsfile = new JsonFile( string("presets/")+string(plugin->getName()) );
+		cJSON* presets = cJSON_GetObjectItem(jsfile->json(),"presets");
+		if (presets)
+		{
+			// get this particular preset
+			const char* presetName = presetParam->labels[nPreset].c_str();
+			cJSON* preset = cJSON_GetObjectItem(presets,presetName);
+			if (preset)
+			{
+				// set parameters
+				ret = plugin->setParams(preset);
+
+				// remember what preset we just selected, to make the interface make more sense
+				plugin->setPresetNumber(nPreset);
+			}
+		}
+
+		delete jsfile;
+	}
+
+	return ret;
+}
+
 void Host::setPluginParam(cJSON* json)
 {
 	cJSON* jsonInstance = cJSON_GetObjectItem(json,"instance");
@@ -474,7 +506,18 @@ void Host::setPluginParam(cJSON* json)
 		Plugin* plugin = getPluginFromInstance(jsonInstance->valueint);
 		if (plugin)
 		{
-			if (!plugin->setParam(json))
+			// if this is the special 'preset' parameter, special handling
+			if (strcmp(jsonParam->valuestring,"preset")==0)
+			{
+				if (!setPluginPreset(plugin,jsonValue->valueint)) {
+					JSONERROR(json,"bad preset index");
+				}
+				else {
+					// tell client to refresh (get values of all parameters for this plugin)
+					cJSON_AddItemToObject(json,"refresh",cJSON_CreateBool(1));
+				}
+			}
+			else if (!plugin->setParam(json))
 			{
 				JSONERROR(json,"bad parameter name or value");
 			}
@@ -581,24 +624,27 @@ void Host::updatePluginPresets(Plugin* plugin)
 			cJSON_AddItemToObject(jsfile->json(),"presets",presets);
 		}
 
-		cJSON* preset;
-
 		// create default preset. do this every time, in case we change the hardcoded values
 		// in the registerParam() calls, or add or change the parameters themserves.
-		cJSON_DeleteItemFromObject(presets,"default");
-		preset = cJSON_CreateObject();
-		plugin->getAllParams(preset);
-		cJSON_AddItemToObject(presets,"default",preset);
+		cJSON* dfault = cJSON_GetObjectItem(presets,"default");
+		if (dfault) {
+			while (dfault->child)
+				cJSON_DeleteItemFromObject(dfault,dfault->child->string);
+		} else {
+			dfault = cJSON_CreateObject();
+			cJSON_AddItemToObject(presets,"default",dfault);
+		}
+		plugin->getAllParams(dfault);
 
 		// get preset count
 		int presetCount = 0;
-		preset = presets->child;
+		cJSON* preset = presets->child;
 		vector<string> presetNames;
 		while (preset)
 		{
 			presetNames.push_back(string(preset->string));
 			presetCount++;
-			preset = preset->child;
+			preset = preset->next;
 		}
 
 		// register new parameter

@@ -35,6 +35,8 @@ public:
 
 	void setPluginParam(cJSON* json);
 
+	bool setPluginPreset(Plugin* plugin,int nPreset);
+
 private:
 
 	// create a new plugin instance

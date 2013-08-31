@@ -22,6 +22,7 @@ Plugin::Plugin() {
 
 	_mix=127;
 	_type=PLUGIN_PROCESSOR;
+	_presetNumber=0;
 }
 
 Plugin::~Plugin() {
@@ -48,6 +49,34 @@ int Plugin::getVersion() {
 	return _version;
 }
 
+int Plugin::setParam(char* name,int value)
+{
+	int ok=1;
+
+	// get the PluginParam struct pointer for the named parameter
+	PluginParam* pPluginParam = 0;
+	HASH_FIND_STR(_paramList,name,pPluginParam);
+	if (pPluginParam)
+	{
+		// actually set the value
+		if (pPluginParam->index==PARAM_MIX)
+			pPluginParam->plugin->setMix(value);
+		if (pPluginParam->index==PARAM_PRESET)
+			printf("setParam should never get called wih PARAM_PRESET!!\n");
+		else
+		{
+			printf("set param(%d,%d)\n",pPluginParam->index,value);
+			pPluginParam->plugin->setParam(pPluginParam->index,value);
+		}
+	}
+	else
+	{
+		ok = 0;
+	}
+
+	return ok;
+}
+
 int Plugin::setParam(cJSON* jsonItem)
 {
 	int ok =1;
@@ -62,21 +91,7 @@ int Plugin::setParam(cJSON* jsonItem)
 	if (jsonParam && jsonParam->type==cJSON_String && jsonParam->valuestring &&
 		jsonValue && jsonValue->type==cJSON_Number)
 	{
-		// get the PluginParam struct pointer for the named parameter
-		PluginParam* pPluginParam = 0;
-		HASH_FIND_STR(_paramList,jsonParam->valuestring,pPluginParam);
-		if (pPluginParam)
-		{
-			// actually set the value
-			if (pPluginParam->index==PARAM_MIX)
-				pPluginParam->plugin->setMix(jsonValue->valueint);
-			else
-				pPluginParam->plugin->setParam(pPluginParam->index,jsonValue->valueint);
-		}
-		else
-		{
-			ok = 0;
-		}
+		ok = setParam(jsonParam->valuestring,jsonValue->valueint);
 	}
 	else
 	{
@@ -86,14 +101,14 @@ int Plugin::setParam(cJSON* jsonItem)
 	return ok;
 }
 
-int Plugin::setParams(cJSON* jsonParamArray) {
+int Plugin::setParams(cJSON* jsonParamObject) {
 	int ok = 1;
 
 	// loop over array
-	cJSON* jsonItem=jsonParamArray->child;
+	cJSON* jsonItem=jsonParamObject->child;
 	while(jsonItem)
 	{
-		setParam(jsonItem);
+		setParam(jsonItem->string,jsonItem->valueint);
 
 		jsonItem=jsonItem->next;
 	}
@@ -144,6 +159,8 @@ int Plugin::getParams(cJSON* jsonParamArray) {
 
 				if (pPluginParam->index==PARAM_MIX)
 					value = pPluginParam->plugin->getMix();
+				else if (pPluginParam->index==PARAM_PRESET)
+					value = pPluginParam->plugin->getPresetNumber();
 				else
 					value = pPluginParam->plugin->getParam(pPluginParam->index);
 
@@ -179,7 +196,13 @@ int Plugin::getPluginJson(cJSON* jsonObject) {
 	{
 		cJSON* paramObject = cJSON_CreateObject();
 
-		int value = pParam->index == PARAM_MIX ? getMix():getParam(pParam->index);
+		int value;
+		if (pParam->index == PARAM_MIX)
+			value = getMix();
+		else if (pParam->index == PARAM_PRESET)
+			value = getPresetNumber();
+		else
+			value = getParam(pParam->index);
 
 		cJSON_AddItemToObject(paramObject,"name",cJSON_CreateString(pParam->name));
 		cJSON_AddItemToObject(paramObject,"description",cJSON_CreateString(pParam->description));
@@ -428,6 +451,16 @@ PluginParam* Plugin::getRegisteredParam(char* name)
 	PluginParam* pPluginParam = 0;
 	HASH_FIND_STR(_paramList,name,pPluginParam);
 	return pPluginParam;
+}
+
+int Plugin::getPresetNumber()
+{
+	return _presetNumber;
+}
+
+void Plugin::setPresetNumber(int presetNumber)
+{
+	_presetNumber = presetNumber;
 }
 
 bool Plugin::unRegisterParam(char* name)

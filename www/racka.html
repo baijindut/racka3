@@ -184,6 +184,9 @@ function refreshRack() {
 		
 		json.plugins.forEach(function(plugin) {
 
+			console.log("---");
+			console.log(JSON.stringify(plugin));
+
 			var html = createHtmlPlugin(plugin);
 			
 			// insert at correct place in rack
@@ -234,10 +237,22 @@ function createHtmlKnob(instance,param) {
 		html+='>';
 		var i=0;
 		param.labels.forEach(function(label) {
-            html+='<option value="'+i+'">'+label+'</option>';
+			var s = "";
+			if (i==Number(param.value))
+				s = 'selected';
+            html+='<option value="'+i+'" '+s+'>'+label+'</option>';
             i++;
 		});
 		html+='</select>';
+		
+		// the 'preset' type of list is special and needs extra icons
+		if (param.name.toLowerCase()=="preset")
+		{
+			html+='<br/>';
+			html+='<a href=\'javascript:if (true==confirm(\"sure to save over current plugin preset?\")){savePreset(\"'+instance+'\",\"\");}\'>:w!</a>';
+			html+='&nbsp;';
+			html+='<a href=\'javascript:savePreset(\"'+instance+'\",prompt(\"name for plugin preset:\",\"user\"));\'>:w</a>';
+		}
 	}
 	else if ( Math.abs(Number(param.max) - Number(param.min)) == Number(param.step) )
 	{
@@ -325,6 +340,11 @@ function createHtmlPlugin(pluginObject) {
 	return html;
 }
 
+function savePreset(pluginInstance,name)
+{
+	console.log("save plugin instance "+pluginInstance+" preset as name "+name);
+}
+
 function setParam(pluginInstance,paramName,paramValue) {
 	
 	var json = {"instance": Number(pluginInstance), "param": String(paramName), "value": Number(paramValue)};
@@ -339,6 +359,9 @@ function setParam(pluginInstance,paramName,paramValue) {
 	}).done( function(json) {
 		if (json.error) {
 			alert("host sez: "+json.error);
+		} else if (json.refresh){
+			console.log("refresh requested");
+			refreshRack();
 		} else {
 			console.log("set "+pluginInstance+":"+paramName+" = "+paramValue);
 		}

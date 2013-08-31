@@ -71,6 +71,7 @@ public:
 
 	// set a single parameter
 	int setParam(cJSON* json);
+	int setParam(char* name,int value);
 
 	// called by host to get plugin parameters. supplied values (if any) are completely ignored.
 	// [{param="volume",value=100},{param="pan",value=128}] or [{param="volume"},{param="pan",value=128}]
@@ -92,6 +93,10 @@ public:
 	// mixing and routing
 	int getMix();
 	void setMix(int mix);
+
+	// used for host to store the preset
+	int getPresetNumber();
+	void setPresetNumber(int presetNumber);
 
 	int getOutputBufferCount();
 	StereoBuffer* getOutputBuffer(int i);
@@ -148,6 +153,8 @@ private:
 	int _friend;
 
 	PluginParam* _paramList;
+
+	int _presetNumber;
 };
 
 #endif /* PLUGIN_H_ */
