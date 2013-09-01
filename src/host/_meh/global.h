@@ -345,15 +345,15 @@ public:
     class Chorus *efx_Flanger;
     class Phaser *efx_Phaser;
     class Analog_Phaser *efx_APhaser;
-    class EQ *efx_EQ1;
-    class EQ *efx_EQ2;
+    class PluginEQ *efx_EQ1;
+    class PluginEQ *efx_EQ2;
     class Echo *efx_Echo;
     class Distorsion *efx_Distorsion;
     class Distorsion *efx_Overdrive;
     class Compressor *efx_Compressor;
     class DynamicFilter *efx_WhaWha;
     class Alienwah *efx_Alienwah;
-    class EQ *efx_Cabinet;
+    class PluginEQ *efx_Cabinet;
     class Pan *efx_Pan;
     class Harmonizer *efx_Har;
     class MusicDelay *efx_MusDelay;
@@ -373,7 +373,7 @@ public:
     class Exciter *efx_Exciter;
     class MBDist *efx_MBDist;
     class Arpie *efx_Arpie;
-    class Expander *efx_Expander;
+    class PluginExpander *efx_Expander;
     class Synthfilter *efx_Synthfilter;
     class Shuffle *efx_Shuffle;
     class MBVvol *efx_MBVvol;

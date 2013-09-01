@@ -27,28 +27,28 @@
 
 #include "global.h"
 #include "AnalogFilter.h"
+#include "Plugin.h"
 
-class PluginEQ
+#define MAX_EQ_BANDS 16
+
+class PluginEQ : public Plugin
 {
 public:
-    PluginEQ (float * efxoutl_, float * efxoutr_);
+    PluginEQ ();
     ~PluginEQ ();
-    void out (float * smpsl, float * smpr);
-    void setpreset (int npreset);
-    void changepar (int npar, int value);
-    int getpar (int npar);
+
+	int process(StereoBuffer* input);
+
+    void setParam (int npar, int value);
+    int getParam (int npar);
+
+private:
+
     void cleanup ();
-    float getfreqresponse (float freq);
     void setvolume (int Pvolume);
 
-    int Ppreset;
     int Pvolume;	//Volumul
-
     float outvolume;		//this is the volume of effect and is public because need it in system effect. The out volume of
-
-    float *efxoutl;
-    float *efxoutr;
-
 
     struct {
         //parameters
@@ -57,6 +57,8 @@ public:
         AnalogFilter *l, *r;
     } filter[MAX_EQ_BANDS];
 
+    // useful but not useful yet!
+    float getfreqresponse (float freq);
 };
 
 

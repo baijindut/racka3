@@ -105,6 +105,7 @@ src/host/Host.o: src/host/Host.cpp src/host/Host.h \
  src/host/plugins/Freeverb/revmodel.h src/host/plugins/Freeverb/comb.h \
  src/host/plugins/Freeverb/denormals.h \
  src/host/plugins/Freeverb/allpass.h src/host/plugins/Freeverb/tuning.h \
+ src/host/plugins/PluginEQ.h src/host/plugins/PluginExpander.h \
  /usr/include/c++/4.6/algorithm /usr/include/c++/4.6/utility \
  /usr/include/c++/4.6/bits/stl_relops.h \
  /usr/include/c++/4.6/bits/stl_algo.h /usr/include/c++/4.6/cstdlib \

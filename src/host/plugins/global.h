@@ -74,7 +74,6 @@
 #define LOG_FMAX		10.0f			//  -- This optimizes LFO sweep for useful range.
 #define MINDEPTH		20.0f			// won't allow filter lower than 20Hz
 #define MAXDEPTH		15000.0f		// Keeps delay greater than 2 samples at 44kHz SR
-#define MAX_EQ_BANDS 16
 #define CLOSED  1
 #define OPENING 2
 #define OPEN    3

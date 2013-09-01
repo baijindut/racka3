@@ -25,16 +25,11 @@
 */
 
 #include <math.h>
-#include "Expander.h"
+#include "PluginExpander.h"
 
 
-PluginExpander::Expander (float * efxoutl_, float * efxoutr_)
+PluginExpander::PluginExpander ()
 {
-
-    efxoutl = efxoutl_;
-    efxoutr = efxoutr_;
-
-
     lpfl = new AnalogFilter (2, 22000, 1, 0);
     lpfr = new AnalogFilter (2, 22000, 1, 0);
     hpfl = new AnalogFilter (3, 20, 1, 0);
@@ -45,16 +40,31 @@ PluginExpander::Expander (float * efxoutl_, float * efxoutr_)
     efollower = 0;
     fs = fSAMPLE_RATE;
 
-    Expander_Change_Preset(0);
-
-
+    /*
+    //Noise Gate
+    {-50, 20, 50, 50, 3134, 76, 0},
+    //Boost Gate
+    {-55, 30, 50, 50, 1441, 157, 50},
+    //Treble swell
+    {-30, 9, 950, 25, 6703, 526, 90}
+    */
+    registerPlugin(1,"Expander","Expander",1);
+    registerParam(1,"Threshold","","","","",-99,0,1,-30);
+    registerParam(2,"Shape","","","","",0,64,1,9);
+    registerParam(3,"Attack","","Ms","","",0,2000,1,950);
+    registerParam(4,"Decay","","Ms","","",0,2000,1,25);
+    registerParam(5,"LPF Freq","","Hz","","",20,20000,1,6703);
+    registerParam(6,"HPF Freq","","Hz","","",20,20000,1,526);
+    registerParam(7,"Level","","","","",0,127,1,90);
 }
 
 PluginExpander::~PluginExpander ()
 {
+	delete lpfl;
+	delete lpfr;
+	delete hpfl;
+	delete hpfr;
 }
-
-
 
 void
 PluginExpander::cleanup ()
@@ -66,9 +76,6 @@ PluginExpander::cleanup ()
     oldgain = 0.0f;
 
 }
-
-
-
 
 void
 PluginExpander::setlpf (int value)
@@ -88,9 +95,8 @@ PluginExpander::sethpf (int value)
     hpfr->setfreq (fr);
 };
 
-
 void
-PluginExpander::Expander_Change (int np, int value)
+PluginExpander::setParam (int np, int value)
 {
 
     switch (np) {
@@ -130,7 +136,7 @@ PluginExpander::Expander_Change (int np, int value)
 }
 
 int
-PluginExpander::getpar (int np)
+PluginExpander::getParam (int np)
 {
 
     switch (np)
@@ -163,55 +169,33 @@ PluginExpander::getpar (int np)
 
 }
 
-
-void
-PluginExpander::Expander_Change_Preset (int npreset)
+int
+PluginExpander::process(StereoBuffer* input)
 {
-
-    const int PRESET_SIZE = 7;
-    const int NUM_PRESETS = 3;
-    int presets[NUM_PRESETS][PRESET_SIZE] = {
-
-        //Noise Gate
-        {-50, 20, 50, 50, 3134, 76, 0},
-        //Boost Gate
-        {-55, 30, 50, 50, 1441, 157, 50},
-        //Treble swell
-        {-30, 9, 950, 25, 6703, 526, 90}
-    };
-
-    if(npreset>NUM_PRESETS-1) {
-        Fpre->ReadPreset(25,npreset-NUM_PRESETS+1);
-        for (int n = 0; n < PRESET_SIZE; n++)
-            Expander_Change (n+1, pdata[n]);
-    } else {
-        for (int n = 0; n < PRESET_SIZE; n++)
-            Expander_Change (n + 1, presets[npreset][n]);
-    }
-
-}
-
-
-
-void
-PluginExpander::out (float *efxoutl, float *efxoutr)
-{
-
-
     int i;
     float delta = 0.0f;
     float expenv = 0.0f;
 
+	float* inLeft = input->left;
+	float* inRight = input->right;
+	float* outLeft = _outputBuffers[0]->left;
+	float* outRight = _outputBuffers[0]->right;
 
-    lpfl->filterout (efxoutl);
-    hpfl->filterout (efxoutl);
-    lpfr->filterout (efxoutr);
-    hpfr->filterout (efxoutr);
+	// copy to output buffer, in which the in-place processing will occur
+	for (i=0;i<PERIOD;i++)
+	{
+		outLeft[i]=inLeft[i];
+		outRight[i]=inRight[i];
+	}
 
+    lpfl->filterout (outLeft);
+    hpfl->filterout (outLeft);
+    lpfr->filterout (outRight);
+    hpfr->filterout (outRight);
 
     for (i = 0; i < PERIOD; i++) {
 
-        delta = 0.5f*(fabsf (efxoutl[i]) + fabsf (efxoutr[i])) - env;    //envelope follower from Compressor.C
+        delta = 0.5f*(fabsf (outLeft[i]) + fabsf (outRight[i])) - env;    //envelope follower from Compressor.C
         if (delta > 0.0)
             env += a_rate * delta;
         else
@@ -226,15 +210,14 @@ PluginExpander::out (float *efxoutl, float *efxoutr)
         oldgain = gain;				//smooth it out a little bit
 
         if(efollower) {
-            efxoutl[i] = gain;
-            efxoutr[i] += gain;
+            outLeft[i] = gain;
+            outRight[i] += gain;
         } else {
-            efxoutl[i] *= gain*level;
-            efxoutr[i] *= gain*level;
+        	outLeft[i] *= gain*level;
+        	outRight[i] *= gain*level;
         }
 
     }
 
-
-
+    return paContinue;
 };

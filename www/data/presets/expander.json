@@ -1,0 +1,14 @@
+{
+	"presets":	{
+		"default":	{
+			"Threshold":	-30,
+			"Shape":	9,
+			"Attack":	950,
+			"Decay":	25,
+			"LPF Freq":	6703,
+			"HPF Freq":	526,
+			"Level":	90,
+			"Mix":	0
+		}
+	}
+}

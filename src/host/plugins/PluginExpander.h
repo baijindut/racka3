@@ -33,24 +33,22 @@
 
 #include "global.h"
 #include "AnalogFilter.h"
+#include "Plugin.h"
 
-class PluginExpander
+class PluginExpander : public Plugin
 {
 
 public:
 
-    Expander (float * efxoutl_, float * efxoutr_);
+    PluginExpander ();
     ~PluginExpander ();
 
-    void out (float * smps_l, float * smps_r);
+    int process(StereoBuffer* input);
 
-    void Expander_Change (int np, int value);
-    void Expander_Change_Preset (int npreset);
+    void setParam (int np, int value);
+    int getParam (int npar);
+
     void cleanup ();
-    int getpar (int npar);
-
-    float *efxoutl;
-    float *efxoutr;
 
 
 
@@ -90,8 +88,6 @@ private:
 
 
     AnalogFilter *lpfl, *lpfr, *hpfl, *hpfr;
-
-    class FPreset *Fpre;
 
 };
 

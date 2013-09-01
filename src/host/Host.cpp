@@ -21,6 +21,8 @@
 #include "plugins/PluginArpie.h"
 #include "plugins/PluginGrain.h"
 #include "plugins/PluginReverb.h"
+#include "plugins/PluginEQ.h"
+#include "plugins/PluginExpander.h"
 
 #include <stdio.h>
 #include <algorithm>
@@ -44,6 +46,8 @@ Host::Host()
 	_pluginNames.push_back("Arpie");
 	_pluginNames.push_back("Grain");
 	_pluginNames.push_back("Reverb");
+	_pluginNames.push_back("EQ");
+	_pluginNames.push_back("Expander");
 
 	// loop over all names and create all plugin json list
 	_jsonAllPlugins = cJSON_CreateArray();
@@ -561,6 +565,10 @@ Plugin* Host::createNewPlugin(string name)
 		plugin = new PluginGrain();
 	} else if (name=="Reverb") {
 		plugin = new PluginReverb();
+	} else if (name=="EQ") {
+		plugin = new PluginEQ();
+	} else if (name=="Expander") {
+		plugin = new PluginExpander();
 	}
 
 	// do extra stuff for plugin

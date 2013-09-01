@@ -1,0 +1,23 @@
+{
+	"presets":	{
+		"default":	{
+			"Volume":	64,
+			"Band 0 Filter":	0,
+			"Band 0 Freq":	440,
+			"Band 0 Gain":	64,
+			"Band 0 Q":	64,
+			"Band 0 Stages":	1,
+			"Band 1 Filter":	0,
+			"Band 1 Freq":	440,
+			"Band 1 Gain":	64,
+			"Band 1 Q":	64,
+			"Band 1 Stages":	1,
+			"Band 2 Filter":	0,
+			"Band 2 Freq":	440,
+			"Band 2 Gain":	64,
+			"Band 2 Q":	64,
+			"Band 2 Stages":	1,
+			"Mix":	0
+		}
+	}
+}

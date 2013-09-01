@@ -258,12 +258,12 @@ RKR::RKR ()
     efx_APhaser = new Analog_Phaser(efxoutl, efxoutr);
     efx_Distorsion = new Distorsion (efxoutl, efxoutr);
     efx_Overdrive = new Distorsion (efxoutl, efxoutr);
-    efx_EQ2 = new EQ (efxoutl, efxoutr);
-    efx_EQ1 = new EQ (efxoutl, efxoutr);
+    efx_EQ2 = new PluginEQ (efxoutl, efxoutr);
+    efx_EQ1 = new PluginEQ (efxoutl, efxoutr);
     efx_Compressor = new Compressor (efxoutl, efxoutr);
     efx_WhaWha = new DynamicFilter (efxoutl, efxoutr);
     efx_Alienwah = new Alienwah (efxoutl, efxoutr);
-    efx_Cabinet = new EQ (efxoutl, efxoutr);
+    efx_Cabinet = new PluginEQ (efxoutl, efxoutr);
     efx_Pan = new Pan (efxoutl, efxoutr);
     efx_Har = new Harmonizer (efxoutl, efxoutr, (long) HarQual, Har_Down, Har_U_Q, Har_D_Q);
     efx_MusDelay = new MusicDelay (efxoutl, efxoutr);
@@ -276,7 +276,7 @@ RKR::RKR ()
     efx_Exciter = new Exciter(efxoutl,efxoutr);
     efx_MBDist = new MBDist(efxoutl,efxoutr);
     efx_Arpie = new Arpie(efxoutl,efxoutr);
-    efx_Expander = new Expander(efxoutl,efxoutr);
+    efx_Expander = new PluginExpander(efxoutl,efxoutr);
     efx_Shuffle = new Shuffle(efxoutl,efxoutr);
     efx_Synthfilter = new Synthfilter(efxoutl,efxoutr);
     efx_MBVvol = new MBVvol(efxoutl,efxoutr);

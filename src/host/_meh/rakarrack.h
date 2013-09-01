@@ -22,7 +22,7 @@ public:
   void draw();
   int handle(int event);
 private:
-  EQ *efx_EQ1; 
+  PluginEQ *efx_EQ1; 
 };
 
 class Scope : public Fl_Box {
@@ -32,7 +32,7 @@ public:
   void draw();
   int handle(int event);
 private:
-  EQ *efx_EQ1; 
+  PluginEQ *efx_EQ1; 
 };
 
 class NewVum : public Fl_Slider {

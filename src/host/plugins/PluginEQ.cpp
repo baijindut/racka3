@@ -25,15 +25,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include "EQ.h"
+#include "PluginEQ.h"
 
-PluginEQ::PluginEQ (float * efxoutl_, float * efxoutr_)
+PluginEQ::PluginEQ ()
 {
-
-    efxoutl = efxoutl_;
-    efxoutr = efxoutr_;
-
-
     for (int i = 0; i < MAX_EQ_BANDS; i++) {
         filter[i].Ptype = 0;
         filter[i].Pfreq = 64;
@@ -44,15 +39,52 @@ PluginEQ::PluginEQ (float * efxoutl_, float * efxoutr_)
         filter[i].r = new AnalogFilter (6, 1000.0f, 1.0f, 0);
     };
     //default values
-    Ppreset = 0;
     Pvolume = 50;
 
-    setpreset (Ppreset);
     cleanup ();
+
+    registerPlugin(1,"EQ","Analogue EQ",1);
+    registerParam(0,"Volume","","","Off","Loud",0,127,1,64);
+
+    const char* filters[] = {"Off",
+    					"LPF 1 pole",
+    				    "HPF 1 pole",
+    				    "LPF 2 poles",
+    					"HPF 2 poles",
+    					"BPF 2 poles",
+    					"NOTCH 2 poles",
+    					"PEAK (2 poles)",
+    					"Low Shelf - 2 poles",
+    					"High Shelf - 2 poles",
+    					0};
+    for (int i=0;i<3;i++)
+    {
+    	char name[64];
+
+    	sprintf(name,"Band %d Filter",i);
+    	registerParam(i*5 + 10,name,filters,0);
+
+    	sprintf(name,"Band %d Freq",i);
+    	registerParam(i*5 + 11,name,"","Hz","","",20,20000,1,440);
+
+    	sprintf(name,"Band %d Gain",i);
+    	registerParam(i*5 + 12,name,"","","Off","Loud",0,127,1,64);
+
+    	sprintf(name,"Band %d Q",i);
+    	registerParam(i*5 + 13,name,"","","","",0,127,1,64);
+
+    	sprintf(name,"Band %d Stages",i);
+    	registerParam(i*5 + 14,name,"","","","",1,4,1,1);
+    }
 };
 
 PluginEQ::~PluginEQ ()
 {
+	for (int i = 0; i < MAX_EQ_BANDS; i++)
+	{
+		delete filter[i].l;
+		delete filter[i].r;
+	};
 };
 
 /*
@@ -67,28 +99,38 @@ PluginEQ::cleanup ()
     };
 };
 
-
-
 /*
  * Effect output
  */
-void
-PluginEQ::out (float * smpsl, float * smpsr)
+int
+PluginEQ::process(StereoBuffer* input)
 {
     int i;
+	float* inLeft = input->left;
+	float* inRight = input->right;
+	float* outLeft = _outputBuffers[0]->left;
+	float* outRight = _outputBuffers[0]->right;
+
+	// copy to output buffer, in which the in-place processing will occur
+	for (i=0;i<PERIOD;i++)
+	{
+		outLeft[i]=inLeft[i];
+		outRight[i]=inRight[i];
+	}
+
     for (i = 0; i < MAX_EQ_BANDS; i++) {
         if (filter[i].Ptype == 0)
             continue;
-        filter[i].l->filterout (efxoutl);
-        filter[i].r->filterout (efxoutr);
+        filter[i].l->filterout (outLeft);
+        filter[i].r->filterout (outRight);
     };
-
 
     for (i = 0; i < PERIOD; i++) {
-        efxoutl[i] = smpsl[i] * outvolume;
-        efxoutr[i] = smpsr[i] * outvolume;
+    	outLeft[i] *= outvolume;
+    	outRight[i] *= outvolume;
     };
 
+    return	paContinue;
 };
 
 
@@ -107,25 +149,7 @@ PluginEQ::setvolume (int Pvolume)
 
 
 void
-PluginEQ::setpreset (int npreset)
-{
-    const int PRESET_SIZE = 1;
-    const int NUM_PRESETS = 2;
-    int presets[NUM_PRESETS][PRESET_SIZE] = {
-        //EQ 1
-        {67},
-        //EQ 2
-        {67}
-    };
-
-    for (int n = 0; n < PRESET_SIZE; n++)
-        changepar (n, presets[npreset][n]);
-    Ppreset = npreset;
-};
-
-
-void
-PluginEQ::changepar (int npar, int value)
+PluginEQ::setParam (int npar, int value)
 {
     switch (npar) {
     case 0:
@@ -134,6 +158,15 @@ PluginEQ::changepar (int npar, int value)
     };
     if (npar < 10)
         return;
+
+    // 0 to set volume
+    // 1-9 invalid
+    // then every subsequent 5 if a filter:
+    // 10: filter type (0-9)
+    // 11: frequency (20-20000)
+    // 12: gain (0-127)
+    // 13: Q (0-127)
+    // 14: stage (0-MAX_EQ_BANDS)
 
     int nb = (npar - 10) / 5;	//number of the band (filter)
     if (nb >= MAX_EQ_BANDS)
@@ -180,7 +213,7 @@ PluginEQ::changepar (int npar, int value)
 };
 
 int
-PluginEQ::getpar (int npar)
+PluginEQ::getParam (int npar)
 {
     switch (npar) {
     case 0:
@@ -215,9 +248,6 @@ PluginEQ::getpar (int npar)
 
     return (0);			//in case of bogus parameter number
 };
-
-
-
 
 float PluginEQ::getfreqresponse (float freq)
 {
