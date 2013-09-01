@@ -196,7 +196,7 @@ function refreshRack() {
 			$(".knob").knob({
 				change : function (value) {
 					var id=this.$.context.id.split("|");
-					setParam(Number(id[0]),id[1],value);
+					setParam(Number(String(id[0]).substr(2)),id[1],value);
 				}
 			});
 			
@@ -223,7 +223,7 @@ function refreshRack() {
 function createHtmlKnob(instance,param) {
 	
 	var html = "";
-	var knobId = instance+'|'+param.name;
+	var knobId = "id"+instance+'|'+param.name;
 	
 	// knob or toggle, it always goes in a knob holder.
 	html+='<div class="knobHolder">';
@@ -252,6 +252,8 @@ function createHtmlKnob(instance,param) {
 			html+='<a href=\'javascript:if (true==confirm(\"sure to save over current plugin preset?\")){savePreset(\"'+instance+'\",\"\");}\'>:w!</a>';
 			html+='&nbsp;';
 			html+='<a href=\'javascript:savePreset(\"'+instance+'\",prompt(\"name for plugin preset:\",\"user\"));\'>:w</a>';
+			html+='&nbsp;';
+			html+='<a href=\'javascript:if (true==confirm(\"sure to DELETE current plugin preset?\")){deletePreset(\"'+instance+'\",\"\");}\'>:x</a>';
 		}
 	}
 	else if ( Math.abs(Number(param.max) - Number(param.min)) == Number(param.step) )
@@ -340,24 +342,61 @@ function createHtmlPlugin(pluginObject) {
 	return html;
 }
 
-function savePreset(pluginInstance,name)
+function deletePreset(pluginInstance,name)
 {
+	if (name=="")
+	{
+		var knobId = "id"+pluginInstance+'|'+"preset";
+		var select = document.getElementById(knobId);
+		name = select.options[select.selectedIndex].text;
+	}
+	
 	console.log("save plugin instance "+pluginInstance+" preset as name "+name);
 	
-	var json = {"instance": Number(pluginInstance), "pluginName": String(name)};
+	var json = {"instance": Number(pluginInstance), "presetName": String(name)};
 	
 	console.log(json);
 
 	$.ajax({
 		type: "POST",
-		url: "racka3/storePreset",
+		url: "racka3/deletePluginPreset",
 		async: false,
 		data: JSON.stringify(json)
 	}).done( function(json) {
 		if (json.error) {
 			alert("host sez: "+json.error);
 		} else {
-			console.log("set "+pluginInstance+":"+paramName+" = "+paramValue);
+			console.log("deleted preset "+name);
+			refreshRack();
+		}
+	});		
+}
+
+function savePreset(pluginInstance,name)
+{
+	if (name=="")
+	{
+		var knobId = "id"+pluginInstance+'|'+"preset";
+		var select = document.getElementById(knobId);
+		name = select.options[select.selectedIndex].text;
+	}
+	
+	console.log("save plugin instance "+pluginInstance+" preset as name "+name);
+	
+	var json = {"instance": Number(pluginInstance), "presetName": String(name)};
+	
+	console.log(json);
+
+	$.ajax({
+		type: "POST",
+		url: "racka3/storePluginPreset",
+		async: false,
+		data: JSON.stringify(json)
+	}).done( function(json) {
+		if (json.error) {
+			alert("host sez: "+json.error);
+		} else {
+			console.log("stored preset "+name);
 			refreshRack();
 		}
 	});	

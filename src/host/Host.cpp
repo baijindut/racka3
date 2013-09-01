@@ -583,7 +583,7 @@ void Host::chainLock()
 	pthread_mutex_lock(&_chainSpinner);
 }
 
-void Host::storePreset(cJSON* json)
+void Host::deletePluginPreset(cJSON* json)
 {
 	cJSON* jsonInstance = cJSON_GetObjectItem(json,"instance");
 	cJSON* jsonName = cJSON_GetObjectItem(json,"presetName");
@@ -607,7 +607,48 @@ void Host::storePreset(cJSON* json)
 				if (presets)
 				{
 					// delete the old preset with this name (if existant)
-					cJSON_DeleteItemFromObject(jsfile->json(),presetName);
+					cJSON_DeleteItemFromObject(presets,presetName);
+				}
+
+				// flush and dispose
+				delete jsfile;
+
+				// update plugin to reflect new preset
+				updatePluginPresets(plugin);
+			}
+		}
+	}
+	else
+	{
+		JSONERROR(json,"instance and/or presetName not given");
+	}
+}
+
+void Host::storePluginPreset(cJSON* json)
+{
+	cJSON* jsonInstance = cJSON_GetObjectItem(json,"instance");
+	cJSON* jsonName = cJSON_GetObjectItem(json,"presetName");
+
+	if (jsonInstance && jsonInstance->type==cJSON_Number &&
+		jsonName && jsonName->type==cJSON_String)
+	{
+		char* presetName = jsonName->valuestring;
+		Plugin* plugin = getPluginFromInstance(jsonInstance->valueint);
+		if (!plugin)
+		{
+			JSONERROR(json,"no such plugin instance");
+		}
+		else
+		{
+			JsonFile* jsfile = new JsonFile( string("presets/")+string(plugin->getName()) );
+			if (jsfile)
+			{
+				// get preset object, create if needed
+				cJSON* presets = cJSON_GetObjectItem(jsfile->json(),"presets");
+				if (presets)
+				{
+					// delete the old preset with this name (if existant)
+					cJSON_DeleteItemFromObject(presets,presetName);
 
 					// make new one
 					cJSON* preset = cJSON_CreateObject();
@@ -619,8 +660,15 @@ void Host::storePreset(cJSON* json)
 
 				// flush and dispose
 				delete jsfile;
+
+				// update plugin to reflect new preset
+				updatePluginPresets(plugin);
 			}
 		}
+	}
+	else
+	{
+		JSONERROR(json,"instance and/or presetName not given");
 	}
 }
 

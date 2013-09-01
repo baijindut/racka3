@@ -1,31 +1,16 @@
 {
 	"presets":	{
 		"default":	{
-			"Panning":	64,
+			"Panning":	0,
 			"Tempo":	33,
 			"Randomness":	0,
 			"LFO Type":	0,
-			"Stereo":	90,
-			"Depth":	40,
-			"Delay":	85,
-			"Feedback":	64,
-			"L/R Cross":	119,
-			"Flange Mode":	0,
-			"Subtract":	0,
-			"Interpolation (hiQ)":	0,
-			"Mix":	0
-		},
-		"test":	{
-			"Panning":	10,
-			"Tempo":	33,
-			"Randomness":	0,
-			"LFO Type":	0,
-			"Stereo":	90,
-			"Depth":	40,
-			"Delay":	85,
-			"Feedback":	64,
-			"L/R Cross":	119,
-			"Flange Mode":	0,
+			"Stereo":	0,
+			"Depth":	1,
+			"Delay":	4,
+			"Feedback":	4,
+			"L/R Cross":	2,
+			"Flange Mode":	1,
 			"Subtract":	0,
 			"Interpolation (hiQ)":	0,
 			"Mix":	0

@@ -37,7 +37,8 @@ public:
 
 	bool setPluginPreset(Plugin* plugin,int nPreset);
 
-	void storePreset(cJSON* json);
+	void storePluginPreset(cJSON* json);
+	void deletePluginPreset(cJSON* json);
 
 private:
 
