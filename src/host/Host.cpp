@@ -35,6 +35,8 @@ Host::Host()
 	Plugin* plugin;
 	_nextInstance=0;
 
+	_rackPresets= new JsonFile("presets/rack.json");
+
 	// add names of all plugins to list
 	_pluginNames.push_back("Echoverse");
 	_pluginNames.push_back("Chorus");
@@ -75,6 +77,8 @@ Host::~Host()
 		delete *it;
 
 	cJSON_Delete(_jsonAllPlugins);
+
+	delete _rackPresets;
 }
 
 int Host::process(float* inLeft,float* inRight,float* outLeft,float* outRight,
@@ -678,6 +682,62 @@ void Host::storePluginPreset(cJSON* json)
 	{
 		JSONERROR(json,"instance and/or presetName not given");
 	}
+}
+
+void Host::deleteRackPreset(cJSON* json)
+{
+	cJSON* jsonName = cJSON_GetObjectItem(json,"presetName");
+
+	if (jsonName && jsonName->type==cJSON_String)
+	{
+		char* presetName = jsonName->valuestring;
+		cJSON* presets = cJSON_GetObjectItem(_rackPresets->json(),"presets");
+		if (presets)
+		{
+			// delete the old preset with this name (if existant)
+			cJSON_DeleteItemFromObject(presets,presetName);
+
+			_rackPresets->persist();
+		}
+	}
+	else
+	{
+		JSONERROR(json,"must give presetName");
+	}
+}
+
+void Host::storeRackPreset(cJSON* json)
+{
+	cJSON* jsonName = cJSON_GetObjectItem(json,"presetName");
+
+	if (jsonName && jsonName->type==cJSON_String)
+	{
+		char* presetName = jsonName->valuestring;
+		cJSON* presets = cJSON_GetObjectItem(_rackPresets->json(),"presets");
+		if (!presets)
+		{
+			presets = cJSON_CreateObject();
+			cJSON_AddItemToObject(_rackPresets->json(),"presets",presets);
+		}
+		if (presets)
+		{
+			// delete the old preset with this name (if existant)
+			cJSON_DeleteItemFromObject(presets,presetName);
+
+			// todo
+
+			_rackPresets->persist();
+		}
+	}
+	else
+	{
+		JSONERROR(json,"must give presetName");
+	}
+}
+
+void Host::loadRackPreset(cJSON* json)
+{
+	// todo
 }
 
 void Host::chainUnlock()

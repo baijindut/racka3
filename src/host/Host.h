@@ -40,6 +40,11 @@ public:
 	void storePluginPreset(cJSON* json);
 	void deletePluginPreset(cJSON* json);
 
+	void storeRackPreset(cJSON* json);
+	void deleteRackPreset(cJSON* json);
+	void loadRackPreset(cJSON* json);
+
+
 private:
 
 	// create a new plugin instance
@@ -70,6 +75,8 @@ private:
 	void chainUnlock();
 
 	int _nextInstance;
+
+	JsonFile* _rackPresets;
 };
 
 #endif /* HOST_H_ */
