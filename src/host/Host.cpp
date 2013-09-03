@@ -724,7 +724,14 @@ void Host::storeRackPreset(cJSON* json)
 			// delete the old preset with this name (if existant)
 			cJSON_DeleteItemFromObject(presets,presetName);
 
-			// todo
+			cJSON* rack = cJSON_CreateObject();
+
+			// we could use getPluginChain - but this is a messy function.
+			// really we want to loop over chain and save just the parameter values.
+			// we also need some extra stuff like friend, etc
+			//getPluginChain(rack);
+
+			cJSON_AddItemToObject(presets,presetName,rack);
 
 			_rackPresets->persist();
 		}
@@ -737,7 +744,57 @@ void Host::storeRackPreset(cJSON* json)
 
 void Host::loadRackPreset(cJSON* json)
 {
-	// todo
+	cJSON* jsonName = cJSON_GetObjectItem(json,"presetName");
+
+	if (jsonName && jsonName->type==cJSON_String)
+	{
+		char* presetName = jsonName->valuestring;
+		cJSON* presets = cJSON_GetObjectItem(_rackPresets->json(),"presets");
+		if (!presets)
+		{
+			presets = cJSON_CreateObject();
+			cJSON_AddItemToObject(_rackPresets->json(),"presets",presets);
+		}
+		if (presets)
+		{
+			cJSON* rack = cJSON_GetObjectItem(presets,"presetName");
+			cJSON* pluginArray;
+			pluginArray = rack ? cJSON_GetObjectItem(rack,"plugins"):0;
+			if (pluginArray)
+			{
+				chainLock();
+
+				// delete all plugins
+				vector<Plugin*>::iterator it;
+				for(it=_plugins.begin(); it!=_plugins.end();++it)
+					delete *it;
+
+				// add plugins
+				int count = cJSON_GetArraySize(pluginArray);
+				for (int i=0;i<count;i++)
+				{
+					cJSON* jsonPlugin = cJSON_GetArrayItem(pluginArray,i);
+					cJSON* jpName = cJSON_GetObjectItem(jsonPlugin,"name");
+
+					Plugin* plugin = createNewPlugin(jpName->valuestring);
+
+					// fill params
+
+					_plugins.push_back(plugin);
+				}
+
+				chainUnlock();
+			}
+			else
+			{
+				JSONERROR(json,"no such preset with this name");
+			}
+		}
+	}
+	else
+	{
+		JSONERROR(json,"must give presetName");
+	}
 }
 
 void Host::chainUnlock()
