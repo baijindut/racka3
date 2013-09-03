@@ -423,14 +423,14 @@ void Host::getAvailablePlugins(cJSON* json)
 	cJSON_AddItemReferenceToObject(json,"plugins",_jsonAllPlugins);
 }
 
-void Host::getPluginChain(cJSON* json)
+void Host::getPluginChain(cJSON* json,bool bFullParamInfo)
 {
 	cJSON* pluginArray = cJSON_CreateArray();
 
 	for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
 	{
 		cJSON* pluginObject = cJSON_CreateObject();
-		(*it)->getPluginJson(pluginObject);
+		(*it)->getPluginJson(pluginObject,bFullParamInfo);
 		cJSON_AddItemToArray(pluginArray,pluginObject);
 	}
 
@@ -721,15 +721,16 @@ void Host::storeRackPreset(cJSON* json)
 		}
 		if (presets)
 		{
-			// delete the old preset with this name (if existant)
+			// delete the old preset with this name (if existant), and make a new one
 			cJSON_DeleteItemFromObject(presets,presetName);
+			cJSON* preset = cJSON_CreateObject();
+			cJSON_AddItemToObject(presets,presetName,preset);
 
+			// the preset contains an object called rack
 			cJSON* rack = cJSON_CreateObject();
+			cJSON_AddItemToObject(preset,"rack",rack);
 
-			// we could use getPluginChain - but this is a messy function.
-			// really we want to loop over chain and save just the parameter values.
-			// we also need some extra stuff like friend, etc
-			//getPluginChain(rack);
+			getPluginChain(rack,false);
 
 			cJSON_AddItemToObject(presets,presetName,rack);
 
