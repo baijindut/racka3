@@ -11,6 +11,7 @@ src/host/plugins/PluginExpander.o: src/host/plugins/PluginExpander.cpp /usr/incl
  /usr/include/i386-linux-gnu/bits/nan.h \
  /usr/include/i386-linux-gnu/bits/mathdef.h \
  /usr/include/i386-linux-gnu/bits/mathcalls.h \
+ /usr/include/i386-linux-gnu/bits/math-finite.h \
  src/host/plugins/PluginExpander.h src/host/plugins/global.h \
  src/host/plugins/../../settings.h libs/portaudio/include/portaudio.h \
  src/host/plugins/AnalogFilter.h src/host/plugins/Filter_.h \

@@ -92,6 +92,7 @@ src/host/Host.o: src/host/Host.cpp src/host/Host.h \
  /usr/include/i386-linux-gnu/bits/nan.h \
  /usr/include/i386-linux-gnu/bits/mathdef.h \
  /usr/include/i386-linux-gnu/bits/mathcalls.h \
+ /usr/include/i386-linux-gnu/bits/math-finite.h \
  src/host/plugins/delayline.h src/host/plugins/../Plugin.h \
  src/host/plugins/../StereoBuffer.h src/host/plugins/PluginChorus.h \
  src/host/plugins/EffectLFO.h src/host/plugins/PluginNoiseGate.h \

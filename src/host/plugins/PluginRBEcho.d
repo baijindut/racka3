@@ -31,7 +31,8 @@ src/host/plugins/PluginRBEcho.o: src/host/plugins/PluginRBEcho.C /usr/include/st
  /usr/include/i386-linux-gnu/bits/inf.h \
  /usr/include/i386-linux-gnu/bits/nan.h \
  /usr/include/i386-linux-gnu/bits/mathdef.h \
- /usr/include/i386-linux-gnu/bits/mathcalls.h /usr/include/string.h \
+ /usr/include/i386-linux-gnu/bits/mathcalls.h \
+ /usr/include/i386-linux-gnu/bits/math-finite.h /usr/include/string.h \
  /usr/include/i386-linux-gnu/bits/string3.h \
  src/host/plugins/PluginRBEcho.h src/host/plugins/global.h \
  src/host/plugins/../../settings.h libs/portaudio/include/portaudio.h \
@@ -90,4 +91,7 @@ src/host/plugins/PluginRBEcho.o: src/host/plugins/PluginRBEcho.C /usr/include/st
  /usr/include/i386-linux-gnu/bits/unistd.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
  /usr/include/c++/4.6/bits/basic_string.tcc \
- src/host/plugins/../StereoBuffer.h src/host/plugins/../StereoBuffer.h
+ src/host/plugins/../StereoBuffer.h src/host/plugins/../JsonFile.h \
+ /usr/include/i386-linux-gnu/sys/stat.h \
+ /usr/include/i386-linux-gnu/bits/stat.h \
+ src/host/plugins/../StereoBuffer.h

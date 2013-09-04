@@ -24,6 +24,7 @@
 #include "PluginGrain.h"
 #include <stdio.h>
 #include "portaudio.h"
+#include "../Plugin.h"
 
 #define GRN_INPUT        0
 #define GRN_OUTPUT       1

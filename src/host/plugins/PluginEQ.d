@@ -31,14 +31,16 @@ src/host/plugins/PluginEQ.o: src/host/plugins/PluginEQ.cpp /usr/include/stdio.h 
  /usr/include/i386-linux-gnu/bits/inf.h \
  /usr/include/i386-linux-gnu/bits/nan.h \
  /usr/include/i386-linux-gnu/bits/mathdef.h \
- /usr/include/i386-linux-gnu/bits/mathcalls.h src/host/plugins/PluginEQ.h \
- src/host/plugins/global.h src/host/plugins/../../settings.h \
- libs/portaudio/include/portaudio.h src/host/plugins/AnalogFilter.h \
- src/host/plugins/Filter_.h src/host/Plugin.h src/cJSON.h src/uthash.h \
- /usr/include/string.h /usr/include/i386-linux-gnu/bits/string3.h \
- /usr/include/inttypes.h /usr/lib/gcc/i686-linux-gnu/4.6/include/stdint.h \
- /usr/include/stdint.h /usr/include/i386-linux-gnu/bits/wchar.h \
- /usr/include/c++/4.6/vector /usr/include/c++/4.6/bits/stl_algobase.h \
+ /usr/include/i386-linux-gnu/bits/mathcalls.h \
+ /usr/include/i386-linux-gnu/bits/math-finite.h \
+ src/host/plugins/PluginEQ.h src/host/plugins/global.h \
+ src/host/plugins/../../settings.h libs/portaudio/include/portaudio.h \
+ src/host/plugins/AnalogFilter.h src/host/plugins/Filter_.h \
+ src/host/Plugin.h src/cJSON.h src/uthash.h /usr/include/string.h \
+ /usr/include/i386-linux-gnu/bits/string3.h /usr/include/inttypes.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/stdint.h /usr/include/stdint.h \
+ /usr/include/i386-linux-gnu/bits/wchar.h /usr/include/c++/4.6/vector \
+ /usr/include/c++/4.6/bits/stl_algobase.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/c++config.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/os_defines.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/cpu_defines.h \

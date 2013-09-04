@@ -79,6 +79,11 @@ src/host/plugins/PluginXOverSplitter.o: src/host/plugins/PluginXOverSplitter.cpp
  /usr/include/i386-linux-gnu/bits/unistd.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
  /usr/include/c++/4.6/bits/basic_string.tcc src/host/StereoBuffer.h \
+ src/host/JsonFile.h /usr/include/i386-linux-gnu/sys/stat.h \
+ /usr/include/i386-linux-gnu/bits/stat.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/i386-linux-gnu/bits/stdio_lim.h \
+ /usr/include/i386-linux-gnu/bits/sys_errlist.h \
+ /usr/include/i386-linux-gnu/bits/stdio2.h \
  src/host/plugins/AnalogFilter.h src/host/plugins/global.h \
  src/host/plugins/../../settings.h /usr/include/math.h \
  /usr/include/i386-linux-gnu/bits/huge_val.h \
@@ -87,4 +92,6 @@ src/host/plugins/PluginXOverSplitter.o: src/host/plugins/PluginXOverSplitter.cpp
  /usr/include/i386-linux-gnu/bits/inf.h \
  /usr/include/i386-linux-gnu/bits/nan.h \
  /usr/include/i386-linux-gnu/bits/mathdef.h \
- /usr/include/i386-linux-gnu/bits/mathcalls.h src/host/plugins/Filter_.h
+ /usr/include/i386-linux-gnu/bits/mathcalls.h \
+ /usr/include/i386-linux-gnu/bits/math-finite.h \
+ src/host/plugins/Filter_.h

@@ -31,6 +31,7 @@ src/host/plugins/EffectLFO.o: src/host/plugins/EffectLFO.C /usr/include/stdlib.h
  /usr/include/i386-linux-gnu/bits/inf.h \
  /usr/include/i386-linux-gnu/bits/nan.h \
  /usr/include/i386-linux-gnu/bits/mathdef.h \
- /usr/include/i386-linux-gnu/bits/mathcalls.h src/host/plugins/global.h \
+ /usr/include/i386-linux-gnu/bits/mathcalls.h \
+ /usr/include/i386-linux-gnu/bits/math-finite.h src/host/plugins/global.h \
  src/host/plugins/../../settings.h libs/portaudio/include/portaudio.h \
  src/host/plugins/EffectLFO.h src/host/plugins/f_sin.h

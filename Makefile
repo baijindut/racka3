@@ -65,14 +65,15 @@ MY_CFLAGS = -Wno-write-strings -g -DLINUX -Isrc -Ilibs/portaudio/include -Isrc/h
 MY_LIBS   = -ldl -lm -lasound -lpthread -lportaudio
 
 # The pre-processor options used by the cpp (man cpp for more).
-CPPFLAGS  = -Os
+CPPFLAGS  = -Os -ffast-math -funroll-loops -Wno-psabi -fPIC -DPIC
 
 # The options used in linking as well as in any direct use of ld.
 LDFLAGS   = -Llibs/portaudio/lib
 
 # The directories in which source files reside.
 # If not specified, only the current directory will be serached.
-SRCDIRS   = src/host/plugins src/host src src/host/plugins/Freeverb
+SRCDIRS   = src/host/plugins src/host src src/host/plugins/Freeverb 
+SRCDIRS  += src/host/caps-0.9.16/ src/host/caps-0.9.16/dsp src/host/caps-0.9.16/waves
 
 # The executable file name.
 # If not specified, current directory name or `a.out' will be used.

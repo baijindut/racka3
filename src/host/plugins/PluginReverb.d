@@ -11,6 +11,7 @@ src/host/plugins/PluginReverb.o: src/host/plugins/PluginReverb.cpp /usr/include/
  /usr/include/i386-linux-gnu/bits/nan.h \
  /usr/include/i386-linux-gnu/bits/mathdef.h \
  /usr/include/i386-linux-gnu/bits/mathcalls.h \
+ /usr/include/i386-linux-gnu/bits/math-finite.h \
  src/host/plugins/PluginReverb.h src/host/plugins/global.h \
  src/host/plugins/../../settings.h libs/portaudio/include/portaudio.h \
  src/host/plugins/../Plugin.h src/cJSON.h src/uthash.h \
@@ -86,11 +87,12 @@ src/host/plugins/PluginReverb.o: src/host/plugins/PluginReverb.cpp /usr/include/
  /usr/include/i386-linux-gnu/bits/unistd.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
  /usr/include/c++/4.6/bits/basic_string.tcc \
- src/host/plugins/../StereoBuffer.h src/host/plugins/../StereoBuffer.h \
- src/host/plugins/Freeverb/revmodel.h src/host/plugins/Freeverb/comb.h \
- src/host/plugins/Freeverb/denormals.h \
- src/host/plugins/Freeverb/allpass.h src/host/plugins/Freeverb/tuning.h \
- /usr/include/libio.h /usr/include/_G_config.h \
- /usr/include/i386-linux-gnu/bits/stdio_lim.h \
+ src/host/plugins/../StereoBuffer.h src/host/plugins/../JsonFile.h \
+ /usr/include/i386-linux-gnu/sys/stat.h \
+ /usr/include/i386-linux-gnu/bits/stat.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
- /usr/include/i386-linux-gnu/bits/stdio2.h
+ /usr/include/i386-linux-gnu/bits/stdio2.h \
+ src/host/plugins/../StereoBuffer.h src/host/plugins/Freeverb/revmodel.h \
+ src/host/plugins/Freeverb/comb.h src/host/plugins/Freeverb/denormals.h \
+ src/host/plugins/Freeverb/allpass.h src/host/plugins/Freeverb/tuning.h
