@@ -31,6 +31,10 @@ static int processCallback( const void *inputBuffer, void *outputBuffer,
                          void *userData );
 
 static int gNumNoInputs = 0;
+
+// copy mono channel to stereo. -1 = off, 0= channel0 to both, 1=channel1 to both
+static int g_monoChannel = -1;
+
 /* This routine will be called by the PortAudio engine when audio is needed.
 ** It may be called at interrupt level on some machines so don't do anything
 ** that could mess up the system like calling malloc() or free().
@@ -49,6 +53,21 @@ static int processCallback( const void *inputBuffer, void *outputBuffer,
 	{
 		inLeft = ((float **) inputBuffer)[0];
     	inRight = ((float **) inputBuffer)[1];
+
+    	// copy 0->1 or 1->0
+    	if (g_monoChannel>=0)
+    	{
+    		if (g_monoChannel==0)
+    		{
+    			for (int t=0;t<framesPerBuffer;t++)
+    				inRight[t]=inLeft[t];
+    		}
+    		else
+    		{
+    			for (int t=0;t<framesPerBuffer;t++)
+    				inLeft[t]=inRight[t];
+    		}
+    	}
 	}
 	else // we are in mono mode.
 	{
@@ -205,19 +224,22 @@ int main(int argc,char* argv[])
     data.toneBlocks=0;
 
     // get args to specify what sound device
-    char* inName = 0;
-    char* outName =0;
+    char* devName = 0;
 
-    if (argc>2)
+    for (int i=1;i<argc;i++)
     {
-    	inName=argv[1];
-    	outName=argv[2];
+    	char* arg = argv[i];
+
+    	if (strstr(arg,"device=")==arg)
+    		devName = &arg[strlen("device=")];
+    	if (strstr(arg,"mono=")==arg)
+    	    		g_monoChannel = atoi(&arg[strlen("mono=")]);
     }
 
     err = Pa_Initialize();
     if( err != paNoError ) goto error;
 
-    setAudioIO(&inputParameters,inName,&outputParameters,outName);
+    setAudioIO(&inputParameters,devName,&outputParameters,devName);
 
     if (inputParameters.device == paNoDevice) {
       fprintf(stderr,"Error: No default input device.\n");

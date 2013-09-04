@@ -181,14 +181,16 @@ int Plugin::getParams(cJSON* jsonParamArray) {
 
 	return ok;
 }
-int Plugin::getPluginJson(cJSON* jsonObject) {
+int Plugin::getPluginJson(cJSON* jsonObject,bool bFullParamInfo) {
 
 	cJSON_AddItemToObject(jsonObject,"name",cJSON_CreateString(_name));
-	cJSON_AddItemToObject(jsonObject,"description",cJSON_CreateString(_description));
 	cJSON_AddItemToObject(jsonObject,"version",cJSON_CreateNumber(_version));
 	cJSON_AddItemToObject(jsonObject,"instance",cJSON_CreateNumber(_instance));
 	cJSON_AddItemToObject(jsonObject,"position",cJSON_CreateNumber(_position));
 	cJSON_AddItemToObject(jsonObject,"friend",cJSON_CreateNumber(_friend));
+
+	if (bFullParamInfo)
+		cJSON_AddItemToObject(jsonObject,"description",cJSON_CreateString(_description));
 
 	cJSON* paramArray = cJSON_CreateArray();
 	PluginParam* pParam = _paramList;
@@ -205,15 +207,18 @@ int Plugin::getPluginJson(cJSON* jsonObject) {
 			value = getParam(pParam->index);
 
 		cJSON_AddItemToObject(paramObject,"name",cJSON_CreateString(pParam->name));
-		cJSON_AddItemToObject(paramObject,"description",cJSON_CreateString(pParam->description));
-		cJSON_AddItemToObject(paramObject,"units",cJSON_CreateString(pParam->units));
-		cJSON_AddItemToObject(paramObject,"minName",cJSON_CreateString(pParam->minName));
-		cJSON_AddItemToObject(paramObject,"maxName",cJSON_CreateString(pParam->maxName));
-		cJSON_AddItemToObject(paramObject,"max",cJSON_CreateNumber((int)pParam->max));
-		cJSON_AddItemToObject(paramObject,"min",cJSON_CreateNumber((int)pParam->min));
-		cJSON_AddItemToObject(paramObject,"step",cJSON_CreateNumber((int)pParam->step));
-		//cJSON_AddItemToObject(paramObject,"defaultValue",cJSON_CreateNumber((int)pParam->defaultValue));
 		cJSON_AddItemToObject(paramObject,"value",cJSON_CreateNumber(value));
+
+		if (bFullParamInfo)
+		{
+			cJSON_AddItemToObject(paramObject,"description",cJSON_CreateString(pParam->description));
+			cJSON_AddItemToObject(paramObject,"units",cJSON_CreateString(pParam->units));
+			cJSON_AddItemToObject(paramObject,"minName",cJSON_CreateString(pParam->minName));
+			cJSON_AddItemToObject(paramObject,"maxName",cJSON_CreateString(pParam->maxName));
+			cJSON_AddItemToObject(paramObject,"max",cJSON_CreateNumber((int)pParam->max));
+			cJSON_AddItemToObject(paramObject,"min",cJSON_CreateNumber((int)pParam->min));
+			cJSON_AddItemToObject(paramObject,"step",cJSON_CreateNumber((int)pParam->step));
+		}
 
 		cJSON* labelArray = cJSON_CreateArray();
 		for (vector<string>::iterator it = pParam->labels.begin();it!=pParam->labels.end();++it)

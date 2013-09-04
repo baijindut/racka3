@@ -27,7 +27,7 @@ public:
 
 	void getAvailablePlugins(cJSON* json);
 
-	void getPluginChain(cJSON* json);
+	void getPluginChain(cJSON* json,bool bFullParamInfo = true);
 
 	void addPlugin(cJSON* json);			// name, position
 	void removePlugin(cJSON* json);		// instance
@@ -39,6 +39,11 @@ public:
 
 	void storePluginPreset(cJSON* json);
 	void deletePluginPreset(cJSON* json);
+
+	void storeRackPreset(cJSON* json);
+	void deleteRackPreset(cJSON* json);
+	void loadRackPreset(cJSON* json);
+
 
 private:
 
@@ -70,6 +75,8 @@ private:
 	void chainUnlock();
 
 	int _nextInstance;
+
+	JsonFile* _rackPresets;
 };
 
 #endif /* HOST_H_ */
