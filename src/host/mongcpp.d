@@ -21,16 +21,14 @@ src/host/mongcpp.o: src/host/mongcpp.cpp src/host/mongcpp.h \
  /usr/include/i386-linux-gnu/bits/select.h \
  /usr/include/i386-linux-gnu/bits/sigset.h \
  /usr/include/i386-linux-gnu/bits/time.h \
- /usr/include/i386-linux-gnu/bits/select2.h \
  /usr/include/i386-linux-gnu/sys/sysmacros.h \
  /usr/include/i386-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
- /usr/include/i386-linux-gnu/bits/stdlib.h src/host/mongoose.h \
- /usr/include/stdio.h /usr/include/libio.h /usr/include/_G_config.h \
- /usr/include/wchar.h /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
+ src/host/mongoose.h /usr/include/stdio.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/wchar.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
- /usr/include/i386-linux-gnu/bits/stdio2.h /usr/include/c++/4.6/string \
- /usr/include/c++/4.6/bits/stringfwd.h \
+ /usr/include/c++/4.6/string /usr/include/c++/4.6/bits/stringfwd.h \
  /usr/include/c++/4.6/bits/char_traits.h \
  /usr/include/c++/4.6/bits/stl_algobase.h \
  /usr/include/c++/4.6/bits/functexcept.h \
@@ -45,7 +43,6 @@ src/host/mongcpp.o: src/host/mongcpp.cpp src/host/mongcpp.h \
  /usr/include/c++/4.6/bits/stl_iterator.h \
  /usr/include/c++/4.6/debug/debug.h /usr/include/c++/4.6/bits/postypes.h \
  /usr/include/c++/4.6/cwchar /usr/include/i386-linux-gnu/bits/wchar.h \
- /usr/include/i386-linux-gnu/bits/wchar2.h \
  /usr/include/c++/4.6/bits/allocator.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/c++allocator.h \
  /usr/include/c++/4.6/ext/new_allocator.h /usr/include/c++/4.6/new \
@@ -70,7 +67,6 @@ src/host/mongcpp.o: src/host/mongcpp.cpp src/host/mongcpp.h \
  /usr/include/i386-linux-gnu/bits/posix_opt.h \
  /usr/include/i386-linux-gnu/bits/environments.h \
  /usr/include/i386-linux-gnu/bits/confname.h /usr/include/getopt.h \
- /usr/include/i386-linux-gnu/bits/unistd.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
  /usr/include/c++/4.6/initializer_list \
  /usr/include/c++/4.6/bits/basic_string.tcc /usr/include/c++/4.6/map \
@@ -100,4 +96,4 @@ src/host/mongcpp.o: src/host/mongcpp.cpp src/host/mongcpp.h \
  /usr/include/c++/4.6/bits/ostream.tcc \
  /usr/include/c++/4.6/bits/istream.tcc \
  /usr/include/c++/4.6/bits/sstream.tcc /usr/include/c++/4.6/cstring \
- /usr/include/string.h /usr/include/i386-linux-gnu/bits/string3.h
+ /usr/include/string.h

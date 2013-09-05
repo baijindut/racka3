@@ -18,8 +18,7 @@ src/host/plugins/Filter.o: src/host/plugins/Filter.C /usr/include/math.h \
  /usr/include/_G_config.h /usr/include/wchar.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
- /usr/include/i386-linux-gnu/bits/sys_errlist.h \
- /usr/include/i386-linux-gnu/bits/stdio2.h src/host/plugins/Filter.h \
+ /usr/include/i386-linux-gnu/bits/sys_errlist.h src/host/plugins/Filter.h \
  src/host/plugins/global.h src/host/plugins/../../settings.h \
  libs/portaudio/include/portaudio.h src/host/plugins/Filter_.h \
  src/host/plugins/AnalogFilter.h src/host/plugins/FormantFilter.h \

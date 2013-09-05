@@ -23,6 +23,7 @@
 #include "plugins/PluginReverb.h"
 #include "plugins/PluginEQ.h"
 #include "plugins/PluginExpander.h"
+#include "CAPSPluginWrapper.h"
 
 #include <stdio.h>
 #include <algorithm>
@@ -50,6 +51,8 @@ Host::Host()
 	_pluginNames.push_back("Reverb");
 	_pluginNames.push_back("EQ");
 	_pluginNames.push_back("Expander");
+
+	_pluginNames.push_back("AutoFilter");
 
 	// loop over all names and create all plugin json list
 	_jsonAllPlugins = cJSON_CreateArray();
@@ -573,6 +576,9 @@ Plugin* Host::createNewPlugin(string name)
 		plugin = new PluginEQ();
 	} else if (name=="Expander") {
 		plugin = new PluginExpander();
+	}
+	else if (name=="AutoFilter") {
+		plugin = new CAPSPluginWrapper("AutoFilter");
 	}
 
 	// do extra stuff for plugin

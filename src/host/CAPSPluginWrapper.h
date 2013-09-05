@@ -31,6 +31,7 @@ private:
 
     vector <float> _paramMultipliers;
     vector <float> _paramValues;
+    vector <int> _paramOffset;
 
     vector <int> _inputAudioPorts;
     vector <int> _outputAudioPorts;
