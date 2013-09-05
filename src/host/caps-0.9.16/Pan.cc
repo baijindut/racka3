@@ -184,12 +184,15 @@ Narrower::cycle (uint frames)
 PortInfo
 Narrower::port_info [] =
 {
-	{ "in.l", INPUT | AUDIO }, { "in.r", INPUT | AUDIO }, 
-	{	"mode", INPUT | CONTROL, {INTEGER | DEFAULT_0, 0, 1}, 
-		"{0:'crossfeed mixing',1:'mid/side processing',}" }, 
+	{ "in.l", INPUT | AUDIO },
+	{ "in.r", INPUT | AUDIO },
+	{	"mode", INPUT | CONTROL,
+		{INTEGER | DEFAULT_0, 0, 1},
+		"{0:'crossfeed mixing',1:'mid/side processing',}"
+	},
 	{ "strength", INPUT | CONTROL | GROUP, {DEFAULT_LOW, 0, 1} }, 
 	{ "out.l", OUTPUT | AUDIO }, 
-	{	"out.r", OUTPUT | AUDIO	}
+	{ "out.r", OUTPUT | AUDIO	}
 };
 
 template <> void

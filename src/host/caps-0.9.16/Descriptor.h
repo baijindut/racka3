@@ -109,11 +109,16 @@ class Descriptor
 				ranges = new LADSPA_PortRangeHint [PortCount];
 				PortRangeHints = ranges;
 
+				const char** meta = new const char*[PortCount];
+				PortMetaData = meta;
+
 				for (int i = 0; i < (int) PortCount; ++i)
 				{
 					names[i] = T::port_info[i].name;
 					desc[i] = T::port_info[i].descriptor;
 					ranges[i] = T::port_info[i].range;
+					meta[i] = T::port_info[i].meta;
+
 					if (desc[i] & INPUT)
 						ranges[i].HintDescriptor |= BOUNDED;
 				}

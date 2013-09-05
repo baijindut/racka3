@@ -36,8 +36,9 @@ src/host/caps-0.9.16//Pan.o: src/host/caps-0.9.16//Pan.cc src/host/caps-0.9.16//
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
  /usr/include/i386-linux-gnu/bits/stdio2.h src/host/caps-0.9.16//ladspa.h \
- src/host/caps-0.9.16//dsp/RBJ.h src/host/caps-0.9.16//dsp/BiQuad.h \
- src/host/caps-0.9.16//dsp/complex.h src/host/caps-0.9.16//Pan.h \
- src/host/caps-0.9.16//dsp/Delay.h src/host/caps-0.9.16//dsp/util.h \
+ src/host/caps-0.9.16//LadspaPlugin.h src/host/caps-0.9.16//dsp/RBJ.h \
+ src/host/caps-0.9.16//dsp/BiQuad.h src/host/caps-0.9.16//dsp/complex.h \
+ src/host/caps-0.9.16//Pan.h src/host/caps-0.9.16//dsp/Delay.h \
+ src/host/caps-0.9.16//dsp/util.h \
  src/host/caps-0.9.16//dsp/FPTruncateMode.h \
  src/host/caps-0.9.16//dsp/BiQuad.h src/host/caps-0.9.16//Descriptor.h

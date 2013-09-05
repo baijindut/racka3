@@ -414,6 +414,8 @@ typedef struct _LADSPA_Descriptor {
      above). Valid indices vary from 0 to PortCount-1. */
   const LADSPA_PortRangeHint * PortRangeHints;
 
+  const char** PortMetaData;
+
   /* This may be used by the plugin developer to pass any custom
      implementation data into an instantiate call. It must not be used
      or interpreted by the host. It is expected that most plugin

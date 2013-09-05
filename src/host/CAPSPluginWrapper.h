@@ -11,11 +11,14 @@
 #include "caps-0.9.16/basics.h"
 #include "Plugin.h"
 
-class LadspaPluginWrapper: public Plugin
+#include <string>
+
+
+class CAPSPluginWrapper: public Plugin
 {
 public:
-	LadspaPluginWrapper(LadspaPlugin* ladspaPlugin);
-	virtual ~LadspaPluginWrapper();
+	CAPSPluginWrapper(string name);
+	virtual ~CAPSPluginWrapper();
 
 	int process(StereoBuffer* input);
 
@@ -23,7 +26,16 @@ private:
     void setParam (int npar, int value);
     int getParam (int npar);
 
-    LadspaPlugin* _p;
+    const LADSPA_Descriptor* _p;
+    LADSPA_Handle _h;
+
+    vector <float> _paramMultipliers;
+    vector <float> _paramValues;
+
+    vector <int> _inputAudioPorts;
+    vector <int> _outputAudioPorts;
+
+    StereoBuffer* _inputBuffer;
 };
 
 #endif /* LADSPAPLUGINHOST_H_ */
