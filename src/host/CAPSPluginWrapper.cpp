@@ -16,8 +16,9 @@
 CAPSPluginWrapper::CAPSPluginWrapper()
 {
 	_p=0;
-	_h=0;
-	_inputBuffer=0;
+	_h[0]=0;
+	_h[1]=0;
+	_instanceCount=0;
 }
 
 bool CAPSPluginWrapper::loadCapsPlugin(string  name)
@@ -31,7 +32,7 @@ bool CAPSPluginWrapper::loadCapsPlugin(string  name)
 	const LADSPA_Descriptor* d=ladspa_descriptor(i);
 	while (d)
 	{
-		if (strcasecmp(name.c_str(),d->Label)==0)
+		if (strcasecmp(name.substr(strlen(CAPS)).c_str(),d->Label)==0)
 		{
 			_p = d;
 		}
@@ -41,142 +42,144 @@ bool CAPSPluginWrapper::loadCapsPlugin(string  name)
 	// if we got a descriptor
 	if (_p)
 	{
-		// create actual instance
-		_h = _p->instantiate(_p,SAMPLE_RATE);
-		if (_h)
+		// register plugin itself
+		char pname[128];
+		sprintf(pname,"%s%s",CAPS,_p->Label);
+		registerPlugin(1,pname,(char*)_p->Name,1);
+
+		// loop over params and register
+		for (i=0;i<_p->PortCount;i++)
 		{
-			// register plugin itself
-			registerPlugin(1,(char*)_p->Label,(char*)_p->Name,1);
+			LADSPA_PortDescriptor desc = _p->PortDescriptors[i];
+			LADSPA_PortRangeHint hint = _p->PortRangeHints[i];
+			const char* name = _p->PortNames[i];
+			const char* meta = _p->PortMetaData[i];
 
-			// loop over params and register
-			for (i=0;i<_p->PortCount;i++)
+			float min,max,step,value;
+			char* labelJson;
+
+			labelJson = (char*)meta;
+
+			if (LADSPA_IS_PORT_AUDIO(desc))
 			{
-				LADSPA_PortDescriptor desc = _p->PortDescriptors[i];
-				LADSPA_PortRangeHint hint = _p->PortRangeHints[i];
-				const char* name = _p->PortNames[i];
-				const char* meta = _p->PortMetaData[i];
+				// audio port
+				if (LADSPA_IS_PORT_INPUT(desc))
+					_inputAudioPorts.push_back(i);
+				else
+					_outputAudioPorts.push_back(i);
+			}
+			else if (LADSPA_IS_PORT_CONTROL(desc) && LADSPA_IS_PORT_INPUT(desc))
+			{
+				// param
+				min = hint.LowerBound;
+				max = hint.UpperBound;
 
-				float min,max,step,value;
-				char* labelJson;
+				PluginParam* param=0;
+				float multiplier = 1.0f;
+				int offset=0;
+				vector<string> labels;
+				bool doRegister=false;
 
-				labelJson = (char*)meta;
+				// todo get value from first preset
 
-				if (LADSPA_IS_PORT_AUDIO(desc))
+				value = min;
+
+				if (labelJson && LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
 				{
-					// audio port
-					if (LADSPA_IS_PORT_INPUT(desc))
-						_inputAudioPorts.push_back(i);
-					else
-						_outputAudioPorts.push_back(i);
-				}
-				else if (LADSPA_IS_PORT_CONTROL(desc) && LADSPA_IS_PORT_INPUT(desc))
-				{
-					// param
-					min = hint.LowerBound;
-					max = hint.UpperBound;
+					// we have labels
+					offset = min;
 
-					PluginParam* param=0;
-					float multiplier = 1.0f;
-					int offset=0;
-					vector<string> labels;
-					bool doRegister=false;
-
-					// todo get value from first preset
-
-					value = min;
-
-					if (labelJson && LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
+					// decode labels
+					// they look like this:
+					// {0:'breathy',1:'fat A',2:'fat B',3:'fat C',4:'fat D'}
+					char* txt = (char*)malloc(strlen(labelJson)+1);
+					char* a=labelJson;
+					char* b=txt;
+					while (*a)
 					{
-						// we have labels
-						offset = min;
-
-						// decode labels
-						// they look like this:
-						// {0:'breathy',1:'fat A',2:'fat B',3:'fat C',4:'fat D'}
-						char* txt = (char*)malloc(strlen(labelJson)+1);
-						char* a=labelJson;
-						char* b=txt;
-						while (*a)
+						if (*a != '{' && *a !='}' && *a != '\'')
 						{
-							if (*a != '{' && *a !='}' && *a != '\'')
-							{
-								*b = *a;
-								b++;
-							}
-							a++;
+							*b = *a;
+							b++;
 						}
-						*b=0;
-						// now we have txt with just comma seperated key:value
-						char* tok = strtok (txt,",");
-						while (tok != NULL)
+						a++;
+					}
+					*b=0;
+					// now we have txt with just comma seperated key:value
+					char* tok = strtok (txt,",");
+					while (tok != NULL)
+					{
+						int key;
+						char value[128];
+						if (2==sscanf(tok,"%d:%[^\t\n]",&key,value))
 						{
-							int key;
-							char value[128];
-							if (2==sscanf(tok,"%d:%[^\t\n]",&key,value))
-							{
-								labels.push_back(string(value));
-							}
-
-							tok = strtok (NULL, ",");
+							labels.push_back(string(value));
 						}
 
-						free(txt);
+						tok = strtok (NULL, ",");
+					}
 
-						// register, but there may be a offset
-						doRegister = true;
+					free(txt);
+
+					// register, but there may be a offset
+					doRegister = true;
+				}
+				else
+				{
+					if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
+					{
+						doRegister=true;
 					}
 					else
 					{
-						if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
+						if (min==0 && max ==1)
 						{
-							doRegister=true;
+							multiplier = 127;
+							min=0;max=127;
 						}
-						else
-						{
-							if (min==0 && max ==1)
-							{
-								multiplier = 127;
-								min=0;max=127;
-							}
-							doRegister=true;
-						}
-					}
-
-					// we have to have the values for params locally
-					if (doRegister)
-					{
-						_paramOffset.push_back(offset);
-						_paramValues.push_back(value);
-						_paramMultipliers.push_back(multiplier);
-
-						if (labels.size())
-							param = registerParam(i,(char*)name,labels,value);
-						else
-							param = registerParam(i,(char*)name,"","","","",min,max,1,value*multiplier);
-
-						_p->connect_port(_h,i,&(_paramValues[_paramValues.size()-1]));
+						doRegister=true;
 					}
 				}
-			}	// end params loop
 
-			// connect audio ports
-			_inputBuffer = new StereoBuffer(PERIOD);
+				// we have to have the values for params locally
+				if (doRegister)
+				{
+					_paramOffset.push_back(offset);
+					_paramValues.push_back(value);
+					_paramMultipliers.push_back(multiplier);
 
-			for (i=0;i< (_inputAudioPorts.size()>2?2:_inputAudioPorts.size());i++ ) {
-				int port = _inputAudioPorts[i];
-				_p->connect_port(_h,port,i==0?_inputBuffer->left:_inputBuffer->right);
+					if (labels.size())
+						param = registerParam(i,(char*)name,labels,value);
+					else
+						param = registerParam(i,(char*)name,"","","","",min,max,1,value*multiplier);
+				}
 			}
-
-			for (i=0;i< (_outputAudioPorts.size()>2?2:_outputAudioPorts.size());i++ ) {
-				int port = _outputAudioPorts[i];
-				_p->connect_port(_h,port,i==0?_outputBuffers[0]->left:_outputBuffers[0]->right);
-			}
-		}
+		}	// end params loop
 	}
 
-	if (_p && _h)
+	// create actual instance(s)
+	// scenarios:
+	// mono input, stereo output: NOT ALLOWED
+	// mono input, mono output: 2 instances
+	// stereo input, stereo output: 1 instances
+
+	assert(_inputAudioPorts.size() && _outputAudioPorts.size());
+	assert(! (_inputAudioPorts.size()==1 && _outputAudioPorts.size()==2));
+
+	_h[0] = _p->instantiate(_p,SAMPLE_RATE);
+	_instanceCount =1;
+	if (_inputAudioPorts.size()==1 && _outputAudioPorts.size()==1) {
+		_h[1] = _p->instantiate(_p,SAMPLE_RATE);
+		_instanceCount=2;
+	}
+	else
+		_h[1]=0;
+
+	if (_p)
 	{
-		_p->activate(_h);
+		for (i=0;i<_instanceCount;i++)
+			_p->activate(_h[i]);
+
 		return true;
 	}
 
@@ -185,11 +188,16 @@ bool CAPSPluginWrapper::loadCapsPlugin(string  name)
 
 CAPSPluginWrapper::~CAPSPluginWrapper()
 {
-	if (_p->deactivate)
-		_p->deactivate(_h);
+	int i;
 
-	if (_p->cleanup)
-		_p->cleanup(_h);
+	for (i=0;i<_instanceCount;i++)
+	{
+		if (_p->deactivate)
+			_p->deactivate(_h[i]);
+
+		if (_p->cleanup)
+			_p->cleanup(_h[i]);
+	}
 
 	// delete _p ?
 }
@@ -198,26 +206,47 @@ int CAPSPluginWrapper::process(StereoBuffer* input)
 {
 	int i;
 
-	// copy to input
-	if (_inputAudioPorts.size()==1)
+	if (_instanceCount==1)
 	{
-		// stereo mixdown
-		for (i=0;i<input->length;i++)
-		{
-			_inputBuffer->left[i]= (input->left[i] * 0.5) + (input->right[i] * 0.5);
+		// connect all ports
+		for (i=0;i<_paramValues.size();i++) {
+			_p->connect_port(_h[0],i,&(_paramValues[i]));
 		}
-	}
-	else
-	{
-		// standard stereo
-		for (i=0;i<input->length;i++)
-		{
-			_inputBuffer->left[i]=input->left[i];
-			_inputBuffer->right[i]=input->right[i];
-		}
-	}
 
-	_p->run(_h,_inputBuffer->length);
+		for (i=0;i< (_inputAudioPorts.size()>2?2:_inputAudioPorts.size());i++ ) {
+			int port = _inputAudioPorts[i];
+			_p->connect_port(_h[0],port,i==0?input->left:input->right);
+		}
+
+		for (i=0;i< (_outputAudioPorts.size()>2?2:_outputAudioPorts.size());i++ ) {
+			int port = _outputAudioPorts[i];
+			_p->connect_port(_h[0],port,i==0?_outputBuffers[0]->left:_outputBuffers[0]->right);
+		}
+
+		_p->run(_h[0],input->length);
+	}
+	else if (_instanceCount==2)
+	{
+		// connect all ports
+		for (int inst=0;inst<2;inst++)
+		{
+			for (i=0;i<_paramValues.size();i++) {
+				_p->connect_port(_h[inst],i,&(_paramValues[i]));
+			}
+		}
+
+		int inPort = _inputAudioPorts[0];
+		int outPort = _outputAudioPorts[0];
+
+		_p->connect_port(_h[0],inPort,input->left);
+		_p->connect_port(_h[1],inPort,input->right);
+
+		_p->connect_port(_h[0],outPort,_outputBuffers[0]->left);
+		_p->connect_port(_h[1],outPort,_outputBuffers[0]->right);
+
+		_p->run(_h[0],input->length);
+		_p->run(_h[1],input->length);
+	}
 
 	return paContinue;
 }
@@ -227,7 +256,7 @@ void CAPSPluginWrapper::setParam(int npar, int value)
 	if (npar>=0 && npar<=_paramValues.size())
 	{
 		float val = (value / _paramMultipliers[npar])+_paramOffset[npar];
-		printf("set val = %f\n",val);
+		//printf("set val = %f\n",val);
 		_paramValues[npar]= val;
 	}
 }

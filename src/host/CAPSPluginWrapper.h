@@ -29,7 +29,8 @@ private:
     int getParam (int npar);
 
     const LADSPA_Descriptor* _p;
-    LADSPA_Handle _h;
+    LADSPA_Handle _h[2]; // in case we need left and right
+    int _instanceCount;
 
     vector <float> _paramMultipliers;
     vector <float> _paramValues;
@@ -37,8 +38,6 @@ private:
 
     vector <int> _inputAudioPorts;
     vector <int> _outputAudioPorts;
-
-    StereoBuffer* _inputBuffer;
 };
 
 #endif /* LADSPAPLUGINHOST_H_ */
