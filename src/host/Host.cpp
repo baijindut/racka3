@@ -60,9 +60,12 @@ Host::Host()
 	{
 		cJSON* jsonObject = cJSON_CreateObject();
 		Plugin* plugin = createNewPlugin(*it);
-		plugin->getPluginJson(jsonObject);
-		delete plugin;
-		cJSON_AddItemToArray(_jsonAllPlugins,jsonObject);
+		if (plugin)
+		{
+			plugin->getPluginJson(jsonObject);
+			delete plugin;
+			cJSON_AddItemToArray(_jsonAllPlugins,jsonObject);
+		}
 	}
 
 //	pthread_mutexattr_t Attr;
@@ -578,7 +581,11 @@ Plugin* Host::createNewPlugin(string name)
 		plugin = new PluginExpander();
 	}
 	else if (name=="AutoFilter") {
-		plugin = new CAPSPluginWrapper("AutoFilter");
+		plugin = new CAPSPluginWrapper();
+		if (!((CAPSPluginWrapper*)plugin)->loadCapsPlugin(name) ) {
+			delete plugin; plugin=0;
+		}
+
 	}
 
 	// do extra stuff for plugin

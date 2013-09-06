@@ -65,7 +65,7 @@ int Plugin::setParam(char* name,int value)
 			printf("setParam should never get called wih PARAM_PRESET!!\n");
 		else
 		{
-			printf("set param(%d,%d)\n",pPluginParam->index,value);
+			//printf("set param(%d,%d)\n",pPluginParam->index,value);
 			pPluginParam->plugin->setParam(pPluginParam->index,value);
 		}
 	}

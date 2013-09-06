@@ -184,7 +184,7 @@ class Descriptor
 
 		static void _run (LADSPA_Handle h, ulong n)
 			{
-				if (!n) return;
+				//if (!n) return;
 
 				T * plugin = (T *) h;
 

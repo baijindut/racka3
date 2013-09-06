@@ -1,8 +1,11 @@
 {
 	"presets":	{
 		"default":	{
+			"over":	0,
+			"mode":	0,
+			"filter":	0,
 			"gain (dB)":	0,
-			"f (Hz)":	0,
+			"f (Hz)":	20,
 			"Q":	0,
 			"range":	0,
 			"lfo/env":	0,

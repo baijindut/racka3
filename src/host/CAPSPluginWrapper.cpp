@@ -11,9 +11,16 @@
 #include <vector>
 #include <string>
 #include "settings.h"
+#include <algorithm>
 
+CAPSPluginWrapper::CAPSPluginWrapper()
+{
+	_p=0;
+	_h=0;
+	_inputBuffer=0;
+}
 
-CAPSPluginWrapper::CAPSPluginWrapper(string  name)
+bool CAPSPluginWrapper::loadCapsPlugin(string  name)
 {
 	vector <string> names;
 
@@ -22,7 +29,6 @@ CAPSPluginWrapper::CAPSPluginWrapper(string  name)
 	// get get the descriptor
 	int i=0;
 	const LADSPA_Descriptor* d=ladspa_descriptor(i);
-	const LADSPA_Descriptor* _p=0;
 	while (d)
 	{
 		if (strcasecmp(name.c_str(),d->Label)==0)
@@ -72,8 +78,11 @@ CAPSPluginWrapper::CAPSPluginWrapper(string  name)
 					PluginParam* param=0;
 					float multiplier = 1.0f;
 					int offset=0;
+					vector<string> labels;
+					bool doRegister=false;
 
 					// todo get value from first preset
+
 					value = min;
 
 					if (labelJson && LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
@@ -81,40 +90,70 @@ CAPSPluginWrapper::CAPSPluginWrapper(string  name)
 						// we have labels
 						offset = min;
 
-						vector<string> labels;
-
-						// todo: parse that shit
-
-
 						// decode labels
+						// they look like this:
 						// {0:'breathy',1:'fat A',2:'fat B',3:'fat C',4:'fat D'}
+						char* txt = (char*)malloc(strlen(labelJson)+1);
+						char* a=labelJson;
+						char* b=txt;
+						while (*a)
+						{
+							if (*a != '{' && *a !='}' && *a != '\'')
+							{
+								*b = *a;
+								b++;
+							}
+							a++;
+						}
+						*b=0;
+						// now we have txt with just comma seperated key:value
+						char* tok = strtok (txt,",");
+						while (tok != NULL)
+						{
+							int key;
+							char value[128];
+							if (2==sscanf(tok,"%d:%[^\t\n]",&key,value))
+							{
+								labels.push_back(string(value));
+							}
+
+							tok = strtok (NULL, ",");
+						}
+
+						free(txt);
 
 						// register, but there may be a offset
-						param = registerParam(i,(char*)name,labels,value);
+						doRegister = true;
 					}
 					else
 					{
 						if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
 						{
-							param = registerParam(i,(char*)name,"","","","",min,max,1,value);
+							doRegister=true;
 						}
 						else
 						{
 							if (min==0 && max ==1)
 							{
 								multiplier = 127;
+								min=0;max=127;
 							}
-							param = registerParam(i,(char*)name,"","","","",0,127,1,value*multiplier);
-
+							doRegister=true;
 						}
 					}
 
 					// we have to have the values for params locally
-					if (param)
+					if (doRegister)
 					{
 						_paramOffset.push_back(offset);
 						_paramValues.push_back(value);
 						_paramMultipliers.push_back(multiplier);
+
+						if (labels.size())
+							param = registerParam(i,(char*)name,labels,value);
+						else
+							param = registerParam(i,(char*)name,"","","","",min,max,1,value*multiplier);
+
 						_p->connect_port(_h,i,&(_paramValues[_paramValues.size()-1]));
 					}
 				}
@@ -123,26 +162,36 @@ CAPSPluginWrapper::CAPSPluginWrapper(string  name)
 			// connect audio ports
 			_inputBuffer = new StereoBuffer(PERIOD);
 
-			for (i=0;i< (_inputAudioPorts.size()>2?2:_inputAudioPorts.size());i++ )
-				_p->connect_port(_h,_inputAudioPorts[i],i==0?_inputBuffer->left:_inputBuffer->right);
+			for (i=0;i< (_inputAudioPorts.size()>2?2:_inputAudioPorts.size());i++ ) {
+				int port = _inputAudioPorts[i];
+				_p->connect_port(_h,port,i==0?_inputBuffer->left:_inputBuffer->right);
+			}
 
-			for (i=0;i< (_outputAudioPorts.size()>2?2:_outputAudioPorts.size());i++ )
-				_p->connect_port(_h,_outputAudioPorts[i],i==0?_outputBuffers[0]->left:_outputBuffers[0]->right);
+			for (i=0;i< (_outputAudioPorts.size()>2?2:_outputAudioPorts.size());i++ ) {
+				int port = _outputAudioPorts[i];
+				_p->connect_port(_h,port,i==0?_outputBuffers[0]->left:_outputBuffers[0]->right);
+			}
 		}
 	}
 
 	if (_p && _h)
 	{
 		_p->activate(_h);
+		return true;
 	}
+
+	return false;
 }
 
 CAPSPluginWrapper::~CAPSPluginWrapper()
 {
-	if (_p && _h)
-	{
+	if (_p->deactivate)
 		_p->deactivate(_h);
-	}
+
+	if (_p->cleanup)
+		_p->cleanup(_h);
+
+	// delete _p ?
 }
 
 int CAPSPluginWrapper::process(StereoBuffer* input)
@@ -177,7 +226,9 @@ void CAPSPluginWrapper::setParam(int npar, int value)
 {
 	if (npar>=0 && npar<=_paramValues.size())
 	{
-		_paramValues[npar]= (value / _paramMultipliers[npar])+_paramOffset[npar];
+		float val = (value / _paramMultipliers[npar])+_paramOffset[npar];
+		printf("set val = %f\n",val);
+		_paramValues[npar]= val;
 	}
 }
 

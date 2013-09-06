@@ -17,8 +17,10 @@
 class CAPSPluginWrapper: public Plugin
 {
 public:
-	CAPSPluginWrapper(string name);
+	CAPSPluginWrapper();
 	virtual ~CAPSPluginWrapper();
+
+	bool loadCapsPlugin(string name);
 
 	int process(StereoBuffer* input);
 
