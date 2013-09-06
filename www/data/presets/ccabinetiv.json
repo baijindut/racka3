@@ -1,0 +1,9 @@
+{
+	"presets":	{
+		"default":	{
+			"model":	-24,
+			"gain (dB)":	-2147483648,
+			"Mix":	0
+		}
+	}
+}

@@ -52,14 +52,12 @@ Host::Host()
 	_pluginNames.push_back("EQ");
 	_pluginNames.push_back("Expander");
 
-//	_pluginNames.push_back(CAPS"AmpVTS");
-//	_pluginNames.push_back(CAPS"AutoFilter");
-	_pluginNames.push_back(CAPS"CabinetII");
-//	_pluginNames.push_back(CAPS"CabinetIII");
-//	_pluginNames.push_back(CAPS"CabinetIV");
-//	_pluginNames.push_back(CAPS"ChorusI");
-//	_pluginNames.push_back(CAPS"CompressX2");
-//	_pluginNames.push_back(CAPS"Eq10X2");
+	_pluginNames.push_back(CAPS"AmpVTS");
+	_pluginNames.push_back(CAPS"AutoFilter");
+	_pluginNames.push_back(CAPS"CabinetIV");
+	_pluginNames.push_back(CAPS"ChorusI");
+	_pluginNames.push_back(CAPS"CompressX2");
+	_pluginNames.push_back(CAPS"Eq10X2");
 
 	// loop over all names and create all plugin json list
 	_jsonAllPlugins = cJSON_CreateArray();

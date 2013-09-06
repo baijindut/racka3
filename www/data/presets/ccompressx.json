@@ -1,0 +1,14 @@
+{
+	"presets":	{
+		"default":	{
+			"measure":	0,
+			"mode":	0,
+			"threshold":	0,
+			"strength":	0,
+			"attack":	0,
+			"release":	0,
+			"gain (dB)":	-12,
+			"Mix":	0
+		}
+	}
+}

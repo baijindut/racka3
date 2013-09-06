@@ -1,0 +1,13 @@
+{
+	"presets":	{
+		"default":	{
+			"t (ms)":	2,
+			"width (ms)":	0,
+			"rate (Hz)":	0,
+			"blend":	0,
+			"feedforward":	0,
+			"feedback":	0,
+			"Mix":	0
+		}
+	}
+}

@@ -32,7 +32,8 @@ bool CAPSPluginWrapper::loadCapsPlugin(string  name)
 	const LADSPA_Descriptor* d=ladspa_descriptor(i);
 	while (d)
 	{
-		if (strcasecmp(name.substr(strlen(CAPS)).c_str(),d->Label)==0)
+		const char* nmatch = name.substr(strlen(CAPS)).c_str();
+		if (strcasecmp(nmatch,d->Label)==0)
 		{
 			_p = d;
 		}
@@ -157,26 +158,26 @@ bool CAPSPluginWrapper::loadCapsPlugin(string  name)
 		}	// end params loop
 	}
 
-	// create actual instance(s)
-	// scenarios:
-	// mono input, stereo output: NOT ALLOWED
-	// mono input, mono output: 2 instances
-	// stereo input, stereo output: 1 instances
-
-	assert(_inputAudioPorts.size() && _outputAudioPorts.size());
-	assert(! (_inputAudioPorts.size()==1 && _outputAudioPorts.size()==2));
-
-	_h[0] = _p->instantiate(_p,SAMPLE_RATE);
-	_instanceCount =1;
-	if (_inputAudioPorts.size()==1 && _outputAudioPorts.size()==1) {
-		_h[1] = _p->instantiate(_p,SAMPLE_RATE);
-		_instanceCount=2;
-	}
-	else
-		_h[1]=0;
-
 	if (_p)
 	{
+		// create actual instance(s)
+		// scenarios:
+		// mono input, stereo output: NOT ALLOWED
+		// mono input, mono output: 2 instances
+		// stereo input, stereo output: 1 instances
+
+		assert(_inputAudioPorts.size() && _outputAudioPorts.size());
+		assert(! (_inputAudioPorts.size()==1 && _outputAudioPorts.size()==2));
+
+		_h[0] = _p->instantiate(_p,SAMPLE_RATE);
+		_instanceCount =1;
+		if (_inputAudioPorts.size()==1 && _outputAudioPorts.size()==1) {
+			_h[1] = _p->instantiate(_p,SAMPLE_RATE);
+			_instanceCount=2;
+		}
+		else
+			_h[1]=0;
+
 		for (i=0;i<_instanceCount;i++)
 			_p->activate(_h[i]);
 
