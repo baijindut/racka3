@@ -58,6 +58,13 @@ Host::Host()
 	_pluginNames.push_back(CAPS"ChorusI");
 	_pluginNames.push_back(CAPS"CompressX2");
 	_pluginNames.push_back(CAPS"Eq10X2");
+	_pluginNames.push_back(CAPS"NoiseGate");
+	_pluginNames.push_back(CAPS"Narrower");
+	_pluginNames.push_back(CAPS"Wider");
+	_pluginNames.push_back(CAPS"PhaserII");
+	_pluginNames.push_back(CAPS"PlateX2");
+	_pluginNames.push_back(CAPS"SpiceX2");
+	_pluginNames.push_back(CAPS"Scape");
 
 	// loop over all names and create all plugin json list
 	_jsonAllPlugins = cJSON_CreateArray();

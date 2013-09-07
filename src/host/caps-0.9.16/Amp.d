@@ -46,4 +46,7 @@ src/host/caps-0.9.16//Amp.o: src/host/caps-0.9.16//Amp.cc src/host/caps-0.9.16//
  src/host/caps-0.9.16//dsp/tonestack/tables.h \
  src/host/caps-0.9.16//dsp/Compress.h src/host/caps-0.9.16//dsp/RMS.h \
  src/host/caps-0.9.16//dsp/OnePole.h src/host/caps-0.9.16//Descriptor.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/xmmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mm_malloc.h \
  src/host/caps-0.9.16//dsp/polynomials.h

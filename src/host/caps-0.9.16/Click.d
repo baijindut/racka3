@@ -38,10 +38,14 @@ src/host/caps-0.9.16//Click.o: src/host/caps-0.9.16//Click.cc src/host/caps-0.9.
  src/host/caps-0.9.16//dsp/complex.h src/host/caps-0.9.16//dsp/White.h \
  src/host/caps-0.9.16//Click.h src/host/caps-0.9.16//dsp/OnePole.h \
  src/host/caps-0.9.16//dsp/BiQuad.h src/host/caps-0.9.16//dsp/util.h \
- src/host/caps-0.9.16//Descriptor.h src/host/caps-0.9.16//Cabinet.h \
- src/host/caps-0.9.16//dsp/Oversampler.h src/host/caps-0.9.16//dsp/FIR.h \
- src/host/caps-0.9.16//dsp/util.h src/host/caps-0.9.16//dsp/sinc.h \
- src/host/caps-0.9.16//dsp/Sine.h src/host/caps-0.9.16//dsp/windows.h \
- src/host/caps-0.9.16//dsp/v4f.h src/host/caps-0.9.16//dsp/v4f_FIR.h \
- src/host/caps-0.9.16//dsp/v4f.h src/host/caps-0.9.16//dsp/v4f_BiQuad.h \
+ src/host/caps-0.9.16//Descriptor.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/xmmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mm_malloc.h \
+ src/host/caps-0.9.16//Cabinet.h src/host/caps-0.9.16//dsp/Oversampler.h \
+ src/host/caps-0.9.16//dsp/FIR.h src/host/caps-0.9.16//dsp/util.h \
+ src/host/caps-0.9.16//dsp/sinc.h src/host/caps-0.9.16//dsp/Sine.h \
+ src/host/caps-0.9.16//dsp/windows.h src/host/caps-0.9.16//dsp/v4f.h \
+ src/host/caps-0.9.16//dsp/v4f_FIR.h src/host/caps-0.9.16//dsp/v4f.h \
+ src/host/caps-0.9.16//dsp/v4f_BiQuad.h \
  src/host/caps-0.9.16//waves/click.h src/host/caps-0.9.16//waves/profit.h

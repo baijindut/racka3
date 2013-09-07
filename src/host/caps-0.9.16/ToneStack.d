@@ -41,5 +41,8 @@ src/host/caps-0.9.16//ToneStack.o: src/host/caps-0.9.16//ToneStack.cc \
  src/host/caps-0.9.16//dsp/LatFilt.h \
  src/host/caps-0.9.16//dsp/tonestack/tables.h \
  src/host/caps-0.9.16//Descriptor.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/xmmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mm_malloc.h \
  src/host/caps-0.9.16//dsp/tonestack/ks_tab.h \
  src/host/caps-0.9.16//dsp/tonestack/vs_tab.h

@@ -13,6 +13,8 @@
 
 #include <string>
 
+#define CAPSMAXPARAMS 128
+
 
 class CAPSPluginWrapper: public Plugin
 {
@@ -32,12 +34,15 @@ private:
     LADSPA_Handle _h[2]; // in case we need left and right
     int _instanceCount;
 
-    vector <float> _paramMultipliers;
-    vector <float> _paramValues;
-    vector <int> _paramOffset;
+    float _paramMultipliers[CAPSMAXPARAMS];
+    float _paramValues[CAPSMAXPARAMS];
+    int _paramOffset[CAPSMAXPARAMS];
+    bool _paramLegit[CAPSMAXPARAMS];
 
     vector <int> _inputAudioPorts;
     vector <int> _outputAudioPorts;
+
+    float* _monoBuffer;
 };
 
 #endif /* LADSPAPLUGINHOST_H_ */

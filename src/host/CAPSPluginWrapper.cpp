@@ -19,6 +19,15 @@ CAPSPluginWrapper::CAPSPluginWrapper()
 	_h[0]=0;
 	_h[1]=0;
 	_instanceCount=0;
+	_monoBuffer=0;
+
+	for (int i=0;i<CAPSMAXPARAMS;i++)
+	{
+		_paramMultipliers[i]=0;
+		_paramValues[i]=0;
+		_paramOffset[i]=0;
+		_paramLegit[i]=false;
+	}
 }
 
 bool CAPSPluginWrapper::loadCapsPlugin(string  name)
@@ -74,6 +83,7 @@ bool CAPSPluginWrapper::loadCapsPlugin(string  name)
 				// param
 				min = hint.LowerBound;
 				max = hint.UpperBound;
+				value = ((max-min) / 2.0 ) + min;
 
 				PluginParam* param=0;
 				float multiplier = 1.0f;
@@ -81,14 +91,12 @@ bool CAPSPluginWrapper::loadCapsPlugin(string  name)
 				vector<string> labels;
 				bool doRegister=false;
 
-				// todo get value from first preset
-
-				value = min;
-
+				// if this a list?
 				if (labelJson && LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
 				{
 					// we have labels
 					offset = min;
+					value = min;
 
 					// decode labels
 					// they look like this:
@@ -125,19 +133,31 @@ bool CAPSPluginWrapper::loadCapsPlugin(string  name)
 					// register, but there may be a offset
 					doRegister = true;
 				}
-				else
+				else // this is a standard parameter
 				{
+					// is it an integer?
 					if (LADSPA_IS_HINT_INTEGER(hint.HintDescriptor))
 					{
+						// default value is halfway
+						value = (int)value;
 						doRegister=true;
 					}
-					else
+					else // its a float
 					{
+						// is it a normalised knob (0.0-1.0) ?
 						if (min==0 && max ==1)
 						{
 							multiplier = 127;
-							min=0;max=127;
+							max=127;
+							value = 63;
 						}
+						else
+						{
+							// abnormal non-integer knobs,like gain in dB (-24 to 24 or whatever)
+							// todo: calculate new step that is smaller than 1 to increase smoothness
+							value = (int)value;
+						}
+
 						doRegister=true;
 					}
 				}
@@ -145,9 +165,11 @@ bool CAPSPluginWrapper::loadCapsPlugin(string  name)
 				// we have to have the values for params locally
 				if (doRegister)
 				{
-					_paramOffset.push_back(offset);
-					_paramValues.push_back(value);
-					_paramMultipliers.push_back(multiplier);
+					// fugly parallel arrays
+					_paramOffset[i]=offset;
+					_paramValues[i]=value;
+					_paramMultipliers[i]=multiplier;
+					_paramLegit[i]=true;
 
 					if (labels.size())
 						param = registerParam(i,(char*)name,labels,value);
@@ -162,12 +184,16 @@ bool CAPSPluginWrapper::loadCapsPlugin(string  name)
 	{
 		// create actual instance(s)
 		// scenarios:
-		// mono input, stereo output: NOT ALLOWED
-		// mono input, mono output: 2 instances
+		// mono input, stereo output: 1 instance, copy mono 0->1
+		// mono input, mono output: 2 instances,
 		// stereo input, stereo output: 1 instances
 
 		assert(_inputAudioPorts.size() && _outputAudioPorts.size());
-		assert(! (_inputAudioPorts.size()==1 && _outputAudioPorts.size()==2));
+
+		if (_inputAudioPorts.size()==1 && _outputAudioPorts.size()==2)
+			_monoBuffer=new float[PERIOD];
+		else
+			_monoBuffer=0;
 
 		_h[0] = _p->instantiate(_p,SAMPLE_RATE);
 		_instanceCount =1;
@@ -175,8 +201,9 @@ bool CAPSPluginWrapper::loadCapsPlugin(string  name)
 			_h[1] = _p->instantiate(_p,SAMPLE_RATE);
 			_instanceCount=2;
 		}
-		else
+		else {
 			_h[1]=0;
+		}
 
 		for (i=0;i<_instanceCount;i++)
 			_p->activate(_h[i]);
@@ -200,6 +227,9 @@ CAPSPluginWrapper::~CAPSPluginWrapper()
 			_p->cleanup(_h[i]);
 	}
 
+	if (_monoBuffer)
+		delete[] _monoBuffer;
+
 	// delete _p ?
 }
 
@@ -209,30 +239,49 @@ int CAPSPluginWrapper::process(StereoBuffer* input)
 
 	if (_instanceCount==1)
 	{
-		// connect all ports
-		for (i=0;i<_paramValues.size();i++) {
-			_p->connect_port(_h[0],i,&(_paramValues[i]));
+		// could be stereo or mono input
+
+		// connect param ports
+		for (i=0;i<_p->PortCount;i++) {
+			if (_paramLegit[i])
+				_p->connect_port(_h[0],i,&(_paramValues[i]));
 		}
 
-		for (i=0;i< (_inputAudioPorts.size()>2?2:_inputAudioPorts.size());i++ ) {
-			int port = _inputAudioPorts[i];
-			_p->connect_port(_h[0],port,i==0?input->left:input->right);
-		}
-
-		for (i=0;i< (_outputAudioPorts.size()>2?2:_outputAudioPorts.size());i++ ) {
+		// connect output (stereo)
+		for (i=0;i<2;i++ ) {
 			int port = _outputAudioPorts[i];
 			_p->connect_port(_h[0],port,i==0?_outputBuffers[0]->left:_outputBuffers[0]->right);
+		}
+
+		if (_monoBuffer)
+		{
+			// mix stereo input into mono
+			for (i=0;i<input->length;i++)
+				_monoBuffer[i] = (input->left[i] * 0.5) + (input->right[i] * 0.5);
+
+			_p->connect_port(_h[0],_inputAudioPorts[0],_monoBuffer);
+		}
+		else
+		{
+			// connect input (stereo)
+			for (i=0;i<2;i++ ) {
+				int port = _inputAudioPorts[i];
+				_p->connect_port(_h[0],port,i==0?input->left:input->right);
+			}
 		}
 
 		_p->run(_h[0],input->length);
 	}
 	else if (_instanceCount==2)
 	{
+		// we have 2 mono instances
+
 		// connect all ports
 		for (int inst=0;inst<2;inst++)
 		{
-			for (i=0;i<_paramValues.size();i++) {
-				_p->connect_port(_h[inst],i,&(_paramValues[i]));
+			for (i=0;i<_p->PortCount;i++) {
+				if (_paramLegit[i])
+					_p->connect_port(_h[inst],i,&(_paramValues[i]));
 			}
 		}
 
@@ -254,19 +303,28 @@ int CAPSPluginWrapper::process(StereoBuffer* input)
 
 void CAPSPluginWrapper::setParam(int npar, int value)
 {
-	if (npar>=0 && npar<=_paramValues.size())
+	if (npar>=0 && npar<_p->PortCount && _paramLegit[npar])
 	{
-		float val = (value / _paramMultipliers[npar])+_paramOffset[npar];
-		//printf("set val = %f\n",val);
+		float mul = _paramMultipliers[npar];
+		float off = _paramOffset[npar];
+
+		float val = (value / mul)+off;
+		//printf("set val %d = %f\n",npar,val);
 		_paramValues[npar]= val;
 	}
 }
 
 int CAPSPluginWrapper::getParam(int npar)
 {
-	if (npar>=0 && npar<=_paramValues.size())
+	if (npar>=0 && npar<_p->PortCount && _paramLegit[npar])
 	{
-		return (_paramValues[npar] * _paramMultipliers[npar])-_paramOffset[npar];
+		float val = _paramValues[npar];
+		float mul = _paramMultipliers[npar];
+		float off = _paramOffset[npar];
+		float ret = (val * mul ) - off;
+
+		//printf("get val %d = %f\n",npar,val);
+		return ret;
 	}
 
 	return 0;

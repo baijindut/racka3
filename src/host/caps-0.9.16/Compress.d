@@ -39,4 +39,7 @@ src/host/caps-0.9.16//Compress.o: src/host/caps-0.9.16//Compress.cc \
  src/host/caps-0.9.16//dsp/OnePole.h src/host/caps-0.9.16//dsp/util.h \
  src/host/caps-0.9.16//dsp/polynomials.h src/host/caps-0.9.16//dsp/FIR.h \
  src/host/caps-0.9.16//dsp/sinc.h src/host/caps-0.9.16//dsp/Sine.h \
- src/host/caps-0.9.16//dsp/windows.h src/host/caps-0.9.16//Descriptor.h
+ src/host/caps-0.9.16//dsp/windows.h src/host/caps-0.9.16//Descriptor.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/xmmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mm_malloc.h

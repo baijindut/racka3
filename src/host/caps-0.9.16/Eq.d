@@ -38,5 +38,8 @@ src/host/caps-0.9.16//Eq.o: src/host/caps-0.9.16//Eq.cc src/host/caps-0.9.16//ba
  src/host/caps-0.9.16//dsp/Eq.h src/host/caps-0.9.16//dsp/BiQuad.h \
  src/host/caps-0.9.16//dsp/complex.h src/host/caps-0.9.16//dsp/RBJ.h \
  src/host/caps-0.9.16//dsp/BiQuad.h src/host/caps-0.9.16//dsp/v4f.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/xmmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mm_malloc.h \
  src/host/caps-0.9.16//dsp/v4f_BiQuad.h src/host/caps-0.9.16//dsp/v4f.h \
  src/host/caps-0.9.16//Descriptor.h

@@ -35,4 +35,7 @@ src/host/caps-0.9.16//White.o: src/host/caps-0.9.16//White.cc src/host/caps-0.9.
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
  src/host/caps-0.9.16//ladspa.h src/host/caps-0.9.16//LadspaPlugin.h \
  src/host/caps-0.9.16//White.h src/host/caps-0.9.16//dsp/White.h \
- src/host/caps-0.9.16//dsp/OnePole.h src/host/caps-0.9.16//Descriptor.h
+ src/host/caps-0.9.16//dsp/OnePole.h src/host/caps-0.9.16//Descriptor.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/xmmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mm_malloc.h

@@ -392,7 +392,7 @@ CabinetIV::cycle (uint frames, O & Over)
 PortInfo
 CabinetIV::port_info [] =
 {
-	{ "in", INPUT | AUDIO }, 
+	{ "in", INPUT | AUDIO },
 	{ "model", CTRL_IN, {INTEGER | DEFAULT_MID, 0, NCabIVModels-1}, CabIVModelDict },
 	{ "gain (dB)", CTRL_IN | GROUP, {DEFAULT_0, -24, 24} }, 
 	{ "out", OUTPUT | AUDIO } 

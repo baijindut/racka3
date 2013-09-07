@@ -40,4 +40,7 @@ src/host/caps-0.9.16//Chorus.o: src/host/caps-0.9.16//Chorus.cc src/host/caps-0.
  src/host/caps-0.9.16//dsp/FPTruncateMode.h \
  src/host/caps-0.9.16//dsp/OnePole.h src/host/caps-0.9.16//dsp/BiQuad.h \
  src/host/caps-0.9.16//dsp/complex.h src/host/caps-0.9.16//dsp/RBJ.h \
- src/host/caps-0.9.16//dsp/BiQuad.h src/host/caps-0.9.16//Descriptor.h
+ src/host/caps-0.9.16//dsp/BiQuad.h src/host/caps-0.9.16//Descriptor.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/xmmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mm_malloc.h

@@ -40,11 +40,14 @@ src/host/caps-0.9.16//interface.o: src/host/caps-0.9.16//interface.cc \
  src/host/caps-0.9.16//dsp/Oversampler.h src/host/caps-0.9.16//dsp/FIR.h \
  src/host/caps-0.9.16//dsp/util.h src/host/caps-0.9.16//dsp/sinc.h \
  src/host/caps-0.9.16//dsp/Sine.h src/host/caps-0.9.16//dsp/windows.h \
- src/host/caps-0.9.16//dsp/v4f.h src/host/caps-0.9.16//dsp/v4f_FIR.h \
- src/host/caps-0.9.16//dsp/v4f.h src/host/caps-0.9.16//dsp/v4f_BiQuad.h \
- src/host/caps-0.9.16//Chorus.h src/host/caps-0.9.16//dsp/Sine.h \
- src/host/caps-0.9.16//dsp/Roessler.h src/host/caps-0.9.16//dsp/Lorenz.h \
- src/host/caps-0.9.16//dsp/Delay.h \
+ src/host/caps-0.9.16//dsp/v4f.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/xmmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mm_malloc.h \
+ src/host/caps-0.9.16//dsp/v4f_FIR.h src/host/caps-0.9.16//dsp/v4f.h \
+ src/host/caps-0.9.16//dsp/v4f_BiQuad.h src/host/caps-0.9.16//Chorus.h \
+ src/host/caps-0.9.16//dsp/Sine.h src/host/caps-0.9.16//dsp/Roessler.h \
+ src/host/caps-0.9.16//dsp/Lorenz.h src/host/caps-0.9.16//dsp/Delay.h \
  src/host/caps-0.9.16//dsp/FPTruncateMode.h \
  src/host/caps-0.9.16//dsp/OnePole.h src/host/caps-0.9.16//dsp/RBJ.h \
  src/host/caps-0.9.16//dsp/BiQuad.h src/host/caps-0.9.16//Phaser.h \

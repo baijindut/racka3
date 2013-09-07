@@ -2,16 +2,16 @@
 	"presets":	{
 		"default":	{
 			"over":	0,
-			"gain":	0,
-			"bright":	0,
-			"power":	0,
+			"gain":	8001,
+			"bright":	8001,
+			"power":	8001,
 			"tonestack":	0,
-			"bass":	0,
-			"mid":	0,
-			"treble":	0,
-			"attack":	0,
-			"squash":	0,
-			"lowcut":	0,
+			"bass":	8001,
+			"mid":	8001,
+			"treble":	8001,
+			"attack":	8001,
+			"squash":	8001,
+			"lowcut":	8001,
 			"Mix":	0
 		}
 	}

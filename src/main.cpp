@@ -35,6 +35,9 @@ static int gNumNoInputs = 0;
 // copy mono channel to stereo. -1 = off, 0= channel0 to both, 1=channel1 to both
 static int g_monoChannel = -1;
 
+// play test tone on startup or not
+static bool g_testTone = 0;
+
 /* This routine will be called by the PortAudio engine when audio is needed.
 ** It may be called at interrupt level on some machines so don't do anything
 ** that could mess up the system like calling malloc() or free().
@@ -99,7 +102,7 @@ static int processCallback( const void *inputBuffer, void *outputBuffer,
     else
     {
     	// initial test tone
-    	if (data->toneBlocks!=-1)
+    	if (g_testTone && (data->toneBlocks!=-1))
     	{
     		if (data->toneBlocks++ > 100)
     		{
@@ -213,6 +216,10 @@ int main(int argc,char* argv[])
     int i;
     HttpServer server;
 
+	#ifdef __SSE__
+    printf("compiled with SSE\n");
+	#endif
+
     server.setPluginHost(&data.host);
 
     /* initialise sinusoidal wavetable */
@@ -233,7 +240,9 @@ int main(int argc,char* argv[])
     	if (strstr(arg,"device=")==arg)
     		devName = &arg[strlen("device=")];
     	if (strstr(arg,"mono=")==arg)
-    	    		g_monoChannel = atoi(&arg[strlen("mono=")]);
+    	    g_monoChannel = atoi(&arg[strlen("mono=")]);
+    	if (strstr(arg,"testtone")==arg)
+    		g_testTone = atoi(&arg[strlen("testtome=")]);
     }
 
     err = Pa_Initialize();

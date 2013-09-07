@@ -35,4 +35,7 @@ src/host/caps-0.9.16//Fractals.o: src/host/caps-0.9.16//Fractals.cc /usr/include
  src/host/caps-0.9.16//ladspa.h src/host/caps-0.9.16//LadspaPlugin.h \
  src/host/caps-0.9.16//Fractals.h src/host/caps-0.9.16//dsp/Lorenz.h \
  src/host/caps-0.9.16//dsp/Roessler.h src/host/caps-0.9.16//dsp/OnePole.h \
- src/host/caps-0.9.16//Descriptor.h
+ src/host/caps-0.9.16//Descriptor.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/xmmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mmintrin.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mm_malloc.h

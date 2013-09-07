@@ -4,12 +4,12 @@
 			"over":	0,
 			"mode":	0,
 			"filter":	0,
-			"gain (dB)":	0,
-			"f (Hz)":	20,
-			"Q":	0,
-			"range":	0,
-			"lfo/env":	0,
-			"rate":	0,
+			"gain (dB)":	12,
+			"f (Hz)":	1510,
+			"Q":	8001,
+			"range":	8001,
+			"lfo/env":	8001,
+			"rate":	8001,
 			"Mix":	0
 		}
 	}
