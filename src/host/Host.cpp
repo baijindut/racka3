@@ -36,8 +36,6 @@ Host::Host()
 	Plugin* plugin;
 	_nextInstance=0;
 
-	_rackPresets= new JsonFile("presets/rack.json");
-
 	// add names of all plugins to list
 	_pluginNames.push_back("Echoverse");
 	_pluginNames.push_back("Chorus");
@@ -95,8 +93,6 @@ Host::~Host()
 		delete *it;
 
 	cJSON_Delete(_jsonAllPlugins);
-
-	delete _rackPresets;
 }
 
 int Host::process(float* inLeft,float* inRight,float* outLeft,float* outRight,
@@ -441,14 +437,14 @@ void Host::getAvailablePlugins(cJSON* json)
 	cJSON_AddItemReferenceToObject(json,"plugins",_jsonAllPlugins);
 }
 
-void Host::getPluginChain(cJSON* json,bool bFullParamInfo)
+void Host::getPluginChain(cJSON* json,bool bVerbose)
 {
 	cJSON* pluginArray = cJSON_CreateArray();
 
 	for(vector<Plugin*>::iterator it=_plugins.begin(); it!=_plugins.end();++it)
 	{
 		cJSON* pluginObject = cJSON_CreateObject();
-		(*it)->getPluginJson(pluginObject,bFullParamInfo);
+		(*it)->getPluginJson(pluginObject,bVerbose);
 		cJSON_AddItemToArray(pluginArray,pluginObject);
 	}
 
@@ -715,14 +711,8 @@ void Host::deleteRackPreset(cJSON* json)
 	if (jsonName && jsonName->type==cJSON_String)
 	{
 		char* presetName = jsonName->valuestring;
-		cJSON* presets = cJSON_GetObjectItem(_rackPresets->json(),"presets");
-		if (presets)
-		{
-			// delete the old preset with this name (if existant)
-			cJSON_DeleteItemFromObject(presets,presetName);
-
-			_rackPresets->persist();
-		}
+		JsonFile* file = new JsonFile(string("racks/")+string(presetName));
+		JsonFile::remove(file);
 	}
 	else
 	{
@@ -737,29 +727,15 @@ void Host::storeRackPreset(cJSON* json)
 	if (jsonName && jsonName->type==cJSON_String)
 	{
 		char* presetName = jsonName->valuestring;
-		cJSON* presets = cJSON_GetObjectItem(_rackPresets->json(),"presets");
-		if (!presets)
-		{
-			presets = cJSON_CreateObject();
-			cJSON_AddItemToObject(_rackPresets->json(),"presets",presets);
-		}
-		if (presets)
-		{
-			// delete the old preset with this name (if existant), and make a new one
-			cJSON_DeleteItemFromObject(presets,presetName);
-			cJSON* preset = cJSON_CreateObject();
-			cJSON_AddItemToObject(presets,presetName,preset);
 
-			// the preset contains an object called rack
-			cJSON* rack = cJSON_CreateObject();
-			cJSON_AddItemToObject(preset,"rack",rack);
+		// clear old preset (or make new one if none before
+		JsonFile* file = new JsonFile(string("racks/")+string(presetName));
+		file->clear();
 
-			getPluginChain(rack,false);
+		// add plugin chain (brief version)
+		getPluginChain(file->json(),false);
 
-			cJSON_AddItemToObject(presets,presetName,rack);
-
-			_rackPresets->persist();
-		}
+		delete file;
 	}
 	else
 	{
@@ -769,57 +745,30 @@ void Host::storeRackPreset(cJSON* json)
 
 void Host::loadRackPreset(cJSON* json)
 {
-	cJSON* jsonName = cJSON_GetObjectItem(json,"presetName");
+	cJSON* presetName = cJSON_GetObjectItem(json,"presetName");
 
-	if (jsonName && jsonName->type==cJSON_String)
+	if (presetName && presetName->type==cJSON_String)
 	{
-		char* presetName = jsonName->valuestring;
-		cJSON* presets = cJSON_GetObjectItem(_rackPresets->json(),"presets");
-		if (!presets)
-		{
-			presets = cJSON_CreateObject();
-			cJSON_AddItemToObject(_rackPresets->json(),"presets",presets);
-		}
-		if (presets)
-		{
-			cJSON* rack = cJSON_GetObjectItem(presets,"presetName");
-			cJSON* pluginArray;
-			pluginArray = rack ? cJSON_GetObjectItem(rack,"plugins"):0;
-			if (pluginArray)
-			{
-				chainLock();
+		JsonFile* file = new JsonFile(string("racks/")+string(presetName->valuestring));
 
-				// delete all plugins
-				vector<Plugin*>::iterator it;
-				for(it=_plugins.begin(); it!=_plugins.end();++it)
-					delete *it;
+		chainLock();
 
-				// add plugins
-				int count = cJSON_GetArraySize(pluginArray);
-				for (int i=0;i<count;i++)
-				{
-					cJSON* jsonPlugin = cJSON_GetArrayItem(pluginArray,i);
-					cJSON* jpName = cJSON_GetObjectItem(jsonPlugin,"name");
+		// delete all plugins
+		vector<Plugin*>::iterator it;
+		for(it=_plugins.begin(); it!=_plugins.end();++it)
+			delete *it;
 
-					Plugin* plugin = createNewPlugin(jpName->valuestring);
-
-					// fill params
-
-					_plugins.push_back(plugin);
-				}
-
-				chainUnlock();
-			}
-			else
-			{
-				JSONERROR(json,"no such preset with this name");
-			}
-		}
+		chainUnlock();
 	}
 	else
 	{
 		JSONERROR(json,"must give presetName");
 	}
+}
+
+void Host::listRackPresets(cJSON* json)
+{
+	// dir data/racks/ for .json files
 }
 
 void Host::chainUnlock()

@@ -1,6 +1,6 @@
-src/host/caps-0.9.16//Pan.o: src/host/caps-0.9.16//Pan.cc src/host/caps-0.9.16//basics.h \
- /usr/include/stdlib.h /usr/include/features.h \
- /usr/include/i386-linux-gnu/bits/predefs.h \
+src/host/plugins/caps-0.9.16//NoiseGate.o: src/host/plugins/caps-0.9.16//NoiseGate.cc \
+ src/host/plugins/caps-0.9.16//basics.h /usr/include/stdlib.h \
+ /usr/include/features.h /usr/include/i386-linux-gnu/bits/predefs.h \
  /usr/include/i386-linux-gnu/sys/cdefs.h \
  /usr/include/i386-linux-gnu/bits/wordsize.h \
  /usr/include/i386-linux-gnu/gnu/stubs.h \
@@ -33,12 +33,20 @@ src/host/caps-0.9.16//Pan.o: src/host/caps-0.9.16//Pan.cc src/host/caps-0.9.16//
  /usr/include/wchar.h /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
- src/host/caps-0.9.16//ladspa.h src/host/caps-0.9.16//LadspaPlugin.h \
- src/host/caps-0.9.16//dsp/RBJ.h src/host/caps-0.9.16//dsp/BiQuad.h \
- src/host/caps-0.9.16//dsp/complex.h src/host/caps-0.9.16//Pan.h \
- src/host/caps-0.9.16//dsp/Delay.h src/host/caps-0.9.16//dsp/util.h \
- src/host/caps-0.9.16//dsp/FPTruncateMode.h \
- src/host/caps-0.9.16//dsp/BiQuad.h src/host/caps-0.9.16//Descriptor.h \
+ src/host/plugins/caps-0.9.16//ladspa.h \
+ src/host/plugins/caps-0.9.16//LadspaPlugin.h \
+ src/host/plugins/caps-0.9.16//NoiseGate.h \
+ src/host/plugins/caps-0.9.16//dsp/util.h \
+ src/host/plugins/caps-0.9.16//dsp/BiQuad.h \
+ src/host/plugins/caps-0.9.16//dsp/complex.h \
+ src/host/plugins/caps-0.9.16//dsp/RBJ.h \
+ src/host/plugins/caps-0.9.16//dsp/BiQuad.h \
+ src/host/plugins/caps-0.9.16//dsp/RMS.h \
+ src/host/plugins/caps-0.9.16//dsp/Delay.h \
+ src/host/plugins/caps-0.9.16//dsp/util.h \
+ src/host/plugins/caps-0.9.16//dsp/FPTruncateMode.h \
+ src/host/plugins/caps-0.9.16//dsp/OnePole.h \
+ src/host/plugins/caps-0.9.16//Descriptor.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/xmmintrin.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/mmintrin.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/mm_malloc.h

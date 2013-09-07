@@ -64,6 +64,25 @@ cJSON* JsonFile::json()
 	return _json;
 }
 
+string JsonFile::getFileName()
+{
+	return _name;
+}
+
+void JsonFile::remove(JsonFile* file)
+{
+	::remove(file->getFileName().c_str());
+
+	delete file;
+}
+
+void JsonFile::clear()
+{
+	if (_json)
+		cJSON_Delete(_json);
+	_json=cJSON_CreateObject();
+}
+
 void JsonFile::ensureDirectories()
 {
 	// get dir for file

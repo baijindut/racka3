@@ -1,5 +1,5 @@
 src/host/CAPSPluginWrapper.o: src/host/CAPSPluginWrapper.cpp \
- src/host/CAPSPluginWrapper.h src/host/caps-0.9.16/basics.h \
+ src/host/CAPSPluginWrapper.h src/host/plugins/caps-0.9.16/basics.h \
  /usr/include/stdlib.h /usr/include/features.h \
  /usr/include/i386-linux-gnu/bits/predefs.h \
  /usr/include/i386-linux-gnu/sys/cdefs.h \
@@ -34,12 +34,12 @@ src/host/CAPSPluginWrapper.o: src/host/CAPSPluginWrapper.cpp \
  /usr/include/wchar.h /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
- src/host/caps-0.9.16/ladspa.h src/host/caps-0.9.16/LadspaPlugin.h \
- src/host/Plugin.h libs/portaudio/include/portaudio.h src/cJSON.h \
- src/uthash.h /usr/include/inttypes.h \
- /usr/lib/gcc/i686-linux-gnu/4.6/include/stdint.h /usr/include/stdint.h \
- /usr/include/i386-linux-gnu/bits/wchar.h /usr/include/c++/4.6/vector \
- /usr/include/c++/4.6/bits/stl_algobase.h \
+ src/host/plugins/caps-0.9.16/ladspa.h \
+ src/host/plugins/caps-0.9.16/LadspaPlugin.h src/host/Plugin.h \
+ libs/portaudio/include/portaudio.h src/cJSON.h src/uthash.h \
+ /usr/include/inttypes.h /usr/lib/gcc/i686-linux-gnu/4.6/include/stdint.h \
+ /usr/include/stdint.h /usr/include/i386-linux-gnu/bits/wchar.h \
+ /usr/include/c++/4.6/vector /usr/include/c++/4.6/bits/stl_algobase.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/c++config.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/os_defines.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/cpu_defines.h \
@@ -89,9 +89,10 @@ src/host/CAPSPluginWrapper.o: src/host/CAPSPluginWrapper.cpp \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
  /usr/include/c++/4.6/bits/basic_string.tcc src/host/StereoBuffer.h \
  src/host/JsonFile.h /usr/include/i386-linux-gnu/sys/stat.h \
- /usr/include/i386-linux-gnu/bits/stat.h src/host/caps-0.9.16/ladspa.h \
- src/settings.h /usr/include/c++/4.6/algorithm \
- /usr/include/c++/4.6/utility /usr/include/c++/4.6/bits/stl_relops.h \
+ /usr/include/i386-linux-gnu/bits/stat.h \
+ src/host/plugins/caps-0.9.16/ladspa.h src/settings.h \
+ /usr/include/c++/4.6/algorithm /usr/include/c++/4.6/utility \
+ /usr/include/c++/4.6/bits/stl_relops.h \
  /usr/include/c++/4.6/bits/stl_algo.h /usr/include/c++/4.6/cstdlib \
  /usr/include/c++/4.6/bits/algorithmfwd.h \
  /usr/include/c++/4.6/bits/stl_heap.h \

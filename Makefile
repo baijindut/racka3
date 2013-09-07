@@ -74,7 +74,7 @@ LDFLAGS   = -Llibs/portaudio/lib
 # The directories in which source files reside.
 # If not specified, only the current directory will be serached.
 SRCDIRS   = src/host/plugins src/host src src/host/plugins/Freeverb 
-SRCDIRS  += src/host/caps-0.9.16/ src/host/caps-0.9.16/dsp src/host/caps-0.9.16/waves
+SRCDIRS  += src/host/plugins/caps-0.9.16/ src/host/plugins/caps-0.9.16/dsp src/host/plugins/caps-0.9.16/waves
 
 # The executable file name.
 # If not specified, current directory name or `a.out' will be used.

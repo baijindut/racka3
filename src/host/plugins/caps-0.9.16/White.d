@@ -1,6 +1,6 @@
-src/host/caps-0.9.16//Amp.o: src/host/caps-0.9.16//Amp.cc src/host/caps-0.9.16//basics.h \
- /usr/include/stdlib.h /usr/include/features.h \
- /usr/include/i386-linux-gnu/bits/predefs.h \
+src/host/plugins/caps-0.9.16//White.o: src/host/plugins/caps-0.9.16//White.cc \
+ src/host/plugins/caps-0.9.16//basics.h /usr/include/stdlib.h \
+ /usr/include/features.h /usr/include/i386-linux-gnu/bits/predefs.h \
  /usr/include/i386-linux-gnu/sys/cdefs.h \
  /usr/include/i386-linux-gnu/bits/wordsize.h \
  /usr/include/i386-linux-gnu/gnu/stubs.h \
@@ -33,20 +33,12 @@ src/host/caps-0.9.16//Amp.o: src/host/caps-0.9.16//Amp.cc src/host/caps-0.9.16//
  /usr/include/wchar.h /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
- src/host/caps-0.9.16//ladspa.h src/host/caps-0.9.16//LadspaPlugin.h \
- src/host/caps-0.9.16//Amp.h src/host/caps-0.9.16//dsp/util.h \
- src/host/caps-0.9.16//dsp/OnePole.h src/host/caps-0.9.16//dsp/BiQuad.h \
- src/host/caps-0.9.16//dsp/complex.h \
- src/host/caps-0.9.16//dsp/Oversampler.h src/host/caps-0.9.16//dsp/FIR.h \
- src/host/caps-0.9.16//dsp/util.h src/host/caps-0.9.16//dsp/sinc.h \
- src/host/caps-0.9.16//dsp/Sine.h src/host/caps-0.9.16//dsp/windows.h \
- src/host/caps-0.9.16//dsp/RBJ.h src/host/caps-0.9.16//dsp/BiQuad.h \
- src/host/caps-0.9.16//dsp/ToneStack.h src/host/caps-0.9.16//dsp/TDFII.h \
- src/host/caps-0.9.16//dsp/LatFilt.h \
- src/host/caps-0.9.16//dsp/tonestack/tables.h \
- src/host/caps-0.9.16//dsp/Compress.h src/host/caps-0.9.16//dsp/RMS.h \
- src/host/caps-0.9.16//dsp/OnePole.h src/host/caps-0.9.16//Descriptor.h \
+ src/host/plugins/caps-0.9.16//ladspa.h \
+ src/host/plugins/caps-0.9.16//LadspaPlugin.h \
+ src/host/plugins/caps-0.9.16//White.h \
+ src/host/plugins/caps-0.9.16//dsp/White.h \
+ src/host/plugins/caps-0.9.16//dsp/OnePole.h \
+ src/host/plugins/caps-0.9.16//Descriptor.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/xmmintrin.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/mmintrin.h \
- /usr/lib/gcc/i686-linux-gnu/4.6/include/mm_malloc.h \
- src/host/caps-0.9.16//dsp/polynomials.h
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mm_malloc.h

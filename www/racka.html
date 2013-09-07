@@ -143,6 +143,9 @@ var _allPlugins;
 // things to do at startup
 $(document).ready(function() {
 	
+	// update rack preset box
+	updateRackPresets();
+	
 	// get all the available plugins supported
 	getAllPlugins();
 	console.log(_allPlugins.length + " plugins available.");
@@ -402,6 +405,95 @@ function savePreset(pluginInstance,name)
 	});	
 }
 
+function loadRackPreset(name)
+{
+	if (presetName=="")
+	{
+		var select = document.getElementById("rackpresets");
+		presetName = select.options[select.selectedIndex].text;
+	}
+	
+	var json = {"presetName": String(presetName)};
+	
+	console.log(json);
+
+	$.ajax({
+		type: "POST",
+		url: "racka3/loadRackPreset",
+		async: false,
+		data: JSON.stringify(json)
+	}).done( function(json) {
+		if (json.error) {
+			alert("host sez: "+json.error);
+		} else {
+			console.log("loaded rack preset "+name);
+			refreshRack();
+		}
+	});		
+}
+
+function updateRackPresets()
+{
+	// todo
+	// call GET listRackPresets
+}
+
+function saveRackPreset(presetName)
+{
+	if (presetName=="")
+	{
+		var select = document.getElementById("rackpresets");
+		presetName = select.options[select.selectedIndex].text;
+	}
+	
+	var json = {"presetName": String(presetName)};
+	
+	console.log(json);
+
+	
+	$.ajax({
+		type: "POST",
+		url: "racka3/storeRackPreset",
+		async: false,
+		data: JSON.stringify(json)
+	}).done( function(json) {
+		if (json.error) {
+			alert("host sez: "+json.error);
+		} else {
+			console.log("stored rack preset "+name);
+			updateRackPresets();
+		}
+	});	
+}
+
+function deleteRackPreset(presetName)
+{
+	if (presetName=="")
+	{
+		var select = document.getElementById("rackpresets");
+		presetName = select.options[select.selectedIndex].text;
+	}
+	
+	var json = {"presetName": String(presetName)};
+	
+	console.log(json);
+
+	
+	$.ajax({
+		type: "POST",
+		url: "racka3/deleteRackPreset",
+		async: false,
+		data: JSON.stringify(json)
+	}).done( function(json) {
+		if (json.error) {
+			alert("host sez: "+json.error);
+		} else {
+			console.log("deleted rack preset "+name);
+			updateRackPresets();
+		}
+	});	
+}
+
 function setParam(pluginInstance,paramName,paramValue) {
 	
 	var json = {"instance": Number(pluginInstance), "param": String(paramName), "value": Number(paramValue)};
@@ -495,6 +587,18 @@ function addPlugin(pluginName,chainPosition) {
 <body text="white">
 
 	<div class="layoutMaster" style="width:1000px">
+		<div class="global"style="width=100%;">
+			rack presets 
+			<select id="rackpresets"></select>
+			<br/>
+			<a href='javascript:if (true==confirm("sure to save over current rack preset?")){saveRackPreset("");}'>:w!</a>
+			&nbsp;
+			<a href='javascript:saveRackPreset(prompt("name for plugin preset:","user"));'>:w</a>
+			&nbsp;
+			<a href='javascript:if (true==confirm("sure to DELETE current rack preset?")){deleteRackPreset();}'>:x</a>
+		}
+
+		</div>
 		<div class="palette" style="float: left; width=250px;">
 			&nbsp;
 		</div>

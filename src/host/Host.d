@@ -101,9 +101,10 @@ src/host/Host.o: src/host/Host.cpp src/host/Host.h \
  src/host/plugins/Freeverb/denormals.h \
  src/host/plugins/Freeverb/allpass.h src/host/plugins/Freeverb/tuning.h \
  src/host/plugins/PluginEQ.h src/host/plugins/PluginExpander.h \
- src/host/CAPSPluginWrapper.h src/host/caps-0.9.16/basics.h \
+ src/host/CAPSPluginWrapper.h src/host/plugins/caps-0.9.16/basics.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/float.h /usr/include/assert.h \
- src/host/caps-0.9.16/ladspa.h src/host/caps-0.9.16/LadspaPlugin.h \
+ src/host/plugins/caps-0.9.16/ladspa.h \
+ src/host/plugins/caps-0.9.16/LadspaPlugin.h \
  /usr/include/c++/4.6/algorithm /usr/include/c++/4.6/utility \
  /usr/include/c++/4.6/bits/stl_relops.h \
  /usr/include/c++/4.6/bits/stl_algo.h /usr/include/c++/4.6/cstdlib \

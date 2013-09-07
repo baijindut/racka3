@@ -30,6 +30,15 @@ public:
 	// reload json
 	bool reload();
 
+	// clear the object (delete all children)
+	void clear();
+
+	// delete file (this also deletes the passed pointer, beware)
+	static void remove(JsonFile* file);
+
+	// get the actual filename
+	std::string getFileName();
+
 private:
 	cJSON* _json;
 	FILE* _hFile;

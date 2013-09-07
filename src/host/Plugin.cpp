@@ -181,7 +181,7 @@ int Plugin::getParams(cJSON* jsonParamArray) {
 
 	return ok;
 }
-int Plugin::getPluginJson(cJSON* jsonObject,bool bFullParamInfo) {
+int Plugin::getPluginJson(cJSON* jsonObject,bool bVerbose) {
 
 	cJSON_AddItemToObject(jsonObject,"name",cJSON_CreateString(_name));
 	cJSON_AddItemToObject(jsonObject,"version",cJSON_CreateNumber(_version));
@@ -189,7 +189,7 @@ int Plugin::getPluginJson(cJSON* jsonObject,bool bFullParamInfo) {
 	cJSON_AddItemToObject(jsonObject,"position",cJSON_CreateNumber(_position));
 	cJSON_AddItemToObject(jsonObject,"friend",cJSON_CreateNumber(_friend));
 
-	if (bFullParamInfo)
+	if (bVerbose)
 		cJSON_AddItemToObject(jsonObject,"description",cJSON_CreateString(_description));
 
 	cJSON* paramArray = cJSON_CreateArray();
@@ -209,7 +209,7 @@ int Plugin::getPluginJson(cJSON* jsonObject,bool bFullParamInfo) {
 		cJSON_AddItemToObject(paramObject,"name",cJSON_CreateString(pParam->name));
 		cJSON_AddItemToObject(paramObject,"value",cJSON_CreateNumber(value));
 
-		if (bFullParamInfo)
+		if (bVerbose)
 		{
 			cJSON_AddItemToObject(paramObject,"description",cJSON_CreateString(pParam->description));
 			cJSON_AddItemToObject(paramObject,"units",cJSON_CreateString(pParam->units));
@@ -218,16 +218,16 @@ int Plugin::getPluginJson(cJSON* jsonObject,bool bFullParamInfo) {
 			cJSON_AddItemToObject(paramObject,"max",cJSON_CreateNumber((int)pParam->max));
 			cJSON_AddItemToObject(paramObject,"min",cJSON_CreateNumber((int)pParam->min));
 			cJSON_AddItemToObject(paramObject,"step",cJSON_CreateNumber((int)pParam->step));
-		}
 
-		cJSON* labelArray = cJSON_CreateArray();
-		for (vector<string>::iterator it = pParam->labels.begin();it!=pParam->labels.end();++it)
-		{
-			string s = *it;
-			const char* c = s.c_str();
-			cJSON_AddItemToArray(labelArray,cJSON_CreateString(c));
+			cJSON* labelArray = cJSON_CreateArray();
+			for (vector<string>::iterator it = pParam->labels.begin();it!=pParam->labels.end();++it)
+			{
+				string s = *it;
+				const char* c = s.c_str();
+				cJSON_AddItemToArray(labelArray,cJSON_CreateString(c));
+			}
+			cJSON_AddItemToObject(paramObject,"labels",labelArray);
 		}
-		cJSON_AddItemToObject(paramObject,"labels",labelArray);
 
 		cJSON_AddItemToArray(paramArray,paramObject);
 		pParam = (PluginParam*)pParam->hh.next;

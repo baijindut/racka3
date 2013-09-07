@@ -1,5 +1,5 @@
-src/host/caps-0.9.16//Compress.o: src/host/caps-0.9.16//Compress.cc \
- src/host/caps-0.9.16//basics.h /usr/include/stdlib.h \
+src/host/plugins/caps-0.9.16//Eq.o: src/host/plugins/caps-0.9.16//Eq.cc \
+ src/host/plugins/caps-0.9.16//basics.h /usr/include/stdlib.h \
  /usr/include/features.h /usr/include/i386-linux-gnu/bits/predefs.h \
  /usr/include/i386-linux-gnu/sys/cdefs.h \
  /usr/include/i386-linux-gnu/bits/wordsize.h \
@@ -33,13 +33,19 @@ src/host/caps-0.9.16//Compress.o: src/host/caps-0.9.16//Compress.cc \
  /usr/include/wchar.h /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
- src/host/caps-0.9.16//ladspa.h src/host/caps-0.9.16//LadspaPlugin.h \
- src/host/caps-0.9.16//Compress.h src/host/caps-0.9.16//dsp/util.h \
- src/host/caps-0.9.16//dsp/Compress.h src/host/caps-0.9.16//dsp/RMS.h \
- src/host/caps-0.9.16//dsp/OnePole.h src/host/caps-0.9.16//dsp/util.h \
- src/host/caps-0.9.16//dsp/polynomials.h src/host/caps-0.9.16//dsp/FIR.h \
- src/host/caps-0.9.16//dsp/sinc.h src/host/caps-0.9.16//dsp/Sine.h \
- src/host/caps-0.9.16//dsp/windows.h src/host/caps-0.9.16//Descriptor.h \
+ src/host/plugins/caps-0.9.16//ladspa.h \
+ src/host/plugins/caps-0.9.16//LadspaPlugin.h \
+ src/host/plugins/caps-0.9.16//Eq.h \
+ src/host/plugins/caps-0.9.16//dsp/util.h \
+ src/host/plugins/caps-0.9.16//dsp/Eq.h \
+ src/host/plugins/caps-0.9.16//dsp/BiQuad.h \
+ src/host/plugins/caps-0.9.16//dsp/complex.h \
+ src/host/plugins/caps-0.9.16//dsp/RBJ.h \
+ src/host/plugins/caps-0.9.16//dsp/BiQuad.h \
+ src/host/plugins/caps-0.9.16//dsp/v4f.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/xmmintrin.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/mmintrin.h \
- /usr/lib/gcc/i686-linux-gnu/4.6/include/mm_malloc.h
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/mm_malloc.h \
+ src/host/plugins/caps-0.9.16//dsp/v4f_BiQuad.h \
+ src/host/plugins/caps-0.9.16//dsp/v4f.h \
+ src/host/plugins/caps-0.9.16//Descriptor.h

@@ -98,10 +98,20 @@ bool HttpServer::handleNewRequest(ServerHandlingEvent eventCode,
 		_pluginHost->setPluginParam(json);
 	} else if (uri == string("/racka3/getpluginchain")) {
 		_pluginHost->getPluginChain(json);
-	} else if (uri == string("/racka3/storePluginPreset")) {
+	}
+	else if (uri == string("/racka3/storePluginPreset")) {
 		_pluginHost->storePluginPreset(json);
 	} else if (uri == string("/racka3/deletePluginPreset")) {
 		_pluginHost->deletePluginPreset(json);
+	}
+	else if (uri == string("/racka3/storeRackPreset")) {
+		_pluginHost->storeRackPreset(json);
+	} else if (uri == string("/racka3/deleteRackPreset")) {
+		_pluginHost->deleteRackPreset(json);
+	} else if (uri == string("/racka3/loadRackPreset")) {
+		_pluginHost->loadRackPreset(json);
+	} else if (uri == string("/racka3/listRackPresets")) {
+		_pluginHost->listRackPresets(json);
 	}
 
 	// did we make any json?

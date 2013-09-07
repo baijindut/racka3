@@ -82,7 +82,7 @@ public:
 	void getAllParams(cJSON* jsonParams);
 
 	// creates the JSON describing the plugin and all its details
-	int getPluginJson(cJSON* jsonObject,bool bFullParamInfo = true);
+	int getPluginJson(cJSON* jsonObject,bool bVerbose = true);
 
 	void setInstance(int instance);
 	int getInstance();
