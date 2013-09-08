@@ -77,6 +77,9 @@ src/host/Host.o: src/host/Host.cpp src/host/Host.h \
  /usr/include/i386-linux-gnu/bits/stat.h /usr/include/libio.h \
  /usr/include/_G_config.h /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h src/host/../settings.h \
+ /usr/include/dirent.h /usr/include/i386-linux-gnu/bits/dirent.h \
+ /usr/include/i386-linux-gnu/bits/posix1_lim.h \
+ /usr/include/i386-linux-gnu/bits/local_lim.h /usr/include/linux/limits.h \
  src/host/plugins/PluginRBEcho.h src/host/plugins/global.h \
  src/host/plugins/../../settings.h /usr/include/math.h \
  /usr/include/i386-linux-gnu/bits/huge_val.h \

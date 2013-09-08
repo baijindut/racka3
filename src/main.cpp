@@ -242,7 +242,7 @@ int main(int argc,char* argv[])
     	if (strstr(arg,"mono=")==arg)
     	    g_monoChannel = atoi(&arg[strlen("mono=")]);
     	if (strstr(arg,"testtone")==arg)
-    		g_testTone = atoi(&arg[strlen("testtome=")]);
+    		g_testTone = atoi(&arg[strlen("testtone=")]);
     }
 
     err = Pa_Initialize();

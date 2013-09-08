@@ -7,6 +7,9 @@
 
 #include "Host.h"
 #include <string.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <dirent.h>
 
 
 #include "plugins/PluginRBEcho.h"
@@ -757,6 +760,38 @@ void Host::loadRackPreset(cJSON* json)
 		vector<Plugin*>::iterator it;
 		for(it=_plugins.begin(); it!=_plugins.end();++it)
 			delete *it;
+		_plugins.clear();
+
+		// create the new chain
+		cJSON* pluginArray = cJSON_GetObjectItem(file->json(),"plugins");
+		if(pluginArray)
+		{
+			for (int i=0;i<cJSON_GetArraySize(pluginArray);i++)
+			{
+				cJSON* pluginJson = cJSON_GetArrayItem(pluginArray,i);
+				Plugin* plugin;
+
+				// create the plugin
+				plugin = createNewPlugin(cJSON_GetObjectItem(pluginJson,"name")->valuestring);
+				_plugins.push_back(plugin);
+
+				// initialize plugin
+				cJSON* paramArray = cJSON_GetObjectItem(pluginJson,"params");
+				for (int p=0;p<cJSON_GetArraySize(paramArray);p++)
+				{
+					cJSON* paramObject = cJSON_GetArrayItem(paramArray,p);
+					char* paramName = cJSON_GetObjectItem(paramObject,"name")->valuestring;
+					int paramValue = cJSON_GetObjectItem(paramObject,"value")->valueint;
+
+					if (strcmp(paramName,"preset")!=0)
+						plugin->setParam(paramName,paramValue);
+				}
+
+				plugin->setInstance(cJSON_GetObjectItem(pluginJson,"instance")->valueint);
+				plugin->setFriend(cJSON_GetObjectItem(pluginJson,"friend")->valueint);
+			}
+		}
+
 
 		chainUnlock();
 	}
@@ -769,6 +804,26 @@ void Host::loadRackPreset(cJSON* json)
 void Host::listRackPresets(cJSON* json)
 {
 	// dir data/racks/ for .json files
+	DIR *dp;
+	struct dirent *ep;
+	dp = opendir (STORAGE_DIR"racks");
+
+	if (dp != NULL)
+	{
+		cJSON* racks = cJSON_CreateArray();
+
+		while ( (ep = readdir (dp)))
+		{
+			if (strstr(ep->d_name,".json"))
+			{
+				cJSON_AddItemToArray(racks,cJSON_CreateString(string(ep->d_name).substr(0,strlen(ep->d_name)-5).c_str()));
+			}
+		}
+
+		(void) closedir (dp);
+
+		cJSON_AddItemToObject(json,"racks",racks);
+	}
 }
 
 void Host::chainUnlock()

@@ -140,6 +140,9 @@ Array.prototype.insert = function (index, item) {
 // holds JSON of all of the plugins
 var _allPlugins;
 
+// name of the selected rack preset
+var g_rackPreset=null;
+
 // things to do at startup
 $(document).ready(function() {
 	
@@ -407,13 +410,13 @@ function savePreset(pluginInstance,name)
 
 function loadRackPreset(name)
 {
-	if (presetName=="")
+	if (name=="")
 	{
 		var select = document.getElementById("rackpresets");
-		presetName = select.options[select.selectedIndex].text;
+		name = select.options[select.selectedIndex].text;
 	}
 	
-	var json = {"presetName": String(presetName)};
+	var json = {"presetName": String(name)};
 	
 	console.log(json);
 
@@ -427,16 +430,38 @@ function loadRackPreset(name)
 			alert("host sez: "+json.error);
 		} else {
 			console.log("loaded rack preset "+name);
+			g_rackPreset=name;
 			refreshRack();
 		}
 	});		
 }
 
 function updateRackPresets()
-{
-	// todo
-	// call GET listRackPresets
+{	
+	$("#rackpresets").empty();
+	var json = {};
+		
+	$.ajax({
+		type: "POST",
+		url: "racka3/listRackPresets",
+		async: false,
+		data: JSON.stringify(json)
+	}).done( function(json) {
+		if (json.error) {
+			alert("host sez: "+json.error);
+		} else {
+			console.log("rack presets----------:");
+			console.log(JSON.stringify(json.racks));
+			json.racks.forEach(function(rack) {
+				$("#rackpresets").append($("<option></option>").attr("value",rack).text(rack)); 
+			});
+			
+			if (g_rackPreset!=null)
+			$("#rackpresets").val(g_rackPreset).prop('selected',true);
+		}
+	});		
 }
+
 
 function saveRackPreset(presetName)
 {
@@ -589,7 +614,7 @@ function addPlugin(pluginName,chainPosition) {
 	<div class="layoutMaster" style="width:1000px">
 		<div class="global"style="width=100%;">
 			rack presets 
-			<select id="rackpresets"></select>
+			<select id="rackpresets" onchange='loadRackPreset("");'></select>
 			<br/>
 			<a href='javascript:if (true==confirm("sure to save over current rack preset?")){saveRackPreset("");}'>:w!</a>
 			&nbsp;

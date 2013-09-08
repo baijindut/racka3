@@ -19,7 +19,8 @@ JsonFile::JsonFile(string fname)
 	for (int i=0;i<fname.length();i++)
 	{
 		char c = tolower(fname[i]);
-		if ( (c>='a' && c<='z') || c=='/')
+		if ( (c>='a' && c<='z') || c=='/' ||
+			 (c>='0' && c<='9'))
 			_name+=c;
 	}
 	_name+=".json";

@@ -16,6 +16,7 @@ Plugin::Plugin() {
 	_paramList = 0;
 	_instance = -1;
 	_position = -1;
+	_friend=-1;
 
 	_desiredSourceInstance = -1;
 	_desiredSourceChannel = 0;

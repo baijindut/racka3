@@ -1,0 +1,62 @@
+{
+	"plugins":	[{
+			"name":	"Compressor",
+			"version":	1,
+			"instance":	1,
+			"position":	0,
+			"friend":	0,
+			"params":	[{
+					"name":	"Threshold",
+					"value":	-30
+				}, {
+					"name":	"Ratio",
+					"value":	2
+				}, {
+					"name":	"Output",
+					"value":	-6
+				}, {
+					"name":	"Attack",
+					"value":	20
+				}, {
+					"name":	"Release",
+					"value":	120
+				}, {
+					"name":	"Auto Output",
+					"value":	1
+				}, {
+					"name":	"Knee",
+					"value":	0
+				}, {
+					"name":	"Stereo",
+					"value":	0
+				}, {
+					"name":	"Peak",
+					"value":	0
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}, {
+			"name":	"Backing Track",
+			"version":	1,
+			"instance":	0,
+			"position":	1,
+			"friend":	-1271922624,
+			"params":	[{
+					"name":	"Level",
+					"value":	64
+				}, {
+					"name":	"Playing",
+					"value":	0
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}]
+}

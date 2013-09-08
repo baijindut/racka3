@@ -1,0 +1,105 @@
+{
+	"plugins":	[{
+			"name":	"Backing Track",
+			"version":	1,
+			"instance":	2,
+			"position":	0,
+			"friend":	-1257242560,
+			"params":	[{
+					"name":	"Level",
+					"value":	64
+				}, {
+					"name":	"Playing",
+					"value":	0
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}, {
+			"name":	"Noise Gate",
+			"version":	1,
+			"instance":	1,
+			"position":	1,
+			"friend":	0,
+			"params":	[{
+					"name":	"Threshold",
+					"value":	0
+				}, {
+					"name":	"Range",
+					"value":	-10
+				}, {
+					"name":	"Attack",
+					"value":	1
+				}, {
+					"name":	"Release",
+					"value":	2
+				}, {
+					"name":	"Low Pass",
+					"value":	6703
+				}, {
+					"name":	"High Pass",
+					"value":	76
+				}, {
+					"name":	"Hold",
+					"value":	2
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}, {
+			"name":	"Chorus",
+			"version":	1,
+			"instance":	0,
+			"position":	2,
+			"friend":	875574304,
+			"params":	[{
+					"name":	"Panning",
+					"value":	64
+				}, {
+					"name":	"Tempo",
+					"value":	33
+				}, {
+					"name":	"Randomness",
+					"value":	0
+				}, {
+					"name":	"LFO Type",
+					"value":	0
+				}, {
+					"name":	"Stereo",
+					"value":	90
+				}, {
+					"name":	"Depth",
+					"value":	40
+				}, {
+					"name":	"Delay",
+					"value":	85
+				}, {
+					"name":	"Feedback",
+					"value":	64
+				}, {
+					"name":	"L/R Cross",
+					"value":	119
+				}, {
+					"name":	"Flange Mode",
+					"value":	0
+				}, {
+					"name":	"Subtract",
+					"value":	0
+				}, {
+					"name":	"Interpolation (hiQ)",
+					"value":	0
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}]
+}

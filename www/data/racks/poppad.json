@@ -1,0 +1,139 @@
+{
+	"plugins":	[{
+			"name":	"C* Scape",
+			"version":	1,
+			"instance":	2,
+			"position":	0,
+			"friend":	-1,
+			"params":	[{
+					"name":	"bpm",
+					"value":	120
+				}, {
+					"name":	"divider",
+					"value":	1
+				}, {
+					"name":	"feedback",
+					"value":	101
+				}, {
+					"name":	"dry",
+					"value":	73
+				}, {
+					"name":	"blend",
+					"value":	109
+				}, {
+					"name":	"tune (Hz)",
+					"value":	457
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}, {
+			"name":	"C* AutoFilter",
+			"version":	1,
+			"instance":	3,
+			"position":	1,
+			"friend":	-1,
+			"params":	[{
+					"name":	"over",
+					"value":	0
+				}, {
+					"name":	"mode",
+					"value":	0
+				}, {
+					"name":	"filter",
+					"value":	0
+				}, {
+					"name":	"gain (dB)",
+					"value":	15
+				}, {
+					"name":	"f (Hz)",
+					"value":	925
+				}, {
+					"name":	"Q",
+					"value":	80
+				}, {
+					"name":	"range",
+					"value":	97
+				}, {
+					"name":	"lfo/env",
+					"value":	81
+				}, {
+					"name":	"rate",
+					"value":	75
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}, {
+			"name":	"Reverb",
+			"version":	1,
+			"instance":	4,
+			"position":	2,
+			"friend":	-1,
+			"params":	[{
+					"name":	"Freeze",
+					"value":	0
+				}, {
+					"name":	"Room Size",
+					"value":	63
+				}, {
+					"name":	"Damping",
+					"value":	63
+				}, {
+					"name":	"Width",
+					"value":	104
+				}, {
+					"name":	"Mix",
+					"value":	83
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}, {
+			"name":	"Compressor",
+			"version":	1,
+			"instance":	5,
+			"position":	3,
+			"friend":	-1,
+			"params":	[{
+					"name":	"Threshold",
+					"value":	-30
+				}, {
+					"name":	"Ratio",
+					"value":	2
+				}, {
+					"name":	"Output",
+					"value":	-6
+				}, {
+					"name":	"Attack",
+					"value":	20
+				}, {
+					"name":	"Release",
+					"value":	120
+				}, {
+					"name":	"Auto Output",
+					"value":	1
+				}, {
+					"name":	"Knee",
+					"value":	0
+				}, {
+					"name":	"Stereo",
+					"value":	0
+				}, {
+					"name":	"Peak",
+					"value":	0
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}]
+}

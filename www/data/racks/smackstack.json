@@ -1,0 +1,68 @@
+{
+	"plugins":	[{
+			"name":	"C* AmpVTS",
+			"version":	1,
+			"instance":	7,
+			"position":	0,
+			"friend":	-1,
+			"params":	[{
+					"name":	"over",
+					"value":	0
+				}, {
+					"name":	"gain",
+					"value":	106
+				}, {
+					"name":	"bright",
+					"value":	107
+				}, {
+					"name":	"power",
+					"value":	74
+				}, {
+					"name":	"tonestack",
+					"value":	0
+				}, {
+					"name":	"bass",
+					"value":	66
+				}, {
+					"name":	"mid",
+					"value":	76
+				}, {
+					"name":	"treble",
+					"value":	69
+				}, {
+					"name":	"attack",
+					"value":	69
+				}, {
+					"name":	"squash",
+					"value":	68
+				}, {
+					"name":	"lowcut",
+					"value":	40
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}, {
+			"name":	"C* CabinetIV",
+			"version":	1,
+			"instance":	6,
+			"position":	1,
+			"friend":	-1,
+			"params":	[{
+					"name":	"model",
+					"value":	0
+				}, {
+					"name":	"gain (dB)",
+					"value":	0
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}]
+}
