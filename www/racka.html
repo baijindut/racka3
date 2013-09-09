@@ -104,6 +104,11 @@ span.paramName
 	border-color: #000000;
 	height: 150px;
 }
+img.icon
+{
+	width:20px;
+	height:20px;
+}
 </style>
 <script src="jquery-1.10.2.min.js"></script>
 <script src="jquery.knob.js"></script>
@@ -631,13 +636,13 @@ function addPlugin(pluginName,chainPosition) {
 			rack presets 
 			<select id="rackpresets" size=6></select>
 			<br/>
-			<a href='javascript:loadRackPreset("");'>:r!</a>
+			<a href='javascript:loadRackPreset("");'><img class="icon" src="icons/open.png" alt="load rack preset"/></a>
 			<br/>
-			<a href='javascript:if (true==confirm("sure to save over current rack preset?")){saveRackPreset("");}'>:w!</a>
+			<a href='javascript:if (true==confirm("sure to save over current rack preset?")){saveRackPreset("");}'><img class="icon" src="icons/save.png" alt="save rack preset"/></a>
 			&nbsp;
-			<a href='javascript:saveRackPreset(prompt("name for plugin preset:","user"));'>:w</a>
+			<a href='javascript:saveRackPreset(prompt("name for plugin preset:","user"));'><img class="icon" src="icons/saveas.png" alt="save rack preset as"/></a>
 			&nbsp;
-			<a href='javascript:if (true==confirm("sure to DELETE current rack preset?")){deleteRackPreset("");}'>:x</a>
+			<a href='javascript:if (true==confirm("sure to DELETE current rack preset?")){deleteRackPreset("");}'><img class="icon" src="icons/delete.png" alt="delete rack preset"/></a>
 		}
 
 		</div>
