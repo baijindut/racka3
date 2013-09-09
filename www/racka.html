@@ -456,8 +456,23 @@ function updateRackPresets()
 				$("#rackpresets").append($("<option></option>").attr("value",rack).text(rack)); 
 			});
 			
+			// clear selected
+			$('#rackpresets option[selected="selected"]').each(
+  				function() {
+        		$(this).removeAttr('selected');
+    		});
+			
 			if (g_rackPreset!=null)
-			$("#rackpresets").val(g_rackPreset).prop('selected',true);
+			{
+				$("#rackpresets").filter(function() {
+    				return $(this).text() == g_rackPreset; 
+    			}).prop('selected', true);
+			}
+			else
+			{
+				// select first entry
+				$("#rackpresets option:first").attr('selected','selected');
+			}
 		}
 	});		
 }
@@ -614,13 +629,15 @@ function addPlugin(pluginName,chainPosition) {
 	<div class="layoutMaster" style="width:1000px">
 		<div class="global"style="width=100%;">
 			rack presets 
-			<select id="rackpresets" onchange='loadRackPreset("");'></select>
+			<select id="rackpresets" size=6></select>
+			<br/>
+			<a href='javascript:loadRackPreset("");'>:r!</a>
 			<br/>
 			<a href='javascript:if (true==confirm("sure to save over current rack preset?")){saveRackPreset("");}'>:w!</a>
 			&nbsp;
 			<a href='javascript:saveRackPreset(prompt("name for plugin preset:","user"));'>:w</a>
 			&nbsp;
-			<a href='javascript:if (true==confirm("sure to DELETE current rack preset?")){deleteRackPreset();}'>:x</a>
+			<a href='javascript:if (true==confirm("sure to DELETE current rack preset?")){deleteRackPreset("");}'>:x</a>
 		}
 
 		</div>

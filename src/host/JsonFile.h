@@ -34,7 +34,7 @@ public:
 	void clear();
 
 	// delete file (this also deletes the passed pointer, beware)
-	static void remove(JsonFile* file);
+	void remove();
 
 	// get the actual filename
 	std::string getFileName();

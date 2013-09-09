@@ -715,7 +715,7 @@ void Host::deleteRackPreset(cJSON* json)
 	{
 		char* presetName = jsonName->valuestring;
 		JsonFile* file = new JsonFile(string("racks/")+string(presetName));
-		JsonFile::remove(file);
+		file->remove();
 	}
 	else
 	{

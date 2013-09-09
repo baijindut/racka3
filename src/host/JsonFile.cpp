@@ -33,9 +33,12 @@ JsonFile::JsonFile(string fname)
 
 JsonFile::~JsonFile()
 {
-	persist();
-	if (_json)
-		cJSON_Delete(_json);
+	if (_name.length())
+	{
+		persist();
+		if (_json)
+			cJSON_Delete(_json);
+	}
 }
 
 static void _mkdir(const char *dir)
@@ -70,11 +73,10 @@ string JsonFile::getFileName()
 	return _name;
 }
 
-void JsonFile::remove(JsonFile* file)
+void JsonFile::remove()
 {
-	::remove(file->getFileName().c_str());
-
-	delete file;
+	::remove(_name.c_str());
+	_name="";
 }
 
 void JsonFile::clear()
