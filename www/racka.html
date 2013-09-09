@@ -260,11 +260,11 @@ function createHtmlKnob(instance,param) {
 		if (param.name.toLowerCase()=="preset")
 		{
 			html+='<br/>';
-			html+='<a href=\'javascript:if (true==confirm(\"sure to save over current plugin preset?\")){savePreset(\"'+instance+'\",\"\");}\'>:w!</a>';
+			html+='<a href=\'javascript:if (true==confirm(\"sure to save over current plugin preset?\")){savePreset(\"'+instance+'\",\"\");}\'><img alt="save preset" src="icons/save.png" class="icon"></a>';
 			html+='&nbsp;';
-			html+='<a href=\'javascript:savePreset(\"'+instance+'\",prompt(\"name for plugin preset:\",\"user\"));\'>:w</a>';
+			html+='<a href=\'javascript:savePreset(\"'+instance+'\",prompt(\"name for plugin preset:\",\"user\"));\'><img alt="save as preset" src="icons/saveas.png" class="icon"></a>';
 			html+='&nbsp;';
-			html+='<a href=\'javascript:if (true==confirm(\"sure to DELETE current plugin preset?\")){deletePreset(\"'+instance+'\",\"\");}\'>:x</a>';
+			html+='<a href=\'javascript:if (true==confirm(\"sure to DELETE current plugin preset?\")){deletePreset(\"'+instance+'\",\"\");}\'><img alt="delete preset" src="icons/delete.png" class="icon"></a>';
 		}
 	}
 	else if ( Math.abs(Number(param.max) - Number(param.min)) == Number(param.step) )
