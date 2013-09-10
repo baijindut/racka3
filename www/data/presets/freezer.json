@@ -1,0 +1,12 @@
+{
+	"presets":	{
+		"default":	{
+			"Threshold":	0,
+			"Range":	-10,
+			"Attack":	1,
+			"Release":	2,
+			"Hold":	2,
+			"Mix":	0
+		}
+	}
+}

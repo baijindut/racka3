@@ -22,21 +22,19 @@
 
 */
 
-#ifndef CHROMA_H
-#define CHROMA_H
+#ifndef FREEZER_H
+#define FREEZER_H
 
 #include "global.h"
 #include "../Plugin.h"
 #include "../StereoBuffer.h"
 
-#include "nnls-chroma-0.2.1/NNLSChroma.h"
-
-class PluginChroma : public Plugin
+class PluginFreezer : public Plugin
 {
 
 public:
-	PluginChroma ();
-    ~PluginChroma ();
+	PluginFreezer ();
+    ~PluginFreezer ();
 
 	int process(StereoBuffer* input);
 
@@ -47,9 +45,25 @@ private:
     int getParam (int npar);
     void cleanup ();
 
+    int Pthreshold;		// attack time  (ms)
+    int Pattack;			// release time (ms)
+    int Ohold;
+    int Pdecay;
+    int Prange;
+    int Phold;
+
 private:
-    VampPlugin* _chroma;
-    float _mono[PERIOD];
+    int hold_count;
+    int state;
+    float range;
+    float cut;
+    float t_level;
+    float a_rate;
+    float d_rate;
+    float env;
+    float gate;
+    float fs;
+    float hold;
 };
 
 #endif

@@ -27,7 +27,7 @@
 #include "plugins/PluginEQ.h"
 #include "plugins/PluginExpander.h"
 #include "CAPSPluginWrapper.h"
-#include "plugins/PluginChroma.h"
+#include "plugins/PluginFreezer.h"
 
 #include <stdio.h>
 #include <algorithm>
@@ -68,7 +68,7 @@ Host::Host()
 	_pluginNames.push_back(CAPS"SpiceX2");
 	_pluginNames.push_back(CAPS"Scape");
 
-	_pluginNames.push_back("Chroma");
+	_pluginNames.push_back("Freezer");
 
 	// loop over all names and create all plugin json list
 	_jsonAllPlugins = cJSON_CreateArray();
@@ -599,8 +599,8 @@ Plugin* Host::createNewPlugin(string name)
 		if (!((CAPSPluginWrapper*)plugin)->loadCapsPlugin(name) ) {
 			delete plugin; plugin=0;
 		}
-	} else if (name=="Chroma") {
-		plugin = new PluginChroma();
+	} else if (name=="Freezer") {
+		plugin = new PluginFreezer();
 	}
 
 	// do extra stuff for plugin

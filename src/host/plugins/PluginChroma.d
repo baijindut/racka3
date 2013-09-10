@@ -116,4 +116,5 @@ src/host/plugins/PluginChroma.o: src/host/plugins/PluginChroma.cpp /usr/include/
  src/host/plugins/nnls-chroma-0.2.1/PluginInputDomainAdapter.h \
  src/host/plugins/nnls-chroma-0.2.1/PluginWrapper.h \
  src/host/plugins/nnls-chroma-0.2.1/PluginBufferingAdapter.h \
+ src/host/plugins/nnls-chroma-0.2.1/vamp.h \
  /usr/include/i386-linux-gnu/sys/time.h
