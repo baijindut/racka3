@@ -108,6 +108,30 @@ src/host/Host.o: src/host/Host.cpp src/host/Host.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/float.h /usr/include/assert.h \
  src/host/plugins/caps-0.9.16/ladspa.h \
  src/host/plugins/caps-0.9.16/LadspaPlugin.h \
+ src/host/plugins/PluginChroma.h \
+ src/host/plugins/nnls-chroma-0.2.1/NNLSChroma.h \
+ src/host/plugins/nnls-chroma-0.2.1/NNLSBase.h \
+ src/host/plugins/nnls-chroma-0.2.1/VampPlugin.h /usr/include/c++/4.6/map \
+ /usr/include/c++/4.6/bits/stl_tree.h /usr/include/c++/4.6/bits/stl_map.h \
+ /usr/include/c++/4.6/bits/stl_multimap.h \
+ src/host/plugins/nnls-chroma-0.2.1/PluginBase.h \
+ src/host/plugins/nnls-chroma-0.2.1/RealTime.h \
+ /usr/include/c++/4.6/iostream /usr/include/c++/4.6/ostream \
+ /usr/include/c++/4.6/ios /usr/include/c++/4.6/bits/ios_base.h \
+ /usr/include/c++/4.6/bits/locale_classes.h \
+ /usr/include/c++/4.6/bits/locale_classes.tcc \
+ /usr/include/c++/4.6/streambuf /usr/include/c++/4.6/bits/streambuf.tcc \
+ /usr/include/c++/4.6/bits/basic_ios.h \
+ /usr/include/c++/4.6/bits/locale_facets.h /usr/include/c++/4.6/cwctype \
+ /usr/include/wctype.h \
+ /usr/include/c++/4.6/i686-linux-gnu/./bits/ctype_base.h \
+ /usr/include/c++/4.6/bits/streambuf_iterator.h \
+ /usr/include/c++/4.6/i686-linux-gnu/./bits/ctype_inline.h \
+ /usr/include/c++/4.6/bits/locale_facets.tcc \
+ /usr/include/c++/4.6/bits/basic_ios.tcc \
+ /usr/include/c++/4.6/bits/ostream.tcc /usr/include/c++/4.6/istream \
+ /usr/include/c++/4.6/bits/istream.tcc /usr/include/c++/4.6/list \
+ /usr/include/c++/4.6/bits/stl_list.h /usr/include/c++/4.6/bits/list.tcc \
  /usr/include/c++/4.6/algorithm /usr/include/c++/4.6/utility \
  /usr/include/c++/4.6/bits/stl_relops.h \
  /usr/include/c++/4.6/bits/stl_algo.h /usr/include/c++/4.6/cstdlib \

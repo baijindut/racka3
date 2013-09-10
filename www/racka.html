@@ -632,19 +632,17 @@ function addPlugin(pluginName,chainPosition) {
 <body text="white">
 
 	<div class="layoutMaster" style="width:1000px">
-		<div class="global"style="width=100%;">
-			rack presets 
-			<select id="rackpresets" size=6></select>
+		<div>
+			
+			<select id="rackpresets" size=8 style="width:120px"></select>
 			<br/>
 			<a href='javascript:loadRackPreset("");'><img class="icon" src="icons/open.png" alt="load rack preset"/></a>
-			<br/>
+			&nbsp;
 			<a href='javascript:if (true==confirm("sure to save over current rack preset?")){saveRackPreset("");}'><img class="icon" src="icons/save.png" alt="save rack preset"/></a>
 			&nbsp;
 			<a href='javascript:saveRackPreset(prompt("name for plugin preset:","user"));'><img class="icon" src="icons/saveas.png" alt="save rack preset as"/></a>
 			&nbsp;
 			<a href='javascript:if (true==confirm("sure to DELETE current rack preset?")){deleteRackPreset("");}'><img class="icon" src="icons/delete.png" alt="delete rack preset"/></a>
-		}
-
 		</div>
 		<div class="palette" style="float: left; width=250px;">
 			&nbsp;
