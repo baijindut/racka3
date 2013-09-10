@@ -42,6 +42,7 @@ PluginChroma::PluginChroma ()
 	_chroma = new PluginBufferingAdapter(_chroma);
 
 	// need to initialise plugin
+	_chroma->initialise(1,PERIOD,PERIOD);
 
 	/*
 	if (adapterFlags & ADAPT_BUFFER_SIZE) {
