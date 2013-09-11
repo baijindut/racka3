@@ -12,7 +12,7 @@
 			"attack":	8001,
 			"squash":	8001,
 			"lowcut":	8001,
-			"Mix":	0
+			"Mix":	127
 		}
 	}
 }

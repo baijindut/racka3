@@ -1,11 +1,6 @@
 /*
-  ZynAddSubFX - a software synthesizer
-
-  Chorus.C - Chorus and Flange effects
-  Copyright (C) 2002-2005 Nasca Octavian Paul
-  Author: Nasca Octavian Paul
-
-  Modified for rakarrack by Josep Andreu
+  freezer plugin by chay strawbridge
+  11-sep2013
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of version 2 of the GNU General Public License
@@ -31,28 +26,40 @@
 
 PluginFreezer::PluginFreezer ()
 {
-    env = 0.0;
-    gate = 0.0;
-    fs = fSAMPLE_RATE;
-    state = CLOSED;
-    hold_count = 0;
+	_gateStruct.env = 0.0;
+	_gateStruct.gate = 0.0;
+	_gateStruct.fs = fSAMPLE_RATE;
+	_gateStruct.state = CLOSED;
+	_gateStruct.oldState = CLOSED;
+	_gateStruct.holdCount = 0;
+	_gateStruct.a_rate=1;
+	_gateStruct.d_rate=1;
+	_gateStruct.cooloff=0;
+	_gateStruct.cold=0;
+
+	_grainLength=0;
+	_grainPos=0;
+	_grainState=GRAINSTATE_NULL;
+	_grain = new StereoBuffer(MAX_TOTALGRAIN);
+	_decay=0;
 
     registerPlugin(1,"Freezer",
      			   "Gate triggered grain synth",
      				1);
     //    {0, -10, 1, 2, 6703, 76, 2},
 
-     registerParam(1,"Threshold","","","","",-70,20,1,0);
-     registerParam(2,"Range","","","dB","",-90,0,1,-10);
-     registerParam(3,"Attack","","","","",1,250,1,1);
-     registerParam(4,"Release","","","","",2,250,1,2);
+     registerParam(1,"Threshold","level at which gate opens","dB","","",-70,20,1,0);
+     registerParam(2,"Range","difference between open and closed state","","dB","",-90,0,1,-10);
 
-     registerParam(7,"Hold","","","","",2,500,2,2);
+     registerParam(7,"Hold","time gate stays open","ms","","",2,500,2,2);
+     registerParam(8,"Cooloff","prevent gate reopening","ms","","",2,500,2,2);
+
+     registerParam(9,"Decay","decay of grain pad","ms","","",2,10000,10,2000);
 };
 
 PluginFreezer::~PluginFreezer ()
 {
-
+	delete _grain;
 };
 
 int PluginFreezer::process(StereoBuffer* input)
@@ -65,55 +72,114 @@ int PluginFreezer::process(StereoBuffer* input)
     int i;
     float sum;
 
+    // lazy, but quick enuf blank the buffer
+    for (i=0;i<input->length;i++)
+    {
+    	outLeft[i]=0;
+    	outRight[i]=0;
+    }
+
     for (i = 0; i < PERIOD; i++) {
 
         sum = fabsf (inLeft[i]) + fabsf (inRight[i]);
 
-        if (sum > env)
-            env = sum;
+        if (sum > _gateStruct.env)
+        	_gateStruct.env = sum;
         else
-            env = sum * ENV_TR + env * (1.0f - ENV_TR);
+        	_gateStruct.env = sum * ENV_TR + _gateStruct.env * (1.0f - ENV_TR);
 
-        if (state == CLOSED)
+        if (_gateStruct.state == CLOSED)
         {
-            if (env >= t_level)
-                state = OPENING;
-        }
-        else if (state == OPENING)
-        {
-            gate += a_rate;
-            if (gate >= 1.0)
+            if (_gateStruct.env >= _gateStruct.t_level)
             {
-                gate = 1.0f;
-                state = OPEN;
-                hold_count = lrintf (hold * fs * 0.001f);
+            	if (_gateStruct.cold <= 0)
+            		_gateStruct.state = OPENING;
+            }
+            _gateStruct.cold --;
+        }
+        else if (_gateStruct.state == OPENING)
+        {
+        	_gateStruct.gate += _gateStruct.a_rate;
+            if (_gateStruct.gate >= 1.0)
+            {
+            	_gateStruct.gate = 1.0f;
+            	_gateStruct.state = OPEN;
+            	_gateStruct.holdCount = lrintf (_gateStruct.hold * _gateStruct.fs * 0.001f);
             }
         }
-        else if (state == OPEN)
+        else if (_gateStruct.state == OPEN)
         {
-            if (hold_count <= 0)
+            if (_gateStruct.holdCount <= 0)
             {
-                if (env < t_level)
+                if (_gateStruct.env < _gateStruct.t_level)
                 {
-                    state = CLOSING;
+                	_gateStruct.state = CLOSING;
                 }
             } else
-                hold_count--;
+            	_gateStruct.holdCount--;
 
         }
-        else if (state == CLOSING)
+        else if (_gateStruct.state == CLOSING)
         {
-            gate -= d_rate;
-            if (env >= t_level)
-                state = OPENING;
-            else if (gate <= 0.0) {
-                gate = 0.0;
-                state = CLOSED;
+        	_gateStruct.gate -= _gateStruct.d_rate;
+            if (_gateStruct.env >= _gateStruct.t_level)
+            {
+            	if (_gateStruct.cold <=0)
+            		_gateStruct.state = OPENING;
+            }
+            else if (_gateStruct.gate <= 0.0) {
+            	_gateStruct.gate = 0.0;
+            	_gateStruct.state = CLOSED;
+            	_gateStruct.cold = lrintf(_gateStruct.cooloff * _gateStruct.fs * 0.001f);
             }
         }
 
-        outLeft[i] *= (cut * (1.0f - gate) + gate);
-        outRight[i] *= (cut * (1.0f - gate) + gate);
+        // act on open/closed gate
+        if (_gateStruct.oldState != _gateStruct.state)
+        {
+			if (_gateStruct.state==OPEN)
+			{
+				_grainState = GRAINSTATE_RECORDING;
+				_grainLength =0;
+				_grainPos=0;
+			}
+			else if (_gateStruct.state==CLOSED)
+			{
+				_grainState = GRAINSTATE_PLAYING;
+				_grainPos=0;
+				_decay = lrintf(Pdecay * _gateStruct.fs * 0.001f);
+
+				// todo: process grain here
+			}
+
+			_gateStruct.oldState = _gateStruct.state;
+        }
+
+        // grain
+        if (_grainState==GRAINSTATE_RECORDING && _grainLength < MAX_TOTALGRAIN)
+        {
+        	_grain->left[_grainLength] = inLeft[i];
+        	_grain->right[_grainLength] = inRight[i];
+        	_grainLength++;
+        }
+        else if (_grainState==GRAINSTATE_PLAYING && _grainLength > 0)
+        {
+        	if (_decay-- <=0) {
+        		_grainState = GRAINSTATE_STOPPED;
+        	}
+        }
+
+
+		float level = _decay / (Pdecay * _gateStruct.fs * 0.001f);;
+		outLeft[i] = _grain->left[_grainPos] * level;
+		outRight[i] = _grain->right[_grainPos] * level;
+
+		if (_grainPos++ >= _grainLength)
+			_grainPos=0;
+
+
+        //outLeft[i] = inLeft[i] * (_gateStruct.cut * (1.0f - _gateStruct.gate) + _gateStruct.gate);
+        //outRight[i] = inRight[i]* (_gateStruct.cut * (1.0f - _gateStruct.gate) + _gateStruct.gate);
     }
 
     return paContinue;
@@ -142,26 +208,27 @@ PluginFreezer::setParam (int npar, int value)
 
     case 1:
         Pthreshold = value;
-        t_level = dB2rap ((float)Pthreshold);
+        _gateStruct.t_level = dB2rap ((float)Pthreshold);
         break;
     case 2:
         Prange = value;
-        cut = dB2rap ((float)Prange);
-        break;
-    case 3:
-        Pattack = value;
-        a_rate = 1000.0f / ((float)Pattack * fs);
-        break;
-    case 4:
-        Pdecay = value;
-        d_rate = 1000.0f / ((float)Pdecay * fs);
+        _gateStruct.cut = dB2rap ((float)Prange);
         break;
 
     case 7:
         Phold = value;
-        hold = (float)Phold;
+        _gateStruct.hold = (float)Phold;
         break;
-
+    case 8:
+        Pcooloff = value;
+        _gateStruct.cooloff = (float)Pcooloff;
+        break;
+    case 9:
+    {
+        Pdecay = value;
+        _decay=0;
+        break;
+    }
     }
 };
 
@@ -178,17 +245,16 @@ PluginFreezer::getParam (int npar)
     case 2:
         return (Prange);
         break;
-    case 3:
-        return (Pattack);
-        break;
-    case 4:
-        return (Pdecay);
-        break;
 
     case 7:
         return (Phold);
         break;
-
+    case 8:
+        return (Pcooloff);
+        break;
+    case 9:
+    	return (Pdecay);
+    	break;
     }
 
     return (0);

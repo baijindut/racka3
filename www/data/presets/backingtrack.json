@@ -3,7 +3,7 @@
 		"default":	{
 			"Level":	64,
 			"Playing":	0,
-			"Mix":	0
+			"Mix":	127
 		}
 	}
 }

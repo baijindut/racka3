@@ -1,11 +1,5 @@
 /*
-  ZynAddSubFX - a software synthesizer
-
-  Chorus.h - Chorus and Flange effects
-  Copyright (C) 2002-2005 Nasca Octavian Paul
-  Author: Nasca Octavian Paul
-
-  Modified for rakarrack by Josep Andreu
+  freezer plugin by chay strawbridge
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of version 2 of the GNU General Public License
@@ -29,6 +23,13 @@
 #include "../Plugin.h"
 #include "../StereoBuffer.h"
 
+#define MAX_TOTALGRAIN 2000
+
+#define GRAINSTATE_NULL 0
+#define GRAINSTATE_RECORDING 1
+#define GRAINSTATE_PLAYING 2
+#define GRAINSTATE_STOPPED 3
+
 class PluginFreezer : public Plugin
 {
 
@@ -46,24 +47,36 @@ private:
     void cleanup ();
 
     int Pthreshold;		// attack time  (ms)
-    int Pattack;			// release time (ms)
-    int Ohold;
-    int Pdecay;
     int Prange;
     int Phold;
+    int Pcooloff;		// gate cooloff period (ms)
+    int Pdecay;
 
 private:
-    int hold_count;
-    int state;
-    float range;
-    float cut;
-    float t_level;
-    float a_rate;
-    float d_rate;
-    float env;
-    float gate;
-    float fs;
-    float hold;
+
+    struct gateStruct
+    {
+		int holdCount;
+		int state;
+		int oldState;
+		float cut;
+		float t_level;
+		float a_rate;
+		float d_rate;
+		float env;
+		float gate;
+		float fs;
+		float hold;
+		float cooloff;
+		float cold;
+	} _gateStruct;
+
+
+    StereoBuffer* _grain;
+    int _grainLength;
+    int _grainState;
+    int _grainPos;
+    float _decay;
 };
 
 #endif

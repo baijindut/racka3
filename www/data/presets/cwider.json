@@ -3,7 +3,7 @@
 		"default":	{
 			"pan":	0,
 			"width":	8001,
-			"Mix":	0
+			"Mix":	127
 		}
 	}
 }

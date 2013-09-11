@@ -7,7 +7,7 @@
 			"blend":	8001,
 			"feedforward":	8001,
 			"feedback":	8001,
-			"Mix":	0
+			"Mix":	127
 		}
 	}
 }

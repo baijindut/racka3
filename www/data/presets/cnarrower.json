@@ -3,7 +3,7 @@
 		"default":	{
 			"mode":	0,
 			"strength":	8001,
-			"Mix":	0
+			"Mix":	127
 		}
 	}
 }

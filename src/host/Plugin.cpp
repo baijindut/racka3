@@ -123,7 +123,15 @@ void Plugin::getAllParams(cJSON* jsonParams)
 
 	while (param)
 	{
-		cJSON* value = cJSON_CreateNumber(getParam(param->index));
+		int val;
+		if (param->index == PARAM_MIX)
+			val = getMix();
+		else if (param->index == PARAM_PRESET)
+			val = -1;
+		else
+			val = getParam(param->index);
+
+		cJSON* value = cJSON_CreateNumber(val);
 		cJSON_AddItemToObject(jsonParams,param->name,value);
 		param = (PluginParam*)param->hh.next;
 	}

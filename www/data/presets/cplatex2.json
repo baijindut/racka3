@@ -5,7 +5,7 @@
 			"tail":	8001,
 			"damping":	0,
 			"blend":	8001,
-			"Mix":	0
+			"Mix":	127
 		}
 	}
 }

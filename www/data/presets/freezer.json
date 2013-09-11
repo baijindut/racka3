@@ -1,12 +1,37 @@
 {
 	"presets":	{
 		"default":	{
-			"Threshold":	0,
+			"Threshold":	4,
+			"Range":	34,
+			"Hold":	430,
+			"Cooloff":	471,
+			"Decay":	1402,
+			"Mix":	127
+		},
+		"dsfsdfsdf":	{
+			"Threshold":	4,
+			"Range":	34,
+			"Hold":	430,
+			"Mix":	0,
+			"preset":	0
+		},
+		"mike":	{
+			"Threshold":	-12,
 			"Range":	-10,
-			"Attack":	1,
-			"Release":	2,
 			"Hold":	2,
-			"Mix":	0
+			"Cooloff":	380,
+			"Decay":	1402,
+			"Mix":	127,
+			"preset":	-1
+		},
+		"freezer1":	{
+			"Threshold":	4,
+			"Range":	34,
+			"Hold":	430,
+			"Cooloff":	471,
+			"Decay":	1402,
+			"Mix":	127,
+			"preset":	-1
 		}
 	}
 }

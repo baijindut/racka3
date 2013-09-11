@@ -1,0 +1,117 @@
+{
+	"plugins":	[{
+			"name":	"C* CompressX2",
+			"version":	1,
+			"instance":	3,
+			"position":	0,
+			"friend":	-1,
+			"params":	[{
+					"name":	"measure",
+					"value":	0
+				}, {
+					"name":	"mode",
+					"value":	0
+				}, {
+					"name":	"threshold",
+					"value":	8001
+				}, {
+					"name":	"strength",
+					"value":	8001
+				}, {
+					"name":	"attack",
+					"value":	8001
+				}, {
+					"name":	"release",
+					"value":	8001
+				}, {
+					"name":	"gain (dB)",
+					"value":	6
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}, {
+			"name":	"C* Scape",
+			"version":	1,
+			"instance":	2,
+			"position":	1,
+			"friend":	-1,
+			"params":	[{
+					"name":	"bpm",
+					"value":	97
+				}, {
+					"name":	"divider",
+					"value":	2
+				}, {
+					"name":	"feedback",
+					"value":	109
+				}, {
+					"name":	"dry",
+					"value":	76
+				}, {
+					"name":	"blend",
+					"value":	111
+				}, {
+					"name":	"tune (Hz)",
+					"value":	451
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}, {
+			"name":	"Chorus",
+			"version":	1,
+			"instance":	1,
+			"position":	2,
+			"friend":	-1,
+			"params":	[{
+					"name":	"Panning",
+					"value":	64
+				}, {
+					"name":	"Tempo",
+					"value":	32
+				}, {
+					"name":	"Randomness",
+					"value":	0
+				}, {
+					"name":	"LFO Type",
+					"value":	0
+				}, {
+					"name":	"Stereo",
+					"value":	87
+				}, {
+					"name":	"Depth",
+					"value":	114
+				}, {
+					"name":	"Delay",
+					"value":	98
+				}, {
+					"name":	"Feedback",
+					"value":	88
+				}, {
+					"name":	"L/R Cross",
+					"value":	84
+				}, {
+					"name":	"Flange Mode",
+					"value":	0
+				}, {
+					"name":	"Subtract",
+					"value":	0
+				}, {
+					"name":	"Interpolation (hiQ)",
+					"value":	1
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}]
+}
