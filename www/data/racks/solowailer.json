@@ -1,0 +1,124 @@
+{
+	"plugins":	[{
+			"name":	"Reverb",
+			"version":	1,
+			"instance":	3,
+			"position":	0,
+			"friend":	-1,
+			"params":	[{
+					"name":	"Freeze",
+					"value":	0
+				}, {
+					"name":	"Room Size",
+					"value":	63
+				}, {
+					"name":	"Damping",
+					"value":	63
+				}, {
+					"name":	"Width",
+					"value":	63
+				}, {
+					"name":	"Mix",
+					"value":	49
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}, {
+			"name":	"C* Scape",
+			"version":	1,
+			"instance":	2,
+			"position":	1,
+			"friend":	-1,
+			"params":	[{
+					"name":	"bpm",
+					"value":	119
+				}, {
+					"name":	"divider",
+					"value":	2
+				}, {
+					"name":	"feedback",
+					"value":	54
+				}, {
+					"name":	"dry",
+					"value":	88
+				}, {
+					"name":	"blend",
+					"value":	114
+				}, {
+					"name":	"tune (Hz)",
+					"value":	454
+				}, {
+					"name":	"Mix",
+					"value":	19
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}, {
+			"name":	"C* AmpVTS",
+			"version":	1,
+			"instance":	7,
+			"position":	2,
+			"friend":	-1,
+			"params":	[{
+					"name":	"over",
+					"value":	0
+				}, {
+					"name":	"gain",
+					"value":	105
+				}, {
+					"name":	"bright",
+					"value":	92
+				}, {
+					"name":	"power",
+					"value":	69
+				}, {
+					"name":	"tonestack",
+					"value":	3
+				}, {
+					"name":	"bass",
+					"value":	20
+				}, {
+					"name":	"mid",
+					"value":	65
+				}, {
+					"name":	"treble",
+					"value":	84
+				}, {
+					"name":	"attack",
+					"value":	0
+				}, {
+					"name":	"squash",
+					"value":	21
+				}, {
+					"name":	"lowcut",
+					"value":	65
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}, {
+			"name":	"C* CabinetIV",
+			"version":	1,
+			"instance":	6,
+			"position":	3,
+			"friend":	-1,
+			"params":	[{
+					"name":	"model",
+					"value":	10
+				}, {
+					"name":	"gain (dB)",
+					"value":	-1
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}]
+}
