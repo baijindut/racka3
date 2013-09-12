@@ -88,4 +88,7 @@ src/host/plugins/PluginFreezer.o: src/host/plugins/PluginFreezer.cpp /usr/includ
  /usr/include/i386-linux-gnu/bits/stat.h /usr/include/libio.h \
  /usr/include/_G_config.h /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
- src/host/plugins/../StereoBuffer.h src/settings.h
+ src/host/plugins/../StereoBuffer.h src/host/plugins/Freeverb/revmodel.h \
+ src/host/plugins/Freeverb/comb.h src/host/plugins/Freeverb/denormals.h \
+ src/host/plugins/Freeverb/allpass.h src/host/plugins/Freeverb/tuning.h \
+ src/settings.h

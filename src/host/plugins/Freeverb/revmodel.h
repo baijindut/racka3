@@ -17,6 +17,7 @@ public:
 					revmodel();
 			void	mute();
 			void	processmix(float *inputL, float *inputR, float *outputL, float *outputR, long numsamples, int skip);
+			void	processmix(float *inputL, float *inputR, float *outputL, float *outputR, long numsamples, int skip,float level);
 			void	processreplace(float *inputL, float *inputR, float *outputL, float *outputR, long numsamples, int skip);
 			void	setroomsize(float value);
 			float	getroomsize();

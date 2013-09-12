@@ -111,6 +111,11 @@ void revmodel::processreplace(float *inputL, float *inputR, float *outputL, floa
 
 void revmodel::processmix(float *inputL, float *inputR, float *outputL, float *outputR, long numsamples, int skip)
 {
+	processmix(inputL,inputR,outputL,outputR,numsamples,skip,1.0);
+}
+
+void revmodel::processmix(float *inputL, float *inputR, float *outputL, float *outputR, long numsamples, int skip,float level)
+{
 	float outL,outR,input;
 	int i;
 
@@ -134,8 +139,8 @@ void revmodel::processmix(float *inputL, float *inputR, float *outputL, float *o
 		}
 
 		// Calculate output MIXING with anything already there
-		*outputL += outL*wet1 + outR*wet2 + *inputL*dry;
-		*outputR += outR*wet1 + outL*wet2 + *inputR*dry;
+		*outputL += (outL*wet1 + outR*wet2 + *inputL*dry)*level;
+		*outputR += (outR*wet1 + outL*wet2 + *inputR*dry)*level;
 
 		// Increment sample pointers, allowing for interleave (if any)
 		inputL += skip;

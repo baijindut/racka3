@@ -22,13 +22,7 @@
 #include "global.h"
 #include "../Plugin.h"
 #include "../StereoBuffer.h"
-
-#define MAX_TOTALGRAIN 2000
-
-#define GRAINSTATE_NULL 0
-#define GRAINSTATE_RECORDING 1
-#define GRAINSTATE_PLAYING 2
-#define GRAINSTATE_STOPPED 3
+#include "Freeverb/revmodel.h"
 
 class PluginFreezer : public Plugin
 {
@@ -46,10 +40,10 @@ private:
     int getParam (int npar);
     void cleanup ();
 
-    int Pthreshold;		// attack time  (ms)
+    int Pthreshold;
+    int Pattack;			// release time (ms)
     int Prange;
     int Phold;
-    int Pcooloff;		// gate cooloff period (ms)
     int Pdecay;
 
 private:
@@ -58,7 +52,6 @@ private:
     {
 		int holdCount;
 		int state;
-		int oldState;
 		float cut;
 		float t_level;
 		float a_rate;
@@ -67,16 +60,11 @@ private:
 		float gate;
 		float fs;
 		float hold;
-		float cooloff;
-		float cold;
 	} _gateStruct;
 
-
-    StereoBuffer* _grain;
-    int _grainLength;
-    int _grainState;
-    int _grainPos;
-    float _decay;
+    vector <revmodel*> _models;
+    vector <float> _modelDelay;
+    int _nextModel;
 };
 
 #endif
