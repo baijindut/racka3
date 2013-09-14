@@ -1,43 +1,25 @@
 {
 	"plugins":	[{
-			"name":	"C* AmpVTS",
+			"name":	"StompBox",
 			"version":	1,
-			"instance":	7,
+			"instance":	1,
 			"position":	0,
 			"friend":	-1,
 			"params":	[{
-					"name":	"over",
+					"name":	"High",
 					"value":	0
 				}, {
-					"name":	"gain",
-					"value":	106
-				}, {
-					"name":	"bright",
-					"value":	107
-				}, {
-					"name":	"power",
-					"value":	74
-				}, {
-					"name":	"tonestack",
+					"name":	"Mid",
 					"value":	0
 				}, {
-					"name":	"bass",
-					"value":	66
+					"name":	"Low",
+					"value":	0
 				}, {
-					"name":	"mid",
-					"value":	76
+					"name":	"Gain",
+					"value":	77
 				}, {
-					"name":	"treble",
-					"value":	69
-				}, {
-					"name":	"attack",
-					"value":	69
-				}, {
-					"name":	"squash",
-					"value":	68
-				}, {
-					"name":	"lowcut",
-					"value":	40
+					"name":	"Mode",
+					"value":	2
 				}, {
 					"name":	"Mix",
 					"value":	127
@@ -46,20 +28,66 @@
 					"value":	0
 				}]
 		}, {
-			"name":	"C* CabinetIV",
+			"name":	"Reverb",
 			"version":	1,
-			"instance":	6,
+			"instance":	2,
 			"position":	1,
 			"friend":	-1,
 			"params":	[{
-					"name":	"model",
+					"name":	"Freeze",
 					"value":	0
 				}, {
-					"name":	"gain (dB)",
-					"value":	0
+					"name":	"Room Size",
+					"value":	63
+				}, {
+					"name":	"Damping",
+					"value":	63
+				}, {
+					"name":	"Width",
+					"value":	63
 				}, {
 					"name":	"Mix",
-					"value":	127
+					"value":	42
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}, {
+			"name":	"Echoverse",
+			"version":	1,
+			"instance":	3,
+			"position":	2,
+			"friend":	-1,
+			"params":	[{
+					"name":	"Pan",
+					"value":	64
+				}, {
+					"name":	"Tempo",
+					"value":	120
+				}, {
+					"name":	"LR Delay",
+					"value":	65
+				}, {
+					"name":	"Angle",
+					"value":	0
+				}, {
+					"name":	"Feedback",
+					"value":	80
+				}, {
+					"name":	"Damping",
+					"value":	10
+				}, {
+					"name":	"Reverse",
+					"value":	0
+				}, {
+					"name":	"Tempo Subdivision",
+					"value":	0
+				}, {
+					"name":	"E.S.",
+					"value":	100
+				}, {
+					"name":	"Mix",
+					"value":	19
 				}, {
 					"name":	"preset",
 					"value":	0

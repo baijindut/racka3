@@ -1,0 +1,31 @@
+{
+	"plugins":	[{
+			"name":	"StompBox",
+			"version":	1,
+			"instance":	1,
+			"position":	0,
+			"friend":	-1,
+			"params":	[{
+					"name":	"High",
+					"value":	0
+				}, {
+					"name":	"Mid",
+					"value":	0
+				}, {
+					"name":	"Low",
+					"value":	0
+				}, {
+					"name":	"Gain",
+					"value":	63
+				}, {
+					"name":	"Mode",
+					"value":	2
+				}, {
+					"name":	"Mix",
+					"value":	127
+				}, {
+					"name":	"preset",
+					"value":	0
+				}]
+		}]
+}

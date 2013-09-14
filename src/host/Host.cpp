@@ -28,6 +28,8 @@
 #include "plugins/PluginExpander.h"
 #include "CAPSPluginWrapper.h"
 #include "plugins/PluginFreezer.h"
+#include "plugins/PluginStompBox.h"
+#include "plugins/PluginRing.h"
 
 #include <stdio.h>
 #include <algorithm>
@@ -69,6 +71,8 @@ Host::Host()
 	_pluginNames.push_back(CAPS"Scape");
 
 	_pluginNames.push_back("Freezer");
+	_pluginNames.push_back("StompBox");
+	_pluginNames.push_back("RingMod");
 
 	// loop over all names and create all plugin json list
 	_jsonAllPlugins = cJSON_CreateArray();
@@ -601,6 +605,10 @@ Plugin* Host::createNewPlugin(string name)
 		}
 	} else if (name=="Freezer") {
 		plugin = new PluginFreezer();
+	} else if (name=="StompBox") {
+		plugin = new PluginStompBox();
+	} else if (name=="RingMod") {
+		plugin = new PluginRing();
 	}
 
 	// do extra stuff for plugin

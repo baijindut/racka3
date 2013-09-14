@@ -3,9 +3,9 @@
 		"default":	{
 			"bpm":	97,
 			"divider":	2,
-			"feedback":	8001,
-			"dry":	8001,
-			"blend":	8001,
+			"feedback":	63,
+			"dry":	63,
+			"blend":	63,
 			"tune (Hz)":	441,
 			"Mix":	127
 		}

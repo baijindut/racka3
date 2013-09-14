@@ -1,0 +1,12 @@
+{
+	"presets":	{
+		"default":	{
+			"High":	0,
+			"Mid":	0,
+			"Low":	0,
+			"Gain":	63,
+			"Mode":	0,
+			"Mix":	127
+		}
+	}
+}

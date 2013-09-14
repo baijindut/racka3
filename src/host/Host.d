@@ -108,8 +108,11 @@ src/host/Host.o: src/host/Host.cpp src/host/Host.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/float.h /usr/include/assert.h \
  src/host/plugins/caps-0.9.16/ladspa.h \
  src/host/plugins/caps-0.9.16/LadspaPlugin.h \
- src/host/plugins/PluginFreezer.h /usr/include/c++/4.6/algorithm \
- /usr/include/c++/4.6/utility /usr/include/c++/4.6/bits/stl_relops.h \
+ src/host/plugins/PluginFreezer.h src/host/plugins/PluginStompBox.h \
+ src/host/plugins/Waveshaper.h src/host/plugins/PluginRing.h \
+ src/host/plugins/PluginArpie.h src/host/StereoBuffer.h \
+ /usr/include/c++/4.6/algorithm /usr/include/c++/4.6/utility \
+ /usr/include/c++/4.6/bits/stl_relops.h \
  /usr/include/c++/4.6/bits/stl_algo.h /usr/include/c++/4.6/cstdlib \
  /usr/include/c++/4.6/bits/algorithmfwd.h \
  /usr/include/c++/4.6/bits/stl_heap.h \

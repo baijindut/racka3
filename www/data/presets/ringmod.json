@@ -1,0 +1,29 @@
+{
+	"presets":	{
+		"default":	{
+			"Pan":	0,
+			"L-R Cross":	-64,
+			"Depth":	35,
+			"Frequency":	1,
+			"Stereo":	0,
+			"Sin":	20,
+			"Tri":	0,
+			"Saw":	40,
+			"Square":	0,
+			"Mix":	127
+		},
+		"ringer":	{
+			"Pan":	0,
+			"L-R Cross":	3,
+			"Depth":	85,
+			"Frequency":	792,
+			"Stereo":	1,
+			"Sin":	0,
+			"Tri":	59,
+			"Saw":	4,
+			"Square":	57,
+			"Mix":	127,
+			"preset":	-1
+		}
+	}
+}

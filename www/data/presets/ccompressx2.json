@@ -3,10 +3,10 @@
 		"default":	{
 			"measure":	0,
 			"mode":	0,
-			"threshold":	8001,
-			"strength":	8001,
-			"attack":	8001,
-			"release":	8001,
+			"threshold":	63,
+			"strength":	63,
+			"attack":	63,
+			"release":	63,
 			"gain (dB)":	6,
 			"Mix":	127
 		}

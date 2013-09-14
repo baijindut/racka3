@@ -2,10 +2,10 @@
 	"presets":	{
 		"default":	{
 			"lo.f (Hz)":	425,
-			"lo.compress":	8001,
-			"lo.gain":	8001,
+			"lo.compress":	63,
+			"lo.gain":	63,
 			"hi.f (Hz)":	2700,
-			"hi.gain":	8001,
+			"hi.gain":	63,
 			"Mix":	127
 		}
 	}

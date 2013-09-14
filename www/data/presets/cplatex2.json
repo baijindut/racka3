@@ -2,9 +2,9 @@
 	"presets":	{
 		"default":	{
 			"bandwidth":	0,
-			"tail":	8001,
+			"tail":	63,
 			"damping":	0,
-			"blend":	8001,
+			"blend":	63,
 			"Mix":	127
 		}
 	}

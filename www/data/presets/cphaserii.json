@@ -1,11 +1,11 @@
 {
 	"presets":	{
 		"default":	{
-			"rate":	8001,
+			"rate":	63,
 			"lfo":	0,
-			"depth":	8001,
-			"spread":	8001,
-			"resonance":	8001,
+			"depth":	63,
+			"spread":	63,
+			"resonance":	63,
 			"Mix":	127
 		}
 	}

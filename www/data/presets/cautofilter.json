@@ -6,10 +6,10 @@
 			"filter":	0,
 			"gain (dB)":	12,
 			"f (Hz)":	1510,
-			"Q":	8001,
-			"range":	8001,
-			"lfo/env":	8001,
-			"rate":	8001,
+			"Q":	63,
+			"range":	63,
+			"lfo/env":	63,
+			"rate":	63,
 			"Mix":	127
 		}
 	}

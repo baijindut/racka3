@@ -4,9 +4,9 @@
 			"t (ms)":	21,
 			"width (ms)":	5,
 			"rate (Hz)":	2,
-			"blend":	8001,
-			"feedforward":	8001,
-			"feedback":	8001,
+			"blend":	63,
+			"feedforward":	63,
+			"feedback":	63,
 			"Mix":	127
 		}
 	}

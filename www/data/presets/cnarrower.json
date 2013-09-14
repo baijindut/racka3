@@ -2,7 +2,7 @@
 	"presets":	{
 		"default":	{
 			"mode":	0,
-			"strength":	8001,
+			"strength":	63,
 			"Mix":	127
 		}
 	}

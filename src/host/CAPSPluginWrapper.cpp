@@ -155,7 +155,7 @@ bool CAPSPluginWrapper::loadCapsPlugin(string  name)
 						{
 							// abnormal non-integer knobs,like gain in dB (-24 to 24 or whatever)
 							// todo: calculate new step that is smaller than 1 to increase smoothness
-							value = (int)value;
+							value = value;
 						}
 
 						doRegister=true;
@@ -174,7 +174,7 @@ bool CAPSPluginWrapper::loadCapsPlugin(string  name)
 					if (labels.size())
 						param = registerParam(i,(char*)name,labels,value);
 					else
-						param = registerParam(i,(char*)name,"","","","",min,max,1,value*multiplier);
+						param = registerParam(i,(char*)name,"","","","",min,max,1,value);
 				}
 			}
 		}	// end params loop

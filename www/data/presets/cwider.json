@@ -2,7 +2,7 @@
 	"presets":	{
 		"default":	{
 			"pan":	0,
-			"width":	8001,
+			"width":	63,
 			"Mix":	127
 		}
 	}
