@@ -6,6 +6,7 @@
  */
 
 #include "Host.h"
+#include "SoundInterface.h"
 
 #include "mongcpp.h"
 using namespace mongoose;
@@ -21,6 +22,7 @@ public:
     virtual ~HttpServer();
 
     void setPluginHost(Host* pluginHost);
+    void setSoundInterface(SoundInterface* interface);
 
 protected:
     virtual bool handleEvent(ServerHandlingEvent eventCode,
@@ -34,6 +36,7 @@ private:
 							 MongooseResponse &response);
 
     Host* _pluginHost;
+    SoundInterface* _soundInterface;
 };
 
 

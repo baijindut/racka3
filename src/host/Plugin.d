@@ -7,7 +7,8 @@ src/host/Plugin.o: src/host/Plugin.cpp src/host/Plugin.h \
  /usr/include/i386-linux-gnu/gnu/stubs.h \
  /usr/include/i386-linux-gnu/gnu/stubs-32.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/stddef.h /usr/include/xlocale.h \
- /usr/include/stdlib.h /usr/include/i386-linux-gnu/bits/waitflags.h \
+ /usr/include/i386-linux-gnu/bits/string3.h /usr/include/stdlib.h \
+ /usr/include/i386-linux-gnu/bits/waitflags.h \
  /usr/include/i386-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
  /usr/include/i386-linux-gnu/bits/endian.h \
  /usr/include/i386-linux-gnu/bits/byteswap.h \
@@ -18,11 +19,13 @@ src/host/Plugin.o: src/host/Plugin.cpp src/host/Plugin.h \
  /usr/include/i386-linux-gnu/bits/select.h \
  /usr/include/i386-linux-gnu/bits/sigset.h \
  /usr/include/i386-linux-gnu/bits/time.h \
+ /usr/include/i386-linux-gnu/bits/select2.h \
  /usr/include/i386-linux-gnu/sys/sysmacros.h \
  /usr/include/i386-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
- /usr/include/inttypes.h /usr/lib/gcc/i686-linux-gnu/4.6/include/stdint.h \
- /usr/include/stdint.h /usr/include/i386-linux-gnu/bits/wchar.h \
- /usr/include/c++/4.6/vector /usr/include/c++/4.6/bits/stl_algobase.h \
+ /usr/include/i386-linux-gnu/bits/stdlib.h /usr/include/inttypes.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/stdint.h /usr/include/stdint.h \
+ /usr/include/i386-linux-gnu/bits/wchar.h /usr/include/c++/4.6/vector \
+ /usr/include/c++/4.6/bits/stl_algobase.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/c++config.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/os_defines.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/cpu_defines.h \
@@ -51,6 +54,7 @@ src/host/Plugin.o: src/host/Plugin.cpp src/host/Plugin.h \
  /usr/include/c++/4.6/bits/postypes.h /usr/include/c++/4.6/cwchar \
  /usr/include/wchar.h /usr/include/stdio.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
+ /usr/include/i386-linux-gnu/bits/wchar2.h \
  /usr/include/c++/4.6/bits/localefwd.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/c++locale.h \
  /usr/include/c++/4.6/clocale /usr/include/locale.h \
@@ -71,9 +75,11 @@ src/host/Plugin.o: src/host/Plugin.cpp src/host/Plugin.h \
  /usr/include/i386-linux-gnu/bits/posix_opt.h \
  /usr/include/i386-linux-gnu/bits/environments.h \
  /usr/include/i386-linux-gnu/bits/confname.h /usr/include/getopt.h \
+ /usr/include/i386-linux-gnu/bits/unistd.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
  /usr/include/c++/4.6/bits/basic_string.tcc src/host/StereoBuffer.h \
  src/host/JsonFile.h /usr/include/i386-linux-gnu/sys/stat.h \
  /usr/include/i386-linux-gnu/bits/stat.h /usr/include/libio.h \
  /usr/include/_G_config.h /usr/include/i386-linux-gnu/bits/stdio_lim.h \
- /usr/include/i386-linux-gnu/bits/sys_errlist.h src/host/../settings.h
+ /usr/include/i386-linux-gnu/bits/sys_errlist.h \
+ /usr/include/i386-linux-gnu/bits/stdio2.h src/host/../settings.h

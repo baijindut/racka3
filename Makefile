@@ -63,18 +63,24 @@ MY_CFLAGS += -march=i386 -msse -mfpmath=sse
 
 # The linker options.
 # MY_LIBS   = -lGLEW -lglut -lGLU -lGL -lX11 -lXmu -lXi -lm -L/usr/X11R6/lib -lgomp -lOpenThreads -lpthread
-MY_LIBS   = -ldl -lm -lasound -lpthread -lportaudio
+MY_LIBS   = -ldl -lm -lasound -lpthread -lportaudio -lportaudiocpp
 
 # The pre-processor options used by the cpp (man cpp for more).
-CPPFLAGS  = -O0 -ffast-math -funroll-loops -Wno-psabi -fPIC -DPIC
+CPPFLAGS  = -Os -ffast-math -funroll-loops -Wno-psabi -fPIC -DPIC -Iexternals/include
 
 # The options used in linking as well as in any direct use of ld.
-LDFLAGS   = -Llibs/portaudio/lib
+LDFLAGS   = -Lexternals/lib
 
 # The directories in which source files reside.
 # If not specified, only the current directory will be serached.
-SRCDIRS   = src/host/plugins src/host src src/host/plugins/Freeverb 
-SRCDIRS  += src/host/plugins/caps-0.9.16/ src/host/plugins/caps-0.9.16/dsp src/host/plugins/caps-0.9.16/waves
+
+SRCDIRS   = src/host/plugins
+SRCDIRS	 += src/host
+SRCDIRS  += src
+SRCDIRS  += src/host/plugins/Freeverb 
+SRCDIRS  += src/host/plugins/caps-0.9.16/
+SRCDIRS  += src/host/plugins/caps-0.9.16/dsp
+SRCDIRS  += src/host/plugins/caps-0.9.16/waves
 
 # The executable file name.
 # If not specified, current directory name or `a.out' will be used.

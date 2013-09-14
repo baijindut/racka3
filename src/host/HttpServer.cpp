@@ -11,6 +11,7 @@
 HttpServer::HttpServer(): MongooseServer()
 {
 	_pluginHost=0;
+	_soundInterface=0;
 }
 
 HttpServer::~HttpServer()
@@ -39,6 +40,11 @@ bool HttpServer::handleEvent(ServerHandlingEvent eventCode,
 	}
 
 	return res;
+}
+
+void HttpServer::setSoundInterface(SoundInterface* interface)
+{
+	_soundInterface=interface;
 }
 
 void HttpServer::setPluginHost(Host* pluginHost)

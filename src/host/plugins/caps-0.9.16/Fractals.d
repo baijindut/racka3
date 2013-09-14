@@ -17,10 +17,13 @@ src/host/plugins/caps-0.9.16//Fractals.o: src/host/plugins/caps-0.9.16//Fractals
  /usr/include/i386-linux-gnu/bits/select.h \
  /usr/include/i386-linux-gnu/bits/sigset.h \
  /usr/include/i386-linux-gnu/bits/time.h \
+ /usr/include/i386-linux-gnu/bits/select2.h \
  /usr/include/i386-linux-gnu/sys/sysmacros.h \
  /usr/include/i386-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
+ /usr/include/i386-linux-gnu/bits/stdlib.h \
  src/host/plugins/caps-0.9.16//basics.h /usr/include/string.h \
- /usr/include/math.h /usr/include/i386-linux-gnu/bits/huge_val.h \
+ /usr/include/i386-linux-gnu/bits/string3.h /usr/include/math.h \
+ /usr/include/i386-linux-gnu/bits/huge_val.h \
  /usr/include/i386-linux-gnu/bits/huge_valf.h \
  /usr/include/i386-linux-gnu/bits/huge_vall.h \
  /usr/include/i386-linux-gnu/bits/inf.h \
@@ -33,6 +36,7 @@ src/host/plugins/caps-0.9.16//Fractals.o: src/host/plugins/caps-0.9.16//Fractals
  /usr/include/wchar.h /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
+ /usr/include/i386-linux-gnu/bits/stdio2.h \
  src/host/plugins/caps-0.9.16//ladspa.h \
  src/host/plugins/caps-0.9.16//LadspaPlugin.h \
  src/host/plugins/caps-0.9.16//Fractals.h \

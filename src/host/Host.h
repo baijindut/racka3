@@ -11,10 +11,11 @@
 #include "portaudio.h"
 #include <vector>
 #include "Plugin.h"
+#include "Processor.h"
 #include "../settings.h"
 using namespace std;
 
-class Host
+class Host : public Processor
 {
 public:
 	Host();
@@ -24,6 +25,7 @@ public:
                  unsigned long framesPerBuffer,
                  const PaStreamCallbackTimeInfo* timeInfo,
                  PaStreamCallbackFlags statusFlags);
+	void panic(){};
 
 	void getAvailablePlugins(cJSON* json);
 

@@ -1,29 +1,47 @@
 
-
 #include <stdio.h>
-#include <math.h>
-#include <string.h>
-#include "portaudio.h"
+#include "cJSON.h"
+
 #include "Host.h"
 #include "HttpServer.h"
-#include <unistd.h>
+#include "SoundInterface.h"
+
 #include "settings.h"
-
-#ifndef M_PI
-#define M_PI  (3.14159265)
-#endif
-
 
 /*******************************************************************/
 int main(int argc,char* argv[])
 {
+	#ifdef __SSE__
+	printf("compiled with SSE\n");
+	#endif
 
+	SoundInterface interface;
+	HttpServer server;
+	Host host;
+
+	// wiring
+	server.setPluginHost(&host);
+	server.setSoundInterface(&interface);
+	interface.setProcessor(&host);
+
+	// list devices example
+	cJSON* devices=cJSON_CreateObject();
+	interface.listDevices(devices);
+	printf("%s\n",cJSON_Print(devices));
+	cJSON_Delete(devices);
+
+	// init sound interface
+	interface.init(0);
+
+	// wait until user gets bored
+    printf("Hit ENTER to stop program.\n");
+    getchar();
+
+#if 0
     int i;
     HttpServer server;
 
-	#ifdef __SSE__
-    printf("compiled with SSE\n");
-	#endif
+
 
     server.setPluginHost(&data.host);
 
@@ -134,4 +152,6 @@ error:
     fprintf( stderr, "Error message: %s\n", Pa_GetErrorText( err ) );
     server.stop();
     return -1;
+#endif
+    return 0;
 }

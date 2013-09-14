@@ -10,12 +10,16 @@
 
 #include <stdio.h>
 #include <math.h>
-#include <string.h>
 #include "portaudio.h"
-#include "Host.h"
-#include "HttpServer.h"
-#include <unistd.h>
 #include "settings.h"
+#include "cJSON.h"
+#include "Processor.h"
+#include <iostream>
+#include <string>
+#include "portaudiocpp/PortAudioCpp.hxx"
+#ifdef WIN32
+#include "portaudiocpp/AsioDeviceAdapter.hxx"
+#endif
 
 #define TABLE_SIZE   (200)
 
@@ -25,23 +29,35 @@ public:
 	SoundInterface();
 	virtual ~SoundInterface();
 
-	bool init(int period,int rate,string devicename);
+	// needs 'period' int, 'rate' int, 'device' string
+	bool init(cJSON* json);
+	bool close();
 
-	int getDeviceCount();
-	string getDeviceName(int n);
+	// adds json array 'devices' to json
+	bool listDevices(cJSON* json);
+
+	// adds 'error' string to json
+	bool getLastError(cJSON* json);
 
 	bool isGood();
 
-	string getLastError();
+	void setProcessor(Processor* p);
+
+	// called by portaudio
+	int process(const void *inputBuffer,
+				 void *outputBuffer,
+				 unsigned long framesPerBuffer,
+				 const PaStreamCallbackTimeInfo *timeInfo,
+				 PaStreamCallbackFlags statusFlags);
 
 private:
-	bool _legit;
-	string _error;
+	void printSupportedStandardSampleRates(cJSON* json,
+			const portaudio::DirectionSpecificStreamParameters &inputParameters,
+			const portaudio::DirectionSpecificStreamParameters &outputParameters);
 
-private:
-    PaStreamParameters inputParameters, outputParameters;
-
-	paTestData;
+	std::string _error;
+	portaudio::MemFunCallbackStream<SoundInterface>* _stream;
+	Processor* _processor;
 };
 
 #endif /* SOUNDINTERFACE_H_ */

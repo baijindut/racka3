@@ -10,17 +10,9 @@ src/main.o: src/main.cpp /usr/include/stdio.h /usr/include/features.h \
  /usr/include/_G_config.h /usr/include/wchar.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
  /usr/include/i386-linux-gnu/bits/stdio_lim.h \
- /usr/include/i386-linux-gnu/bits/sys_errlist.h /usr/include/math.h \
- /usr/include/i386-linux-gnu/bits/huge_val.h \
- /usr/include/i386-linux-gnu/bits/huge_valf.h \
- /usr/include/i386-linux-gnu/bits/huge_vall.h \
- /usr/include/i386-linux-gnu/bits/inf.h \
- /usr/include/i386-linux-gnu/bits/nan.h \
- /usr/include/i386-linux-gnu/bits/mathdef.h \
- /usr/include/i386-linux-gnu/bits/mathcalls.h \
- /usr/include/i386-linux-gnu/bits/math-finite.h /usr/include/string.h \
- /usr/include/xlocale.h libs/portaudio/include/portaudio.h \
- src/host/Host.h /usr/include/c++/4.6/vector \
+ /usr/include/i386-linux-gnu/bits/sys_errlist.h \
+ /usr/include/i386-linux-gnu/bits/stdio2.h src/cJSON.h src/host/Host.h \
+ libs/portaudio/include/portaudio.h /usr/include/c++/4.6/vector \
  /usr/include/c++/4.6/bits/stl_algobase.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/c++config.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/os_defines.h \
@@ -45,7 +37,8 @@ src/main.o: src/main.cpp /usr/include/stdio.h /usr/include/features.h \
  /usr/include/c++/4.6/bits/stl_bvector.h \
  /usr/include/c++/4.6/bits/range_access.h \
  /usr/include/c++/4.6/bits/vector.tcc src/host/Plugin.h src/cJSON.h \
- src/uthash.h /usr/include/stdlib.h \
+ src/uthash.h /usr/include/string.h /usr/include/xlocale.h \
+ /usr/include/i386-linux-gnu/bits/string3.h /usr/include/stdlib.h \
  /usr/include/i386-linux-gnu/bits/waitflags.h \
  /usr/include/i386-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
  /usr/include/i386-linux-gnu/bits/endian.h \
@@ -55,13 +48,16 @@ src/main.o: src/main.cpp /usr/include/stdio.h /usr/include/features.h \
  /usr/include/i386-linux-gnu/bits/select.h \
  /usr/include/i386-linux-gnu/bits/sigset.h \
  /usr/include/i386-linux-gnu/bits/time.h \
+ /usr/include/i386-linux-gnu/bits/select2.h \
  /usr/include/i386-linux-gnu/sys/sysmacros.h \
  /usr/include/i386-linux-gnu/bits/pthreadtypes.h /usr/include/alloca.h \
- /usr/include/inttypes.h /usr/lib/gcc/i686-linux-gnu/4.6/include/stdint.h \
- /usr/include/stdint.h /usr/include/i386-linux-gnu/bits/wchar.h \
- /usr/include/c++/4.6/string /usr/include/c++/4.6/bits/stringfwd.h \
+ /usr/include/i386-linux-gnu/bits/stdlib.h /usr/include/inttypes.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/stdint.h /usr/include/stdint.h \
+ /usr/include/i386-linux-gnu/bits/wchar.h /usr/include/c++/4.6/string \
+ /usr/include/c++/4.6/bits/stringfwd.h \
  /usr/include/c++/4.6/bits/char_traits.h \
  /usr/include/c++/4.6/bits/postypes.h /usr/include/c++/4.6/cwchar \
+ /usr/include/i386-linux-gnu/bits/wchar2.h \
  /usr/include/c++/4.6/bits/localefwd.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/c++locale.h \
  /usr/include/c++/4.6/clocale /usr/include/locale.h \
@@ -82,15 +78,62 @@ src/main.o: src/main.cpp /usr/include/stdio.h /usr/include/features.h \
  /usr/include/i386-linux-gnu/bits/posix_opt.h \
  /usr/include/i386-linux-gnu/bits/environments.h \
  /usr/include/i386-linux-gnu/bits/confname.h /usr/include/getopt.h \
+ /usr/include/i386-linux-gnu/bits/unistd.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
  /usr/include/c++/4.6/bits/basic_string.tcc src/host/StereoBuffer.h \
  src/host/JsonFile.h /usr/include/i386-linux-gnu/sys/stat.h \
- /usr/include/i386-linux-gnu/bits/stat.h src/host/../settings.h \
- src/host/HttpServer.h src/host/Host.h src/host/mongcpp.h \
- /usr/include/c++/4.6/cstddef /usr/include/c++/4.6/cstdlib \
- src/host/mongoose.h /usr/include/c++/4.6/map \
- /usr/include/c++/4.6/bits/stl_tree.h /usr/include/c++/4.6/bits/stl_map.h \
+ /usr/include/i386-linux-gnu/bits/stat.h src/Processor.h \
+ src/host/../settings.h src/host/HttpServer.h src/host/Host.h \
+ src/SoundInterface.h /usr/include/math.h \
+ /usr/include/i386-linux-gnu/bits/huge_val.h \
+ /usr/include/i386-linux-gnu/bits/huge_valf.h \
+ /usr/include/i386-linux-gnu/bits/huge_vall.h \
+ /usr/include/i386-linux-gnu/bits/inf.h \
+ /usr/include/i386-linux-gnu/bits/nan.h \
+ /usr/include/i386-linux-gnu/bits/mathdef.h \
+ /usr/include/i386-linux-gnu/bits/mathcalls.h \
+ /usr/include/i386-linux-gnu/bits/math-finite.h src/settings.h \
+ src/Processor.h /usr/include/c++/4.6/iostream \
+ /usr/include/c++/4.6/ostream /usr/include/c++/4.6/ios \
+ /usr/include/c++/4.6/bits/ios_base.h \
+ /usr/include/c++/4.6/bits/locale_classes.h \
+ /usr/include/c++/4.6/bits/locale_classes.tcc \
+ /usr/include/c++/4.6/streambuf /usr/include/c++/4.6/bits/streambuf.tcc \
+ /usr/include/c++/4.6/bits/basic_ios.h \
+ /usr/include/c++/4.6/bits/locale_facets.h /usr/include/c++/4.6/cwctype \
+ /usr/include/wctype.h \
+ /usr/include/c++/4.6/i686-linux-gnu/./bits/ctype_base.h \
+ /usr/include/c++/4.6/bits/streambuf_iterator.h \
+ /usr/include/c++/4.6/i686-linux-gnu/./bits/ctype_inline.h \
+ /usr/include/c++/4.6/bits/locale_facets.tcc \
+ /usr/include/c++/4.6/bits/basic_ios.tcc \
+ /usr/include/c++/4.6/bits/ostream.tcc /usr/include/c++/4.6/istream \
+ /usr/include/c++/4.6/bits/istream.tcc \
+ externals/include/portaudiocpp/PortAudioCpp.hxx \
+ externals/include/portaudiocpp/AutoSystem.hxx \
+ externals/include/portaudiocpp/System.hxx \
+ externals/include/portaudiocpp/BlockingStream.hxx \
+ externals/include/portaudiocpp/Stream.hxx \
+ externals/include/portaudiocpp/CallbackInterface.hxx \
+ externals/include/portaudiocpp/CallbackStream.hxx \
+ externals/include/portaudiocpp/CFunCallbackStream.hxx \
+ externals/include/portaudiocpp/CppFunCallbackStream.hxx \
+ externals/include/portaudiocpp/Device.hxx /usr/include/c++/4.6/iterator \
+ /usr/include/c++/4.6/bits/stream_iterator.h \
+ externals/include/portaudiocpp/SampleDataFormat.hxx \
+ externals/include/portaudiocpp/Exception.hxx \
+ externals/include/portaudiocpp/HostApi.hxx \
+ externals/include/portaudiocpp/InterfaceCallbackStream.hxx \
+ externals/include/portaudiocpp/MemFunCallbackStream.hxx \
+ externals/include/portaudiocpp/StreamParameters.hxx \
+ externals/include/portaudiocpp/DirectionSpecificStreamParameters.hxx \
+ /usr/include/c++/4.6/cstddef \
+ externals/include/portaudiocpp/SystemDeviceIterator.hxx \
+ externals/include/portaudiocpp/SystemHostApiIterator.hxx \
+ src/host/mongcpp.h /usr/include/c++/4.6/cstdlib src/host/mongoose.h \
+ /usr/include/c++/4.6/map /usr/include/c++/4.6/bits/stl_tree.h \
+ /usr/include/c++/4.6/bits/stl_map.h \
  /usr/include/c++/4.6/bits/stl_multimap.h /usr/include/c++/4.6/memory \
  /usr/include/c++/4.6/bits/stl_tempbuf.h \
  /usr/include/c++/4.6/bits/stl_raw_storage_iter.h \
- /usr/include/c++/4.6/backward/auto_ptr.h src/settings.h
+ /usr/include/c++/4.6/backward/auto_ptr.h src/SoundInterface.h
