@@ -6,6 +6,7 @@ PaAlsa_InitializeStreamInfo
 PaAlsa_SetLibraryPathName
 PaAlsa_SetNumPeriods
 PaAlsa_SetRetriesBusy
+PaOSS_Initialize
 Pa_AbortStream
 Pa_CloseStream
 Pa_GetDefaultHostApi
