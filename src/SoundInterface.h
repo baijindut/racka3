@@ -58,6 +58,10 @@ private:
 	std::string _error;
 	portaudio::MemFunCallbackStream<SoundInterface>* _stream;
 	Processor* _processor;
+
+	portaudio::AutoSystem _autoSys;
+
+	portaudio::System* _sys;
 };
 
 #endif /* SOUNDINTERFACE_H_ */

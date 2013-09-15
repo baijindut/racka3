@@ -12,28 +12,53 @@ using namespace std;
 #define M_PI  (3.14159265)
 #endif
 
+#define CATCHER \
+catch (const portaudio::PaException &e) \
+{\
+	_error=string("A PortAudio error occured: ")+e.paErrorText();\
+}\
+catch (const portaudio::PaCppException &e)\
+{\
+	_error=string("A PortAudioCpp error occured: ")+e.what();\
+}\
+catch (const std::exception &e)\
+{\
+	_error=string("A generic exception occured: ")+e.what();\
+}\
+catch (...)\
+{\
+	_error=string("An unknown exception occured.");\
+}
 
 SoundInterface::SoundInterface()
 {
 	_processor=0;
 	_stream=0;
+	_sys = &portaudio::System::instance();
 }
 
 SoundInterface::~SoundInterface()
 {
-	// TODO Auto-generated destructor stub
+
 }
 
 bool SoundInterface::close()
 {
-	if (_stream)
+	_error.clear();
+
+	try
 	{
-		_stream->close();
-		delete _stream;
-		_stream=0;
-		return true;
+		if (_stream)
+		{
+			_stream->stop();
+			_stream->close();
+			delete _stream;
+			_stream=0;
+		}
 	}
-	return false;
+	CATCHER
+
+	return _error.size();
 }
 
 bool SoundInterface::init(cJSON* json)
@@ -43,35 +68,29 @@ bool SoundInterface::init(cJSON* json)
 		if (_stream)
 			close();
 
-		portaudio::System &sys = portaudio::System::instance();
-
 		// todo: get input and output streams based on requested device name
 
 		// Set up the parameters required to open a (Callback)Stream:
-		portaudio::DirectionSpecificStreamParameters outParams(sys.defaultOutputDevice(), 2, portaudio::FLOAT32, false, sys.defaultOutputDevice().defaultLowOutputLatency(), NULL);
-		portaudio::StreamParameters params(portaudio::DirectionSpecificStreamParameters::null(), outParams, SAMPLE_RATE, PERIOD, paClipOff);
+		portaudio::DirectionSpecificStreamParameters outParams(_sys->defaultOutputDevice(),
+															   2,
+															   portaudio::FLOAT32,
+															   false,
+															   _sys->defaultOutputDevice().defaultLowOutputLatency(),
+															   NULL);
+		portaudio::DirectionSpecificStreamParameters inParams (_sys->defaultInputDevice(),
+															   2,
+															   portaudio::FLOAT32,
+															   false,
+															   _sys->defaultInputDevice().defaultLowOutputLatency(),
+															   NULL);
+		portaudio::StreamParameters params(inParams, outParams, SAMPLE_RATE, PERIOD, paClipOff);
 
 		// Create (and open) a new Stream, using the SineGenerator::generate function as a callback:
 		_stream = new portaudio::MemFunCallbackStream<SoundInterface>(params, *this, &SoundInterface::process);
 
 		_stream->start();
 	}
-	catch (const portaudio::PaException &e)
-	{
-		_error=string("A PortAudio error occured: ")+e.paErrorText();
-	}
-	catch (const portaudio::PaCppException &e)
-	{
-		_error=string("A PortAudioCpp error occured: ")+e.what();
-	}
-	catch (const std::exception &e)
-	{
-		_error=string("A generic exception occured: ")+e.what();
-	}
-	catch (...)
-	{
-		_error=string("An unknown exception occured.");
-	}
+	CATCHER
 
 	return _error.size()==0;
 }
