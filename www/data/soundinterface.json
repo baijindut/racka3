@@ -1,8 +1,9 @@
 {
 	"current":	{
-		"device":	"HDA Intel: CONEXANT Analog (hw:0,0)",
-		"period":	1024,
-		"knownGood":	true
+		"device":	"USB Audio CODEC: USB Audio (hw:1,0)",
+		"period":	64,
+		"monoCopy":	0,
+		"knownGood":	1
 	},
 	"interface":	{
 		"portaudio":	{
@@ -51,6 +52,17 @@
 					"inLow":	-1,
 					"outLow":	0.011610,
 					"inHigh":	-1,
+					"outHigh":	0.046440
+				}
+			}, {
+				"name":	"USB Audio CODEC: USB Audio (hw:1,0)",
+				"api":	"ALSA",
+				"in":	2,
+				"out":	2,
+				"latency":	{
+					"inLow":	0.011610,
+					"outLow":	0.011610,
+					"inHigh":	0.046440,
 					"outHigh":	0.046440
 				}
 			}, {

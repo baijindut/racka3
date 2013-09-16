@@ -60,6 +60,7 @@ private:
 
 	portaudio::Device* deviceFromJson(cJSON* json);
 	int bufferSizeFromJson(cJSON* json);
+	int monoCopyFromJson(cJSON* json);
 
 	std::string _error;
 	portaudio::MemFunCallbackStream<SoundInterface>* _stream;
@@ -70,6 +71,9 @@ private:
 	portaudio::System* _sys;
 
 	JsonFile* _persist;
+
+	float* _spareBuffer;
+	int _monoCopy;
 };
 
 #endif /* SOUNDINTERFACE_H_ */

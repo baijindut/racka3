@@ -122,7 +122,6 @@ bool HttpServer::handleNewRequest(ServerHandlingEvent eventCode,
 	else if (uri == string("/racka3/listDevices")) {				// <-- soundcard configuration
 		_soundInterface->listDevices(json);
 	} else if (uri == string("/racka3/setDevice")) {
-		// todo: check rack is empty before allowing this!
 		if (_pluginHost->getPluginChainSize())
 			cJSON_AddStringToObject(json,"error","cannot change sound settings unless rack is empty");
 		else

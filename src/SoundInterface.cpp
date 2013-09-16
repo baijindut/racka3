@@ -57,6 +57,9 @@ bool SoundInterface::close()
 	}
 	MEGACATCH
 
+	if (_spareBuffer)
+		delete[] _spareBuffer;
+
 	return _error.size();
 }
 
@@ -64,7 +67,7 @@ portaudio::Device* SoundInterface::deviceFromJson(cJSON* json)
 {
 	portaudio::Device* device = &_sys->defaultOutputDevice();
 
-	if (json &&														// have json?
+	if (json &&															// have json?
 		cJSON_GetObjectItem(json,"device") &&							// contains 'name' key
 		cJSON_GetObjectItem(json,"device")->type==cJSON_String &&		// which has string type value
 		cJSON_GetObjectItem(json,"device")->string &&					// and has a not null string
@@ -93,7 +96,8 @@ bool SoundInterface::getCurrent(cJSON* json)
 	{
 		cJSON_AddStringToObject(json,"device",cJSON_GetObjectItem(c,"device")->valuestring);
 		cJSON_AddNumberToObject(json,"period",cJSON_GetObjectItem(c,"period")->valueint);
-		cJSON_AddBoolToObject(json,"knownGood",cJSON_GetObjectItem(c,"knownGood")->valueint);
+		cJSON_AddNumberToObject(json,"monoCopy",cJSON_GetObjectItem(c,"monoCopy")->valueint);
+		cJSON_AddNumberToObject(json,"knownGood",cJSON_GetObjectItem(c,"knownGood")->valueint);
 	}
 	return c!=0;
 }
@@ -110,6 +114,20 @@ int SoundInterface::bufferSizeFromJson(cJSON* json)
 	}
 
 	return bs;
+}
+
+int SoundInterface::monoCopyFromJson(cJSON* json)
+{
+	int mc = -1;
+
+	if (json &&
+		cJSON_GetObjectItem(json,"monoCopy") &&
+		cJSON_GetObjectItem(json,"monoCopy")->type==cJSON_Number)
+	{
+		mc = cJSON_GetObjectItem(json,"monoCopy")->valueint;
+	}
+
+	return mc;
 }
 
 void cJSON_ReplaceItemInObjectOrAdd(cJSON* object,char* name,cJSON* item)
@@ -135,16 +153,22 @@ bool SoundInterface::init(cJSON* json)
 		// extract the settings
 		portaudio::Device* device = deviceFromJson(json);
 		int period = bufferSizeFromJson(json);
+		_monoCopy = monoCopyFromJson(json);
+
+		// create sparebuffer for mono copy if we need to
+		if (_monoCopy==0 || _monoCopy==1)
+			_spareBuffer = new float[period];
 
 		// create the config file
 		cJSON* current = cJSON_CreateObject();
 		cJSON_ReplaceItemInObjectOrAdd(_persist->json(),"current",current);
 		cJSON_ReplaceItemInObjectOrAdd(current,"device",cJSON_CreateString(device->name()));
 		cJSON_ReplaceItemInObjectOrAdd(current,"period",cJSON_CreateNumber(period));
+		cJSON_ReplaceItemInObjectOrAdd(current,"monoCopy",cJSON_CreateNumber(_monoCopy));
 		cJSON* list = cJSON_CreateObject();
 		cJSON_ReplaceItemInObjectOrAdd(_persist->json(),"interface",list);
 		listDevices(list);
-		cJSON_ReplaceItemInObjectOrAdd(current,"knownGood",cJSON_CreateBool(false));
+		cJSON_ReplaceItemInObjectOrAdd(current,"knownGood",cJSON_CreateNumber(0));
 		_persist->persist();
 
 		// Set up the parameters required to open a (Callback)Stream:
@@ -168,7 +192,7 @@ bool SoundInterface::init(cJSON* json)
 		_stream->start();
 
 		// if we got here, this is a known good configuration
-		cJSON_ReplaceItemInObjectOrAdd(current,"knownGood",cJSON_CreateBool(true));
+		cJSON_ReplaceItemInObjectOrAdd(current,"knownGood",cJSON_CreateNumber(1));
 		_persist->persist();
 	}
 	MEGACATCH
@@ -185,10 +209,27 @@ int SoundInterface::process(const void *inputBuffer, void *outputBuffer, unsigne
 	{
 		if (inputBuffer && outputBuffer)
 		{
-			float *inLeft = ((float **) inputBuffer)[0];
-			float *inRight = ((float **) inputBuffer)[1];
-			float *outLeft = ((float **) outputBuffer)[0];
-			float *outRight = ((float **) outputBuffer)[1];
+			float *inLeft = 0;
+			float *inRight = 0;
+			float *outLeft = 0;
+			float *outRight = 0;
+
+			if (_monoCopy==0 || _monoCopy==1)
+			{
+				// stereo in, but only use 1 channel, copy to both sides
+				inLeft = ((float **) inputBuffer)[_monoCopy];
+				inRight = ((float **) inputBuffer)[_monoCopy];
+				outLeft = ((float **) outputBuffer)[0];
+				outRight = ((float **) outputBuffer)[1];
+			}
+			else
+			{
+				// stereo in, stereo out
+				inLeft = ((float **) inputBuffer)[0];
+				inRight = ((float **) inputBuffer)[1];
+				outLeft = ((float **) outputBuffer)[0];
+				outRight = ((float **) outputBuffer)[1];
+			}
 
 			_processor->process(inLeft,inRight,outLeft,outRight,framesPerBuffer,timeInfo,statusFlags);
 		}

@@ -64,7 +64,16 @@ $(document).ready(function() {
 	
 	getCurrent();
 	
-	var html="<table>";
+	html ="name="+_current.device + "<br/>";
+	html+="buffersize (period)=" + _current.period + "<br/>";
+	html+="mono copy=" + _current.monoCopy + "<br/>";
+	if (_current.knownGood==1)
+		html+='<span style="color:green">GOOD</span>';
+	else
+		html+='<span style="color:red">NOT WORKING</span>';
+	$(".currentdevice").html(html);
+	
+    html="<table>";
 	html+='<tr>';
 	html+='<td></td>';
 	html+='<td>device</td>';
@@ -81,13 +90,16 @@ $(document).ready(function() {
 	});
 	html+='</table>';
 	
-	$(".devicelist").append(html);
+	$(".devicelist").html(html);
 });
 
 
 function setDevice(name)
 {
-	var json = {"device": String(name), "period": Number(prompt("buffer length?","1024"))};
+	var period = prompt("buffer length?","1024");
+	var monoCopy = prompt("mono copy: no:-1 left:0 rigt:1","-1");
+	
+	var json = {"device": String(name), "period": Number(period), "monoCopy":Number(monoCopy)};
 	
 	console.log(json);
 
@@ -106,6 +118,10 @@ function setDevice(name)
 <title>Racka3 soundcard setup</title>
 </head>
 <body>
+	current device:
+	<div class="currentdevice">
+	</div>
+<hr/>
 check box to change device
 	<div class="devicelist">
 	</div>
