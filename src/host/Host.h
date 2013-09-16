@@ -30,6 +30,7 @@ public:
 	void getAvailablePlugins(cJSON* json);
 
 	void getPluginChain(cJSON* json,bool bVerbose = true);
+	int getPluginChainSize();
 
 	void addPlugin(cJSON* json);			// name, position
 	void removePlugin(cJSON* json);		// instance

@@ -5,14 +5,12 @@
  *      Author: slippy
  */
 
+#include <string.h>
 #include "SoundInterface.h"
+#include "cJSON.h"
 using namespace std;
 
-#ifndef M_PI
-#define M_PI  (3.14159265)
-#endif
-
-#define CATCHER \
+#define MEGACATCH \
 catch (const portaudio::PaException &e) \
 {\
 	_error=string("A PortAudio error occured: ")+e.paErrorText();\
@@ -36,11 +34,15 @@ SoundInterface::SoundInterface()
 	_stream=0;
 	_autoSys = new portaudio::AutoSystem();
 	_sys = &portaudio::System::instance();
+
+	_persist = new JsonFile("soundinterface");
 }
 
 SoundInterface::~SoundInterface()
 {
+	close();
 	delete _autoSys;
+	delete _persist;
 }
 
 bool SoundInterface::close()
@@ -49,44 +51,130 @@ bool SoundInterface::close()
 
 	try
 	{
+		_stream->stop();
 		_stream->close();
 		_stream=0;
 	}
-	CATCHER
+	MEGACATCH
 
 	return _error.size();
 }
 
+portaudio::Device* SoundInterface::deviceFromJson(cJSON* json)
+{
+	portaudio::Device* device = &_sys->defaultOutputDevice();
+
+	if (json &&														// have json?
+		cJSON_GetObjectItem(json,"device") &&							// contains 'name' key
+		cJSON_GetObjectItem(json,"device")->type==cJSON_String &&		// which has string type value
+		cJSON_GetObjectItem(json,"device")->string &&					// and has a not null string
+		cJSON_GetObjectItem(json,"device")->string[0]!='\0')			// which is not 0-length
+	{
+		char* name = cJSON_GetObjectItem(json,"device")->valuestring;
+
+		// loop over devices and select one that matches
+		for (portaudio::System::DeviceIterator i = _sys->devicesBegin(); i != _sys->devicesEnd(); ++i)
+		{
+			if (0==strcmp((*i).name(),name))
+			{
+				device = &(*i);
+				break;
+			}
+		}
+	}
+
+	return device;
+}
+
+bool SoundInterface::getCurrent(cJSON* json)
+{
+	cJSON* c=cJSON_GetObjectItem(_persist->json(),"current");
+	if (c)
+	{
+		cJSON_AddStringToObject(json,"device",cJSON_GetObjectItem(c,"device")->valuestring);
+		cJSON_AddNumberToObject(json,"period",cJSON_GetObjectItem(c,"period")->valueint);
+		cJSON_AddBoolToObject(json,"knownGood",cJSON_GetObjectItem(c,"knownGood")->valueint);
+	}
+	return c!=0;
+}
+
+int SoundInterface::bufferSizeFromJson(cJSON* json)
+{
+	int bs = 1024;
+
+	if (json &&														// have json?
+		cJSON_GetObjectItem(json,"period") &&							// contains 'name' key
+		cJSON_GetObjectItem(json,"period")->type==cJSON_Number)		// which has int type value
+	{
+		bs = cJSON_GetObjectItem(json,"period")->valueint;
+	}
+
+	return bs;
+}
+
+void cJSON_ReplaceItemInObjectOrAdd(cJSON* object,char* name,cJSON* item)
+{
+	if (cJSON_GetObjectItem(object,name))
+		cJSON_ReplaceItemInObject(object,name,item);
+	else
+		cJSON_AddItemToObject(object,name,item);
+}
+
 bool SoundInterface::init(cJSON* json)
 {
+	_error.clear();
 	try
 	{
 		if (_stream)
 			close();
 
-		// todo: get input and output streams based on requested device name
+		// if no json supplied, get the current settings from file
+		if (!json)
+			json = cJSON_GetObjectItem(_persist->json(),"current");
+
+		// extract the settings
+		portaudio::Device* device = deviceFromJson(json);
+		int period = bufferSizeFromJson(json);
+
+		// create the config file
+		cJSON* current = cJSON_CreateObject();
+		cJSON_ReplaceItemInObjectOrAdd(_persist->json(),"current",current);
+		cJSON_ReplaceItemInObjectOrAdd(current,"device",cJSON_CreateString(device->name()));
+		cJSON_ReplaceItemInObjectOrAdd(current,"period",cJSON_CreateNumber(period));
+		cJSON* list = cJSON_CreateObject();
+		cJSON_ReplaceItemInObjectOrAdd(_persist->json(),"interface",list);
+		listDevices(list);
+		cJSON_ReplaceItemInObjectOrAdd(current,"knownGood",cJSON_CreateBool(false));
+		_persist->persist();
 
 		// Set up the parameters required to open a (Callback)Stream:
-		portaudio::DirectionSpecificStreamParameters outParams(_sys->defaultOutputDevice(),
+		portaudio::DirectionSpecificStreamParameters outParams(*device,
 															   2,
 															   portaudio::FLOAT32,
 															   false,
-															   _sys->defaultOutputDevice().defaultLowOutputLatency(),
-															   NULL);
-		portaudio::DirectionSpecificStreamParameters inParams (_sys->defaultInputDevice(),
+															   device->defaultLowOutputLatency(),
+															   0);
+		portaudio::DirectionSpecificStreamParameters inParams (*device,
 															   2,
 															   portaudio::FLOAT32,
 															   false,
-															   _sys->defaultInputDevice().defaultLowOutputLatency(),
-															   NULL);
-		portaudio::StreamParameters params(inParams, outParams, SAMPLE_RATE, PERIOD, paClipOff);
+															   device->defaultLowOutputLatency(),
+															   0);
 
-		// Create (and open) a new Stream, using the SineGenerator::generate function as a callback:
+		portaudio::StreamParameters params(inParams, outParams, SAMPLE_RATE, period, paClipOff);
+
 		_stream = new portaudio::MemFunCallbackStream<SoundInterface>(params, *this, &SoundInterface::process);
 
 		_stream->start();
+
+		// if we got here, this is a known good configuration
+		cJSON_ReplaceItemInObjectOrAdd(current,"knownGood",cJSON_CreateBool(true));
+		_persist->persist();
 	}
-	CATCHER
+	MEGACATCH
+
+	if (_error.size())
+		cJSON_ReplaceItemInObjectOrAdd(json,"error",cJSON_CreateString(_error.c_str()));
 
 	return _error.size()==0;
 }
@@ -95,12 +183,15 @@ int SoundInterface::process(const void *inputBuffer, void *outputBuffer, unsigne
 {
 	if (_processor)
 	{
-		float *inLeft = ((float **) inputBuffer)[0];
-		float *inRight = ((float **) inputBuffer)[1];
-		float *outLeft = ((float **) outputBuffer)[0];
-		float *outRight = ((float **) outputBuffer)[1];
+		if (inputBuffer && outputBuffer)
+		{
+			float *inLeft = ((float **) inputBuffer)[0];
+			float *inRight = ((float **) inputBuffer)[1];
+			float *outLeft = ((float **) outputBuffer)[0];
+			float *outRight = ((float **) outputBuffer)[1];
 
-		return _processor->process(inLeft,inRight,outLeft,outRight,framesPerBuffer,timeInfo,statusFlags);
+			_processor->process(inLeft,inRight,outLeft,outRight,framesPerBuffer,timeInfo,statusFlags);
+		}
 	}
 
 	return paContinue;
@@ -196,7 +287,7 @@ bool SoundInterface::listDevices(cJSON* json)
 			}
 #endif // WIN32
 
-
+			/*
 			cJSON* jSr = cJSON_CreateArray();
 			cJSON_AddItemToObject(jDev,"sampleRates",jSr);
 
@@ -213,6 +304,7 @@ bool SoundInterface::listDevices(cJSON* json)
 
 				printSupportedStandardSampleRates(jSr,inputParameters, outputParameters);
 			}
+			*/
 		}
 	}
 	catch (const portaudio::PaException &e)
@@ -231,6 +323,9 @@ bool SoundInterface::listDevices(cJSON* json)
 	{
 		_error="An unknown exception occured.";
 	}
+
+	if (_error.size())
+		cJSON_ReplaceItemInObjectOrAdd(json,"error",cJSON_CreateString(_error.c_str()));
 
 	return _error.size()==0;
 }

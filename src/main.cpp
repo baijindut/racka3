@@ -24,18 +24,16 @@ int main(int argc,char* argv[])
 	server.setSoundInterface(&interface);
 	interface.setProcessor(&host);
 
-	// list devices example
-	cJSON* devices=cJSON_CreateObject();
-	interface.listDevices(devices);
-	printf("%s\n",cJSON_Print(devices));
-	cJSON_Delete(devices);
-
 	// init sound interface
-	interface.init(0);
+	if (!interface.init(0))
+		printf("current soundinterface settings dont work. change them.\n");
 
 	// wait until user gets bored
     printf("Hit ENTER to stop program.\n");
     getchar();
+
+    // detatch processor
+    interface.setProcessor(0);
 
 #if 0
     int i;

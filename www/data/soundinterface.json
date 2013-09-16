@@ -1,0 +1,158 @@
+{
+	"current":	{
+		"device":	"HDA Intel: CONEXANT Analog (hw:0,0)",
+		"period":	1024,
+		"knownGood":	true
+	},
+	"interface":	{
+		"portaudio":	{
+			"versionNumber":	1899,
+			"versionText":	"PortAudio V19-devel (built Sep 16 2013 10:40:57)"
+		},
+		"devices":	[{
+				"name":	"HDA Intel: CONEXANT Analog (hw:0,0)",
+				"api":	"ALSA",
+				"in":	2,
+				"out":	2,
+				"latency":	{
+					"inLow":	0.011610,
+					"outLow":	0.011610,
+					"inHigh":	0.046440,
+					"outHigh":	0.046440
+				}
+			}, {
+				"name":	"HDA Intel: HDMI 0 (hw:0,3)",
+				"api":	"ALSA",
+				"in":	0,
+				"out":	8,
+				"latency":	{
+					"inLow":	-1,
+					"outLow":	0.011610,
+					"inHigh":	-1,
+					"outHigh":	0.046440
+				}
+			}, {
+				"name":	"HDA Intel: HDMI 1 (hw:0,7)",
+				"api":	"ALSA",
+				"in":	0,
+				"out":	8,
+				"latency":	{
+					"inLow":	-1,
+					"outLow":	0.011610,
+					"inHigh":	-1,
+					"outHigh":	0.046440
+				}
+			}, {
+				"name":	"HDA Intel: HDMI 2 (hw:0,8)",
+				"api":	"ALSA",
+				"in":	0,
+				"out":	8,
+				"latency":	{
+					"inLow":	-1,
+					"outLow":	0.011610,
+					"inHigh":	-1,
+					"outHigh":	0.046440
+				}
+			}, {
+				"name":	"sysdefault",
+				"api":	"ALSA",
+				"in":	128,
+				"out":	128,
+				"latency":	{
+					"inLow":	0.042653,
+					"outLow":	0.042653,
+					"inHigh":	0.046440,
+					"outHigh":	0.046440
+				}
+			}, {
+				"name":	"front",
+				"api":	"ALSA",
+				"in":	0,
+				"out":	2,
+				"latency":	{
+					"inLow":	-1,
+					"outLow":	0.011610,
+					"inHigh":	-1,
+					"outHigh":	0.046440
+				}
+			}, {
+				"name":	"surround40",
+				"api":	"ALSA",
+				"in":	0,
+				"out":	2,
+				"latency":	{
+					"inLow":	-1,
+					"outLow":	0.011610,
+					"inHigh":	-1,
+					"outHigh":	0.046440
+				}
+			}, {
+				"name":	"surround51",
+				"api":	"ALSA",
+				"in":	0,
+				"out":	2,
+				"latency":	{
+					"inLow":	-1,
+					"outLow":	0.011610,
+					"inHigh":	-1,
+					"outHigh":	0.046440
+				}
+			}, {
+				"name":	"surround71",
+				"api":	"ALSA",
+				"in":	0,
+				"out":	2,
+				"latency":	{
+					"inLow":	-1,
+					"outLow":	0.011610,
+					"inHigh":	-1,
+					"outHigh":	0.046440
+				}
+			}, {
+				"name":	"hdmi",
+				"api":	"ALSA",
+				"in":	0,
+				"out":	8,
+				"latency":	{
+					"inLow":	-1,
+					"outLow":	0.011610,
+					"inHigh":	-1,
+					"outHigh":	0.046440
+				}
+			}, {
+				"name":	"pulse",
+				"api":	"ALSA",
+				"in":	32,
+				"out":	32,
+				"latency":	{
+					"inLow":	0.011610,
+					"outLow":	0.011610,
+					"inHigh":	0.046440,
+					"outHigh":	0.046440
+				}
+			}, {
+				"name":	"dmix",
+				"api":	"ALSA",
+				"in":	0,
+				"out":	2,
+				"latency":	{
+					"inLow":	-1,
+					"outLow":	0.042667,
+					"inHigh":	-1,
+					"outHigh":	0.042667
+				}
+			}, {
+				"default":	["system", "system"],
+				"name":	"default",
+				"api":	"ALSA",
+				"in":	32,
+				"out":	32,
+				"latency":	{
+					"inLow":	0.011610,
+					"outLow":	0.011610,
+					"inHigh":	0.046440,
+					"outHigh":	0.046440
+				}
+			}]
+	}
+}

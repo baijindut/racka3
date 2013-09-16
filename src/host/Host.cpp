@@ -447,6 +447,11 @@ void Host::getAvailablePlugins(cJSON* json)
 	cJSON_AddItemReferenceToObject(json,"plugins",_jsonAllPlugins);
 }
 
+int Host::getPluginChainSize()
+{
+	return _plugins.size();
+}
+
 void Host::getPluginChain(cJSON* json,bool bVerbose)
 {
 	cJSON* pluginArray = cJSON_CreateArray();

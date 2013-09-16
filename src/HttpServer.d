@@ -1,21 +1,13 @@
-src/main.o: src/main.cpp /usr/include/stdio.h /usr/include/features.h \
- /usr/include/i386-linux-gnu/bits/predefs.h \
- /usr/include/i386-linux-gnu/sys/cdefs.h \
- /usr/include/i386-linux-gnu/bits/wordsize.h \
- /usr/include/i386-linux-gnu/gnu/stubs.h \
- /usr/include/i386-linux-gnu/gnu/stubs-32.h \
- /usr/lib/gcc/i686-linux-gnu/4.6/include/stddef.h \
- /usr/include/i386-linux-gnu/bits/types.h \
- /usr/include/i386-linux-gnu/bits/typesizes.h /usr/include/libio.h \
- /usr/include/_G_config.h /usr/include/wchar.h \
- /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
- /usr/include/i386-linux-gnu/bits/stdio_lim.h \
- /usr/include/i386-linux-gnu/bits/sys_errlist.h \
- /usr/include/i386-linux-gnu/bits/stdio2.h src/cJSON.h src/host/Host.h \
+src/HttpServer.o: src/HttpServer.cpp src/HttpServer.h src/host/Host.h \
  libs/portaudio/include/portaudio.h /usr/include/c++/4.6/vector \
  /usr/include/c++/4.6/bits/stl_algobase.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/c++config.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/os_defines.h \
+ /usr/include/features.h /usr/include/i386-linux-gnu/bits/predefs.h \
+ /usr/include/i386-linux-gnu/sys/cdefs.h \
+ /usr/include/i386-linux-gnu/bits/wordsize.h \
+ /usr/include/i386-linux-gnu/gnu/stubs.h \
+ /usr/include/i386-linux-gnu/gnu/stubs-32.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/cpu_defines.h \
  /usr/include/c++/4.6/bits/functexcept.h \
  /usr/include/c++/4.6/bits/exception_defines.h \
@@ -37,13 +29,16 @@ src/main.o: src/main.cpp /usr/include/stdio.h /usr/include/features.h \
  /usr/include/c++/4.6/bits/stl_bvector.h \
  /usr/include/c++/4.6/bits/range_access.h \
  /usr/include/c++/4.6/bits/vector.tcc src/host/Plugin.h src/cJSON.h \
- src/uthash.h /usr/include/string.h /usr/include/xlocale.h \
+ src/uthash.h /usr/include/string.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/stddef.h /usr/include/xlocale.h \
  /usr/include/i386-linux-gnu/bits/string3.h /usr/include/stdlib.h \
  /usr/include/i386-linux-gnu/bits/waitflags.h \
  /usr/include/i386-linux-gnu/bits/waitstatus.h /usr/include/endian.h \
  /usr/include/i386-linux-gnu/bits/endian.h \
  /usr/include/i386-linux-gnu/bits/byteswap.h \
- /usr/include/i386-linux-gnu/sys/types.h /usr/include/time.h \
+ /usr/include/i386-linux-gnu/sys/types.h \
+ /usr/include/i386-linux-gnu/bits/types.h \
+ /usr/include/i386-linux-gnu/bits/typesizes.h /usr/include/time.h \
  /usr/include/i386-linux-gnu/sys/select.h \
  /usr/include/i386-linux-gnu/bits/select.h \
  /usr/include/i386-linux-gnu/bits/sigset.h \
@@ -57,6 +52,8 @@ src/main.o: src/main.cpp /usr/include/stdio.h /usr/include/features.h \
  /usr/include/c++/4.6/bits/stringfwd.h \
  /usr/include/c++/4.6/bits/char_traits.h \
  /usr/include/c++/4.6/bits/postypes.h /usr/include/c++/4.6/cwchar \
+ /usr/include/wchar.h /usr/include/stdio.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
  /usr/include/i386-linux-gnu/bits/wchar2.h \
  /usr/include/c++/4.6/bits/localefwd.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/c++locale.h \
@@ -81,10 +78,13 @@ src/main.o: src/main.cpp /usr/include/stdio.h /usr/include/features.h \
  /usr/include/i386-linux-gnu/bits/unistd.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
  /usr/include/c++/4.6/bits/basic_string.tcc src/host/StereoBuffer.h \
- src/JsonFile.h /usr/include/i386-linux-gnu/sys/stat.h \
- /usr/include/i386-linux-gnu/bits/stat.h src/Processor.h \
- src/host/../settings.h src/HttpServer.h src/SoundInterface.h \
- /usr/include/math.h /usr/include/i386-linux-gnu/bits/huge_val.h \
+ src/JsonFile.h src/cJSON.h /usr/include/i386-linux-gnu/sys/stat.h \
+ /usr/include/i386-linux-gnu/bits/stat.h /usr/include/libio.h \
+ /usr/include/_G_config.h /usr/include/i386-linux-gnu/bits/stdio_lim.h \
+ /usr/include/i386-linux-gnu/bits/sys_errlist.h \
+ /usr/include/i386-linux-gnu/bits/stdio2.h src/Processor.h \
+ src/host/../settings.h src/SoundInterface.h /usr/include/math.h \
+ /usr/include/i386-linux-gnu/bits/huge_val.h \
  /usr/include/i386-linux-gnu/bits/huge_valf.h \
  /usr/include/i386-linux-gnu/bits/huge_vall.h \
  /usr/include/i386-linux-gnu/bits/inf.h \

@@ -1,0 +1,113 @@
+<html>
+<head>
+<LINK href="toggle.css" rel="stylesheet" type="text/css">
+<LINK href="jquery.selectBox.css" rel="stylesheet" type="text/css">
+<style>
+
+</style>
+<script src="jquery-1.10.2.min.js"></script>
+<script>
+JSON.stringify = JSON.stringify || function (obj) {
+    var t = typeof (obj);
+    if (t != "object" || obj === null) {
+        // simple data type
+        if (t == "string") obj = '"'+obj+'"';
+        return String(obj);
+    }
+    else {
+        // recurse array or object
+        var n, v, json = [], arr = (obj && obj.constructor == Array);
+        for (n in obj) {
+            v = obj[n]; t = typeof(v);
+            if (t == "string") v = '"'+v+'"';
+            else if (t == "object" && v !== null) v = JSON.stringify(v);
+            json.push((arr ? "" : '"' + n + '":') + String(v));
+        }
+        return (arr ? "[" : "{") + String(json) + (arr ? "]" : "}");
+    }
+};
+
+Array.prototype.insert = function (index, item) {
+  this.splice(index, 0, item);
+};
+</script>
+<script>
+
+var _allDevices;
+var _current;
+
+
+function getCurrent()
+{
+	$.ajax({
+		type: "POST",
+		url: "racka3/getCurrentDevice",
+		cache: false,
+		async: false
+	}).done( function(json) {
+		console.log(JSON.stringify(json));
+		_current = json;
+	});
+}
+// things to do at startup
+$(document).ready(function() {
+		
+	$.ajax({
+		type: "POST",
+		url: "racka3/listDevices",
+		cache: false,
+		async: false
+	}).done( function(json) {
+		console.log(JSON.stringify(json.devices));
+		_allDevices = json.devices;
+	});
+	
+	getCurrent();
+	
+	var html="<table>";
+	html+='<tr>';
+	html+='<td></td>';
+	html+='<td>device</td>';
+	html+='<td>in</td>';
+	html+='<td>out</td>';
+	html+='</tr>';
+	_allDevices.forEach(function(device) {
+		html+='<tr>'
+		html+='<td><input type="button" onclick=\'setDevice("'+device.name+'")\'/></td>';
+		html+='<td>'+device.name+'</td>';
+		html+='<td>'+device.in+'</td>';
+		html+='<td>'+device.out+'</td>';
+		html+='</tr>'
+	});
+	html+='</table>';
+	
+	$(".devicelist").append(html);
+});
+
+
+function setDevice(name)
+{
+	var json = {"device": String(name), "period": Number(prompt("buffer length?","1024"))};
+	
+	console.log(json);
+
+	$.ajax({
+		type: "POST",
+		url: "racka3/setDevice",
+		async: false,
+		data: JSON.stringify(json)
+	}).done( function(json) {
+		if (json.error) {
+			alert("host sez: "+json.error);
+		}
+	});
+}
+</script>
+<title>Racka3 soundcard setup</title>
+</head>
+<body>
+check box to change device
+	<div class="devicelist">
+	</div>
+</body>
+</html>

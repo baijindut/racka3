@@ -91,5 +91,5 @@ src/host/plugins/PluginEQ.o: src/host/plugins/PluginEQ.cpp /usr/include/stdio.h 
  /usr/include/i386-linux-gnu/bits/unistd.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
  /usr/include/c++/4.6/bits/basic_string.tcc src/host/StereoBuffer.h \
- src/host/JsonFile.h /usr/include/i386-linux-gnu/sys/stat.h \
+ src/JsonFile.h src/cJSON.h /usr/include/i386-linux-gnu/sys/stat.h \
  /usr/include/i386-linux-gnu/bits/stat.h

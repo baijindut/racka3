@@ -1,12 +1,12 @@
-src/SoundInterface.o: src/SoundInterface.cpp src/SoundInterface.h \
- /usr/include/stdio.h /usr/include/features.h \
- /usr/include/i386-linux-gnu/bits/predefs.h \
+src/SoundInterface.o: src/SoundInterface.cpp /usr/include/string.h \
+ /usr/include/features.h /usr/include/i386-linux-gnu/bits/predefs.h \
  /usr/include/i386-linux-gnu/sys/cdefs.h \
  /usr/include/i386-linux-gnu/bits/wordsize.h \
  /usr/include/i386-linux-gnu/gnu/stubs.h \
  /usr/include/i386-linux-gnu/gnu/stubs-32.h \
- /usr/lib/gcc/i686-linux-gnu/4.6/include/stddef.h \
- /usr/include/i386-linux-gnu/bits/types.h \
+ /usr/lib/gcc/i686-linux-gnu/4.6/include/stddef.h /usr/include/xlocale.h \
+ /usr/include/i386-linux-gnu/bits/string3.h src/SoundInterface.h \
+ /usr/include/stdio.h /usr/include/i386-linux-gnu/bits/types.h \
  /usr/include/i386-linux-gnu/bits/typesizes.h /usr/include/libio.h \
  /usr/include/_G_config.h /usr/include/wchar.h \
  /usr/lib/gcc/i686-linux-gnu/4.6/include/stdarg.h \
@@ -29,7 +29,7 @@ src/SoundInterface.o: src/SoundInterface.cpp src/SoundInterface.h \
  /usr/include/c++/4.6/ostream /usr/include/c++/4.6/ios \
  /usr/include/c++/4.6/iosfwd /usr/include/c++/4.6/bits/stringfwd.h \
  /usr/include/c++/4.6/bits/postypes.h /usr/include/c++/4.6/cwchar \
- /usr/include/i386-linux-gnu/bits/wchar.h /usr/include/xlocale.h \
+ /usr/include/i386-linux-gnu/bits/wchar.h \
  /usr/include/i386-linux-gnu/bits/wchar2.h /usr/include/c++/4.6/exception \
  /usr/include/c++/4.6/bits/char_traits.h \
  /usr/include/c++/4.6/bits/stl_algobase.h \
@@ -88,7 +88,18 @@ src/SoundInterface.o: src/SoundInterface.cpp src/SoundInterface.h \
  /usr/include/c++/4.6/bits/locale_facets.tcc \
  /usr/include/c++/4.6/bits/basic_ios.tcc \
  /usr/include/c++/4.6/bits/ostream.tcc /usr/include/c++/4.6/istream \
- /usr/include/c++/4.6/bits/istream.tcc \
+ /usr/include/c++/4.6/bits/istream.tcc src/JsonFile.h \
+ /usr/include/i386-linux-gnu/sys/stat.h \
+ /usr/include/i386-linux-gnu/bits/stat.h /usr/include/stdlib.h \
+ /usr/include/i386-linux-gnu/bits/waitflags.h \
+ /usr/include/i386-linux-gnu/bits/waitstatus.h \
+ /usr/include/i386-linux-gnu/sys/types.h \
+ /usr/include/i386-linux-gnu/sys/select.h \
+ /usr/include/i386-linux-gnu/bits/select.h \
+ /usr/include/i386-linux-gnu/bits/sigset.h \
+ /usr/include/i386-linux-gnu/bits/select2.h \
+ /usr/include/i386-linux-gnu/sys/sysmacros.h /usr/include/alloca.h \
+ /usr/include/i386-linux-gnu/bits/stdlib.h \
  externals/include/portaudiocpp/PortAudioCpp.hxx \
  externals/include/portaudiocpp/AutoSystem.hxx \
  externals/include/portaudiocpp/System.hxx \

@@ -88,7 +88,7 @@ src/host/plugins/PluginGrain.o: src/host/plugins/PluginGrain.cpp \
  /usr/include/i386-linux-gnu/bits/unistd.h \
  /usr/include/c++/4.6/i686-linux-gnu/./bits/atomic_word.h \
  /usr/include/c++/4.6/bits/basic_string.tcc \
- src/host/plugins/../StereoBuffer.h src/host/plugins/../JsonFile.h \
+ src/host/plugins/../StereoBuffer.h src/JsonFile.h src/cJSON.h \
  /usr/include/i386-linux-gnu/sys/stat.h \
  /usr/include/i386-linux-gnu/bits/stat.h /usr/include/libio.h \
  /usr/include/_G_config.h /usr/include/i386-linux-gnu/bits/stdio_lim.h \

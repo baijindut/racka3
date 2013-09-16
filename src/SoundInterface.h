@@ -16,6 +16,7 @@
 #include "Processor.h"
 #include <iostream>
 #include <string>
+#include "JsonFile.h"
 #include "portaudiocpp/PortAudioCpp.hxx"
 #ifdef WIN32
 #include "portaudiocpp/AsioDeviceAdapter.hxx"
@@ -29,7 +30,7 @@ public:
 	SoundInterface();
 	virtual ~SoundInterface();
 
-	// needs 'period' int, 'rate' int, 'device' string
+	// needs 'period' int, 'device' string
 	bool init(cJSON* json);
 	bool close();
 
@@ -38,6 +39,8 @@ public:
 
 	// adds 'error' string to json
 	bool getLastError(cJSON* json);
+
+	bool getCurrent(cJSON* json);
 
 	bool isGood();
 
@@ -55,6 +58,9 @@ private:
 			const portaudio::DirectionSpecificStreamParameters &inputParameters,
 			const portaudio::DirectionSpecificStreamParameters &outputParameters);
 
+	portaudio::Device* deviceFromJson(cJSON* json);
+	int bufferSizeFromJson(cJSON* json);
+
 	std::string _error;
 	portaudio::MemFunCallbackStream<SoundInterface>* _stream;
 	Processor* _processor;
@@ -62,6 +68,8 @@ private:
 	portaudio::AutoSystem* _autoSys;
 
 	portaudio::System* _sys;
+
+	JsonFile* _persist;
 };
 
 #endif /* SOUNDINTERFACE_H_ */
