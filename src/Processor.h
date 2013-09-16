@@ -13,8 +13,8 @@
 class Processor
 {
 public:
-	Processor();
-	virtual ~Processor();
+	Processor(){};
+	virtual ~Processor(){};
 
 	virtual int process(float* inLeft,float* inRight,float* outLeft,float* outRight,
 			 unsigned long framesPerBuffer,

@@ -59,7 +59,7 @@ private:
 	portaudio::MemFunCallbackStream<SoundInterface>* _stream;
 	Processor* _processor;
 
-	portaudio::AutoSystem _autoSys;
+	portaudio::AutoSystem* _autoSys;
 
 	portaudio::System* _sys;
 };

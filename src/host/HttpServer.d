@@ -82,8 +82,8 @@ src/host/HttpServer.o: src/host/HttpServer.cpp src/host/HttpServer.h \
  /usr/include/i386-linux-gnu/bits/stat.h /usr/include/libio.h \
  /usr/include/_G_config.h /usr/include/i386-linux-gnu/bits/stdio_lim.h \
  /usr/include/i386-linux-gnu/bits/sys_errlist.h \
- /usr/include/i386-linux-gnu/bits/stdio2.h src/host/../settings.h \
- src/SoundInterface.h /usr/include/math.h \
+ /usr/include/i386-linux-gnu/bits/stdio2.h src/Processor.h \
+ src/host/../settings.h src/SoundInterface.h /usr/include/math.h \
  /usr/include/i386-linux-gnu/bits/huge_val.h \
  /usr/include/i386-linux-gnu/bits/huge_valf.h \
  /usr/include/i386-linux-gnu/bits/huge_vall.h \
@@ -92,8 +92,9 @@ src/host/HttpServer.o: src/host/HttpServer.cpp src/host/HttpServer.h \
  /usr/include/i386-linux-gnu/bits/mathdef.h \
  /usr/include/i386-linux-gnu/bits/mathcalls.h \
  /usr/include/i386-linux-gnu/bits/math-finite.h src/settings.h \
- src/cJSON.h /usr/include/c++/4.6/iostream /usr/include/c++/4.6/ostream \
- /usr/include/c++/4.6/ios /usr/include/c++/4.6/bits/ios_base.h \
+ src/cJSON.h src/Processor.h /usr/include/c++/4.6/iostream \
+ /usr/include/c++/4.6/ostream /usr/include/c++/4.6/ios \
+ /usr/include/c++/4.6/bits/ios_base.h \
  /usr/include/c++/4.6/bits/locale_classes.h \
  /usr/include/c++/4.6/bits/locale_classes.tcc \
  /usr/include/c++/4.6/streambuf /usr/include/c++/4.6/bits/streambuf.tcc \

@@ -34,12 +34,13 @@ SoundInterface::SoundInterface()
 {
 	_processor=0;
 	_stream=0;
+	_autoSys = new portaudio::AutoSystem();
 	_sys = &portaudio::System::instance();
 }
 
 SoundInterface::~SoundInterface()
 {
-
+	delete _autoSys;
 }
 
 bool SoundInterface::close()
@@ -48,13 +49,8 @@ bool SoundInterface::close()
 
 	try
 	{
-		if (_stream)
-		{
-			_stream->stop();
-			_stream->close();
-			delete _stream;
-			_stream=0;
-		}
+		_stream->close();
+		_stream=0;
 	}
 	CATCHER
 

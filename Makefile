@@ -61,9 +61,10 @@
 MY_CFLAGS  = -Wno-write-strings -g -DLINUX -Isrc -Ilibs/portaudio/include -Isrc/host -Isrc/host/plugins
 MY_CFLAGS += -march=i386 -msse -mfpmath=sse
 
+
 # The linker options.
 # MY_LIBS   = -lGLEW -lglut -lGLU -lGL -lX11 -lXmu -lXi -lm -L/usr/X11R6/lib -lgomp -lOpenThreads -lpthread
-MY_LIBS   = -ldl -lm -lasound -lpthread -lportaudio -lportaudiocpp
+MY_LIBS   = -l:libportaudio.a -l:libportaudiocpp.a -ldl -lm -lasound -lpthread
 
 # The pre-processor options used by the cpp (man cpp for more).
 CPPFLAGS  = -Os -ffast-math -funroll-loops -Wno-psabi -fPIC -DPIC -Iexternals/include
