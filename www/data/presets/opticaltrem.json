@@ -1,0 +1,14 @@
+{
+	"presets":	{
+		"default":	{
+			"Depth":	45,
+			"Tempo":	140,
+			"Randomness":	10,
+			"LFO Type":	0,
+			"Stereo":	64,
+			"Panning":	64,
+			"Invert":	0,
+			"Mix":	127
+		}
+	}
+}

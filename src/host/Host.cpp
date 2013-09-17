@@ -30,6 +30,8 @@
 #include "plugins/PluginFreezer.h"
 #include "plugins/PluginStompBox.h"
 #include "plugins/PluginRing.h"
+#include "plugins/PluginVibe.h"
+#include "plugins/PluginOpticalTrem.h"
 
 #include <stdio.h>
 #include <algorithm>
@@ -73,6 +75,8 @@ Host::Host()
 	_pluginNames.push_back("Freezer");
 	_pluginNames.push_back("StompBox");
 	_pluginNames.push_back("RingMod");
+	_pluginNames.push_back("Vibe");
+	_pluginNames.push_back("Optical Trem");
 
 	// loop over all names and create all plugin json list
 	_jsonAllPlugins = cJSON_CreateArray();
@@ -614,6 +618,10 @@ Plugin* Host::createNewPlugin(string name)
 		plugin = new PluginStompBox();
 	} else if (name=="RingMod") {
 		plugin = new PluginRing();
+	} else if (name=="Vibe") {
+		plugin = new PluginVibe();
+	} else if (name=="Optical Trem") {
+		plugin = new PluginOpticalTrem();
 	}
 
 	// do extra stuff for plugin

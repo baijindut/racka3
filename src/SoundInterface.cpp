@@ -10,6 +10,8 @@
 #include "cJSON.h"
 using namespace std;
 
+int FRAMES_PER_BUFFER = 1024;
+
 #define MEGACATCH \
 catch (const portaudio::PaException &e) \
 {\
@@ -153,6 +155,7 @@ bool SoundInterface::init(cJSON* json)
 		// extract the settings
 		portaudio::Device* device = deviceFromJson(json);
 		int period = bufferSizeFromJson(json);
+		FRAMES_PER_BUFFER = period; //<-- very shit hack.
 		_monoCopy = monoCopyFromJson(json);
 
 		// create sparebuffer for mono copy if we need to

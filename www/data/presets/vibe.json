@@ -1,0 +1,17 @@
+{
+	"presets":	{
+		"default":	{
+			"Width":	35,
+			"Tempo":	120,
+			"Randomness":	10,
+			"LFO Type":	0,
+			"Stereo":	48,
+			"Pan":	64,
+			"FB":	64,
+			"Depth":	3,
+			"LR Cross":	64,
+			"Stereo":	1,
+			"Mix":	127
+		}
+	}
+}
