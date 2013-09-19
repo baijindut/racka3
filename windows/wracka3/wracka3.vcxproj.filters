@@ -19,6 +19,30 @@
     <Filter Include="Source Files\portaudio">
       <UniqueIdentifier>{fa8c159f-b1ec-4208-a8dc-3e31edd3b5eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\src">
+      <UniqueIdentifier>{e1f1bc9f-8b06-47f2-9bff-47b91eda041e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\host">
+      <UniqueIdentifier>{59e7ce6b-35ee-4f09-8f4b-b42b09603b51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\host\plugins">
+      <UniqueIdentifier>{691c0943-951d-425d-9ddd-ac158d984938}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\host\plugins\Freeverb">
+      <UniqueIdentifier>{411eded0-373c-46ab-b5b8-cc1d9edd8b25}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\host\plugins\caps-0.9.16">
+      <UniqueIdentifier>{862ace31-4a40-4019-8309-f2964739d77b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\host\plugins\caps-0.9.16\dsp">
+      <UniqueIdentifier>{a74d7409-fd9d-4c37-bd8f-f4ab9085f6d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\host\plugins\caps-0.9.16\waves">
+      <UniqueIdentifier>{c82d36f4-eae1-4d0c-bccd-ed0692348aaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\host\plugins\caps-0.9.16\dsp\tonestack">
+      <UniqueIdentifier>{cf93bda4-44be-4884-a08f-0fe942e997de}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="ReadMe.txt" />
@@ -81,11 +105,341 @@
     <ClInclude Include="..\..\externals\portaudio\src\common\pa_process.h">
       <Filter>Source Files\portaudio</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\src\uthash.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\cJSON.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Config.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\HttpServer.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\JsonFile.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mongcpp.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\mongoose.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Processor.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\settings.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\SoundInterface.h">
+      <Filter>Source Files\src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\StereoBuffer.h">
+      <Filter>Source Files\src\host</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\CAPSPluginWrapper.h">
+      <Filter>Source Files\src\host</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\Host.h">
+      <Filter>Source Files\src\host</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\HttpServer.h">
+      <Filter>Source Files\src\host</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\JsonFile.h">
+      <Filter>Source Files\src\host</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\mongcpp.h">
+      <Filter>Source Files\src\host</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\mongoose.h">
+      <Filter>Source Files\src\host</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\Plugin.h">
+      <Filter>Source Files\src\host</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\Freeverb\allpass.h">
+      <Filter>Source Files\src\host\plugins\Freeverb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\Freeverb\comb.h">
+      <Filter>Source Files\src\host\plugins\Freeverb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\Freeverb\denormals.h">
+      <Filter>Source Files\src\host\plugins\Freeverb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\Freeverb\revmodel.h">
+      <Filter>Source Files\src\host\plugins\Freeverb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\Freeverb\tuning.h">
+      <Filter>Source Files\src\host\plugins\Freeverb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\BiQuad.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\Butterworth.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\ChebyshevPoly.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\complex.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\Compress.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\Delay.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\Eq.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\FIR.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\FPTruncateMode.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\LatFilt.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\Lorenz.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\OnePole.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\Oversampler.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\polynomials.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\RBJ.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\RMS.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\Roessler.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\sinc.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\Sine.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\SVF.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\TDFII.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\ToneStack.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\util.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\v4f.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\v4f_BiQuad.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\v4f_FIR.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\White.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\windows.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\tonestack\vs_tab.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp\tonestack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\tonestack\ks_tab.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp\tonestack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\dsp\tonestack\tables.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp\tonestack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\waves\profit.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\waves</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\waves\click.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\waves</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\Amp.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\AutoFilter.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\basics.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\CabIIIModels.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\CabIIModels.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\Cabinet.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\CabIV_64_128.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\Chorus.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\Click.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\Compress.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\Descriptor.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\Eq.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\Fractals.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\ladspa.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\LadspaPlugin.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\NoiseGate.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\Pan.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\Phaser.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\Reverb.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\Saturate.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\Scape.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\Sin.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\ToneStack.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\version.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\caps-0.9.16\White.h">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\AnalogFilter.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\delayline.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\EffectLFO.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\f_sin.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\Filter.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\Filter_.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\FilterParams.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\FormantFilter.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\global.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginArpie.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginBackingTrack.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginChorus.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginCollector.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginCompressor.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginEQ.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginExpander.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginFreezer.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginGrain.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginMixSplitter.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginNoiseGate.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginOpticalTrem.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginRBEcho.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginReverb.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginRing.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginSource.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginStompBox.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginVibe.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\PluginXOverSplitter.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\SVFilter.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\host\plugins\Waveshaper.h">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\externals\portaudio\test\patest_leftright.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\ASIOSDK2\common\asio.cpp">
       <Filter>Source Files\ASIO</Filter>
     </ClCompile>
@@ -148,6 +502,204 @@
     </ClCompile>
     <ClCompile Include="..\..\externals\portaudio\src\common\pa_ringbuffer.c">
       <Filter>Source Files\portaudio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\cJSON.c">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Config.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\HttpServer.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\JsonFile.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\main.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mongcpp.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\mongoose.c">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Processor.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\SoundInterface.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\CAPSPluginWrapper.cpp">
+      <Filter>Source Files\src\host</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\Host.cpp">
+      <Filter>Source Files\src\host</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\HttpServer.cpp">
+      <Filter>Source Files\src\host</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\JsonFile.cpp">
+      <Filter>Source Files\src\host</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\mongcpp.cpp">
+      <Filter>Source Files\src\host</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\mongoose.c">
+      <Filter>Source Files\src\host</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\Plugin.cpp">
+      <Filter>Source Files\src\host</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\StereoBuffer.cpp">
+      <Filter>Source Files\src\host</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\Freeverb\allpass.cpp">
+      <Filter>Source Files\src\host\plugins\Freeverb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\Freeverb\comb.cpp">
+      <Filter>Source Files\src\host\plugins\Freeverb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\Freeverb\revmodel.cpp">
+      <Filter>Source Files\src\host\plugins\Freeverb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\dsp\polynomials.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16\dsp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\Amp.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\AutoFilter.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\Cabinet.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\Chorus.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\Click.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\Compress.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\Eq.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\Fractals.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\interface.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\NoiseGate.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\Pan.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\Phaser.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\Reverb.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\Saturate.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\Scape.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\Sin.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\ToneStack.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\caps-0.9.16\White.cc">
+      <Filter>Source Files\src\host\plugins\caps-0.9.16</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\AnalogFilter.C">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\delayline.C">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\EffectLFO.C">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\Filter.C">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\FilterParams.C">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\FormantFilter.C">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginArpie.cpp">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginBackingTrack.cpp">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginChorus.C">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginCollector.cpp">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginCompressor.C">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginEQ.cpp">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginExpander.cpp">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginFreezer.cpp">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginGrain.cpp">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginMixSplitter.cpp">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginNoiseGate.C">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginOpticalTrem.C">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginRBEcho.C">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginReverb.cpp">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginRing.C">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginSource.cpp">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginStompBox.C">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginVibe.C">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\PluginXOverSplitter.cpp">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\SVFilter.C">
+      <Filter>Source Files\src\host\plugins</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\host\plugins\Waveshaper.C">
+      <Filter>Source Files\src\host\plugins</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
